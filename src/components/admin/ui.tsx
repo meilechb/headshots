@@ -12,6 +12,7 @@ export const adminNav = [
   { href: "/admin/galleries", label: "Galleries" },
   { href: "/admin/portfolio", label: "Portfolio" },
   { href: "/admin/packages", label: "Packages" },
+  { href: "/admin/integrations", label: "Lightroom" },
 ] as const;
 
 export function AdminNav() {

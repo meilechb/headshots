@@ -6,6 +6,7 @@ import { requireAdmin } from "@/lib/auth";
 import { db, one, rows } from "@/lib/db";
 import { generateAccessCode, normalizeCode } from "@/lib/gallery-access";
 import { deleteBlobs } from "@/lib/storage";
+import { generateApiToken, hashApiToken } from "@/lib/api-auth";
 import { orderStatuses, type OrderStatus } from "@/lib/types";
 
 /* Every action re-verifies the admin session before touching the database. */
@@ -424,4 +425,25 @@ export async function deletePortfolioImage(id: string) {
   revalidatePath("/admin/portfolio");
   revalidatePath("/");
   revalidatePath("/portfolio");
+}
+
+// ------------------------------------------------------------- api tokens
+
+export type TokenState = { token?: string; name?: string; error?: string };
+
+export async function createApiToken(_prev: TokenState, formData: FormData): Promise<TokenState> {
+  await requireAdmin();
+  const name = str(formData, "name", 80) || "Lightroom";
+  const token = generateApiToken();
+  await db()`
+    insert into api_tokens (name, token_hash, token_prefix)
+    values (${name}, ${hashApiToken(token)}, ${token.slice(0, 12)})`;
+  revalidatePath("/admin/integrations");
+  return { token, name };
+}
+
+export async function revokeApiToken(id: string) {
+  await requireAdmin();
+  await db()`delete from api_tokens where id = ${id}`;
+  revalidatePath("/admin/integrations");
 }

@@ -97,6 +97,15 @@ export type Gallery = {
   allow_downloads: boolean;
   welcome_message: string | null;
   expires_at: string | null;
+  source: "web" | "lightroom";
+  created_at: string;
+};
+
+export type ApiToken = {
+  id: string;
+  name: string;
+  token_prefix: string;
+  last_used_at: string | null;
   created_at: string;
 };
 
@@ -105,6 +114,7 @@ export type Photo = {
   gallery_id: string;
   original_url: string;
   preview_url: string;
+  lr_photo_id: string | null;
   filename: string;
   width: number | null;
   height: number | null;

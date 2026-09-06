@@ -134,3 +134,25 @@ create table if not exists stripe_events (
   type text not null,
   created_at timestamptz not null default now()
 );
+
+-- ---------------------------------------------------------------------------
+-- Lightroom Classic integration
+-- ---------------------------------------------------------------------------
+
+-- Personal API tokens for the Lightroom publish plugin (hash only is stored).
+create table if not exists api_tokens (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  token_hash text not null unique,
+  token_prefix text not null,
+  last_used_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+-- Lightroom's photo UUID so republishing an edited photo replaces the same row
+-- (comments and favorites survive).
+alter table photos add column if not exists lr_photo_id text;
+
+create unique index if not exists photos_gallery_lr_photo_idx on photos (gallery_id, lr_photo_id) where lr_photo_id is not null;
+
+alter table galleries add column if not exists source text not null default 'web';

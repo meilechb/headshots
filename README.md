@@ -20,7 +20,8 @@ and Stripe payments. Runs entirely on free tiers.
 | Public site | `/`, `/portfolio`, `/pricing`, `/about`, `/contact` | Portfolio grid with lightbox and category filter, packages from the database, contact form → inquiries |
 | Client gallery | `/g/[slug]` | Access-code gate (30-day signed cookie). Proof galleries: favorites + notes per photo. Final galleries: per-photo and zip-all downloads. Photos stream through `/api/photo/[id]` after an access check |
 | Payments | `/pay/[orderId]` → Stripe → `/pay/success` | Amounts always come from the order row; webhook at `/api/stripe/webhook` marks the order paid (idempotent) |
-| Studio (admin) | `/admin` | Dashboard, inquiries → clients, orders with payment links, galleries (upload, reorder, codes, publish, reply to notes), portfolio manager, packages |
+| Studio (admin) | `/admin` | Dashboard, inquiries → clients, orders with payment links, galleries (upload, reorder, codes, publish, reply to notes), portfolio manager, packages, Lightroom tokens |
+| Lightroom API | `/api/lr/*` | Bearer-token API used by the Lightroom Classic publish plugin in `lightroom/` |
 | Auth | `/login`, `/auth/signout` | Single admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD_HASH` |
 
 Schema: `db/schema.sql`. Starter packages: `db/seed.sql`.
@@ -69,6 +70,19 @@ Set `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` and `SESSION_SECRET` locally and in Ver
    `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`.
    Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
 3. Local testing: `stripe listen --forward-to localhost:3000/api/stripe/webhook`, test card `4242 4242 4242 4242`.
+
+## Lightroom Classic plugin
+
+`lightroom/meilechbiller.lrplugin` is a Lightroom Classic **publish service**. One published collection = one client gallery.
+
+1. In the studio dashboard open **Lightroom** (`/admin/integrations`), create an API token, and download the plugin zip (or use the folder in this repo).
+2. Lightroom Classic → **File → Plug-in Manager → Add** → choose `meilechbiller.lrplugin`.
+3. **File → Publishing Manager → Add** → Meilech Biller Galleries → enter the site URL and token → **Test connection** → Save.
+4. Right-click the service → **Create Published Collection** → pick the client (or type a new one) and Proofs/Finals → drag photos in → **Publish**.
+
+What happens: the plugin asks the site for a presigned upload URL per photo, PUTs the full-size JPEG straight to the private Blob store, then the site builds the 1600px preview and records the photo (`/api/lr/*`, bearer-token auth, hashes only in `api_tokens`). Re-publishing an edited photo replaces the files and keeps client notes. Client notes and favorites appear in Lightroom's Comments panel; favorites are tagged with the keyword “Client Favorite”. Removing a photo from the collection deletes it; deleting the collection archives the gallery.
+
+After editing plugin files run `node scripts/plugin-zip.mjs` to refresh `public/downloads/meilechbiller-lightroom.zip`.
 
 ## Day-to-day workflow
 
