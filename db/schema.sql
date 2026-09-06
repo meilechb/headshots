@@ -166,3 +166,26 @@ alter table photos add column if not exists lr_photo_id text;
 create unique index if not exists photos_gallery_lr_photo_idx on photos (gallery_id, lr_photo_id) where lr_photo_id is not null;
 
 alter table galleries add column if not exists source text not null default 'web';
+
+-- ---------------------------------------------------------------------------
+-- CRM: every contact-form message belongs to a client record
+-- ---------------------------------------------------------------------------
+
+alter table clients add column if not exists archived boolean not null default false;
+
+alter table inquiries add column if not exists client_id uuid references clients (id) on delete cascade;
+
+create index if not exists inquiries_client_idx on inquiries (client_id, created_at);
+
+-- Backfill: give older messages a client (matched by email) so nothing is orphaned.
+insert into clients (name, email, phone, created_at)
+select distinct on (lower(i.email)) i.name, i.email, i.phone, i.created_at
+from inquiries i
+where i.client_id is null
+  and not exists (select 1 from clients c where lower(c.email) = lower(i.email))
+order by lower(i.email), i.created_at asc;
+
+update inquiries i
+set client_id = c.id
+from clients c
+where i.client_id is null and lower(c.email) = lower(i.email);

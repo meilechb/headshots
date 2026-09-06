@@ -86,11 +86,12 @@ After editing plugin files run `node scripts/plugin-zip.mjs` to refresh `public/
 
 ## Day-to-day workflow
 
-1. **Inquiry** arrives from the contact form → `/admin/inquiries` → *Make client*.
-2. **Order** → `/admin/orders/new` (client, package, amount, date). Copy the payment link from the order page and email it. Stripe → webhook → order shows **Paid**.
-3. After the shoot: **New gallery** (type *Proofs*) → drag in the first edits → **Publish** → *Email link + code*. Clients mark favorites and leave notes per photo; you reply inline and resolve them.
-4. Retouch the picks → **New gallery** (type *Final*, downloads on) → upload → publish → send.
-5. Move the order to **Final delivered** / **Completed**.
+Everything about a person lives on their page under `/admin/clients`. Stages (New lead → Awaiting payment → Booked → Proofs out → Delivered) are worked out from the data; nothing is set by hand except Archive.
+
+1. **Message** arrives from the contact form. The sender becomes a client (or is matched by email) and shows up as a **New lead** with a dot for the unread message.
+2. Open the client → **Reply by email** → **Set up a session** (pick a package; title, price and note fill in). Copy or email the payment link. Stripe → webhook → the session shows **Paid**. Cash or Zelle: **Mark paid**.
+3. After the shoot: **New proofs gallery** → drag in the first edits → **Make live** → *Email link + code*. Clients mark favorites and leave notes per photo; you reply inline and resolve them.
+4. Retouch the picks → **New final gallery** (downloads on) → upload → make live → send.
 
 Portfolio images for the public site are managed at `/admin/portfolio` (featured images feed the home page hero and “Recent sessions”).
 

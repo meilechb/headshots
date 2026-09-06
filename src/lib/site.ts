@@ -38,16 +38,6 @@ export const site = {
   googleBusinessProfile: "",
 };
 
-export const portfolioCategories = [
-  { slug: "corporate", label: "Corporate" },
-  { slug: "personal-brand", label: "Personal Brand" },
-  { slug: "actors", label: "Actors" },
-  { slug: "teams", label: "Teams" },
-  { slug: "creative", label: "Creative" },
-] as const;
-
-export type PortfolioCategory = (typeof portfolioCategories)[number]["slug"];
-
 /** Social links that are actually set. */
 export function socialLinks() {
   return [

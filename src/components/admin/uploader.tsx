@@ -7,7 +7,7 @@ import { finalizeGalleryPhoto, finalizePortfolioImage } from "@/app/admin/action
 
 type Target =
   | { kind: "gallery"; galleryId: string }
-  | { kind: "portfolio"; category: string };
+  | { kind: "portfolio" };
 
 type Item = { name: string; status: "queued" | "uploading" | "processing" | "done" | "error"; message?: string };
 
@@ -96,7 +96,7 @@ export function Uploader({ target }: { target: Target }) {
             { access: "public", handleUploadUrl: "/api/upload/portfolio", contentType: file.type }
           );
           update({ status: "processing" });
-          await finalizePortfolioImage({ url: blob.url, filename: file.name, size: file.size, category: target.category });
+          await finalizePortfolioImage({ url: blob.url, filename: file.name, size: file.size });
         }
         update({ status: "done" });
       } catch (err) {

@@ -2,18 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getGalleryDetail } from "@/lib/data/admin";
 import { site } from "@/lib/site";
+import { galleryKindLabels } from "@/lib/types";
+import { GalleryStatusBadge } from "@/components/admin/badges";
+import { ActionForm, Field, SubmitButton } from "@/components/admin/form";
 import { ConfirmSubmit, CopyButton } from "@/components/admin/ui";
 import { Uploader } from "@/components/admin/uploader";
+import { PhotoManager } from "@/components/admin/photo-manager";
 import { EmailGalleryButton } from "@/components/admin/email-gallery-button";
 import { emailConfigured } from "@/lib/email";
-import { PhotoManager } from "@/components/admin/photo-manager";
-import {
-  deleteGallery,
-  regenerateAccessCode,
-  setAccessCode,
-  setGalleryStatus,
-  updateGallery,
-} from "../../actions";
+import { deleteGallery, regenerateAccessCode, setGalleryStatus, updateGallery } from "../../actions";
 
 // Image processing in server actions can exceed the default function timeout.
 export const maxDuration = 60;
@@ -35,6 +32,9 @@ export default async function GalleryDetailPage({
     0
   );
   const firstName = gallery.client.name.split(" ")[0];
+  const canEmail = emailConfigured();
+  const emailSubject =
+    gallery.kind === "proof" ? `Your proofs are ready — ${site.name}` : `Your final photos are ready — ${site.name}`;
   const emailBody =
     gallery.kind === "proof"
       ? `Hi ${firstName},\n\nYour proofs are ready to review:\n${link}\nAccess code: ${gallery.access_code}\n\nMark your favorites and leave a note on any frame you'd like adjusted. I'll retouch your picks from there.\n\n${site.name}`
@@ -42,34 +42,40 @@ export default async function GalleryDetailPage({
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">← Galleries</Link>
-          <h1 className="mt-2 font-display text-3xl">{gallery.title}</h1>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0">
+          <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
+            ← Galleries
+          </Link>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <h1 className="font-display text-3xl">{gallery.title}</h1>
+            <GalleryStatusBadge status={gallery.status} />
+          </div>
           <p className="mt-1 text-sm text-muted">
-            <Link href={`/admin/clients/${gallery.client.id}`} className="underline">{gallery.client.name}</Link>
-            {" · "}<span className="capitalize">{gallery.kind}</span>
-            {gallery.order ? (
-              <> · <Link href={`/admin/orders/${gallery.order.id}`} className="underline">Order #{gallery.order.order_number}</Link></>
-            ) : null}
+            <Link href={`/admin/clients/${gallery.client.id}`} className="underline hover:text-ink">{gallery.client.name}</Link>
+            {" · "}{galleryKindLabels[gallery.kind]}
             {" · "}{photos.length} photo{photos.length === 1 ? "" : "s"}
             {favorites.length ? ` · ${favorites.length} favorite${favorites.length === 1 ? "" : "s"}` : ""}
             {openNotes ? ` · ${openNotes} open note${openNotes === 1 ? "" : "s"}` : ""}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`badge ${gallery.status === "published" ? "border-success/40 text-success" : "border-line text-muted"}`}>
-            {gallery.status}
-          </span>
           {gallery.status !== "published" ? (
             <form action={setGalleryStatus.bind(null, gallery.id, "published")}>
-              <button type="submit" className="btn-primary px-4 py-2" disabled={photos.length === 0}>
-                Publish
-              </button>
+              <SubmitButton
+                className="btn-primary px-4 py-2"
+                pendingLabel="Publishing…"
+                disabled={photos.length === 0}
+                title={photos.length === 0 ? "Upload photos first" : undefined}
+              >
+                {gallery.status === "archived" ? "Reopen" : "Make live"}
+              </SubmitButton>
             </form>
           ) : (
             <form action={setGalleryStatus.bind(null, gallery.id, "archived")}>
-              <button type="submit" className="btn-secondary px-4 py-2">Archive</button>
+              <SubmitButton className="btn-secondary px-4 py-2" pendingLabel="Closing…">
+                Close gallery
+              </SubmitButton>
             </form>
           )}
           <a href={link} target="_blank" rel="noreferrer" className="btn-ghost">
@@ -79,9 +85,9 @@ export default async function GalleryDetailPage({
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <section className="card p-5 lg:col-span-1">
-          <h2 className="font-medium">Share with client</h2>
-          <p className="mt-1 text-xs text-muted">The client needs both the link and the code.</p>
+        <section className="card p-5">
+          <h2 className="font-medium">Send to client</h2>
+          <p className="mt-1 text-xs text-muted">They need the link and the code.</p>
           <div className="mt-3 flex items-center gap-2">
             <code className="min-w-0 flex-1 truncate border border-line bg-paper-2 px-3 py-2 text-xs">{link}</code>
             <CopyButton value={link} />
@@ -93,77 +99,36 @@ export default async function GalleryDetailPage({
             <CopyButton value={gallery.access_code ?? ""} />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {emailConfigured() ? (
+            {canEmail ? (
               <EmailGalleryButton galleryId={gallery.id} clientEmail={gallery.client.email} />
             ) : null}
             <a
-              href={`mailto:${gallery.client.email}?subject=${encodeURIComponent(`${gallery.kind === "proof" ? "Your proofs are ready" : "Your final photos are ready"} — ${site.name}`)}&body=${encodeURIComponent(emailBody)}`}
-              className={`${emailConfigured() ? "btn-secondary" : "btn-primary"} px-3 py-2 text-xs`}
+              href={`mailto:${gallery.client.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
+              className={`${canEmail ? "btn-secondary" : "btn-primary"} px-3 py-1.5 text-xs`}
             >
-              {emailConfigured() ? "Open in mail app" : "Email link + code"}
+              {canEmail ? "Open in mail app" : "Email link + code"}
             </a>
             <form action={regenerateAccessCode.bind(null, gallery.id)}>
-              <button type="submit" className="btn-secondary px-3 py-2 text-xs">New code</button>
+              <SubmitButton className="btn-secondary px-3 py-1.5 text-xs" pendingLabel="…">
+                New code
+              </SubmitButton>
             </form>
           </div>
-          <form action={setAccessCode.bind(null, gallery.id)} className="mt-3 flex gap-2">
-            <input name="access_code" placeholder="Custom code" className="input py-1.5 text-xs uppercase" />
-            <button type="submit" className="btn-secondary px-3 py-1.5 text-xs">Set</button>
-          </form>
           {gallery.status !== "published" ? (
-            <p className="mt-3 text-xs text-brass-2">Draft: the link shows “not found” until you publish.</p>
+            <p className="mt-3 text-xs text-brass-2">
+              {gallery.status === "draft"
+                ? "Not live yet: the link shows “not found” until you make it live."
+                : "Closed: the link shows “gallery closed” until you reopen it."}
+            </p>
           ) : null}
         </section>
 
-        <form
-          key={`${gallery.status}-${gallery.kind}-${gallery.allow_downloads}-${gallery.expires_at ?? ""}`}
+        <ActionForm
+          key={`${gallery.kind}-${gallery.allow_downloads}-${gallery.expires_at ?? ""}-${gallery.title}`}
           action={updateGallery.bind(null, gallery.id)}
           className="card space-y-4 p-5 lg:col-span-2"
-        >
-          <h2 className="font-medium">Settings</h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_auto]">
-            <div>
-              <label htmlFor="title" className="label">Title</label>
-              <input id="title" name="title" defaultValue={gallery.title} required className="input" />
-            </div>
-            <div>
-              <label htmlFor="kind" className="label">Type</label>
-              <select id="kind" name="kind" defaultValue={gallery.kind} className="input">
-                <option value="proof">Proofs</option>
-                <option value="final">Final</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="status" className="label">Status</label>
-              <select id="status" name="status" defaultValue={gallery.status} className="input">
-                <option value="draft">Draft</option>
-                <option value="published">Published</option>
-                <option value="archived">Archived</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="welcome_message" className="label">Welcome message <span className="text-muted">(shown above the photos)</span></label>
-            <textarea id="welcome_message" name="welcome_message" rows={2} defaultValue={gallery.welcome_message ?? ""} className="input" />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox" name="allow_downloads" defaultChecked={gallery.allow_downloads} className="h-4 w-4" />
-              Allow downloads (final galleries)
-            </label>
-            <div>
-              <label htmlFor="expires_at" className="label">Expires <span className="text-muted">(optional)</span></label>
-              <input
-                id="expires_at"
-                name="expires_at"
-                type="date"
-                defaultValue={gallery.expires_at ? gallery.expires_at.slice(0, 10) : ""}
-                className="input"
-              />
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <button type="submit" className="btn-primary">Save settings</button>
+          submitLabel="Save settings"
+          extra={
             <ConfirmSubmit
               className="btn-danger"
               message="Delete this gallery and all its photos from storage?"
@@ -171,8 +136,39 @@ export default async function GalleryDetailPage({
             >
               Delete gallery
             </ConfirmSubmit>
+          }
+        >
+          <h2 className="font-medium">Settings</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto]">
+            <Field label="Title" htmlFor="title">
+              <input id="title" name="title" defaultValue={gallery.title} required className="input" />
+            </Field>
+            <Field label="Type" htmlFor="kind">
+              <select id="kind" name="kind" defaultValue={gallery.kind} className="input">
+                <option value="proof">Proofs</option>
+                <option value="final">Final photos</option>
+              </select>
+            </Field>
           </div>
-        </form>
+          <Field label="Welcome message" htmlFor="welcome_message" hint="shown above the photos">
+            <textarea id="welcome_message" name="welcome_message" rows={2} defaultValue={gallery.welcome_message ?? ""} className="input" />
+          </Field>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:items-end">
+            <label className="flex min-h-11 items-center gap-2 text-sm">
+              <input type="checkbox" name="allow_downloads" defaultChecked={gallery.allow_downloads} className="h-4 w-4" />
+              Client can download the files
+            </label>
+            <Field label="Closes automatically on" htmlFor="expires_at" hint="optional">
+              <input
+                id="expires_at"
+                name="expires_at"
+                type="date"
+                defaultValue={gallery.expires_at ? gallery.expires_at.slice(0, 10) : ""}
+                className="input"
+              />
+            </Field>
+          </div>
+        </ActionForm>
       </div>
 
       <section className="space-y-4">

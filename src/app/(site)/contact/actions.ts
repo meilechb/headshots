@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { db, one } from "@/lib/db";
 import { notifyAddress, sendEmail } from "@/lib/email";
 import { inquiryAutoReply, inquiryNotification } from "@/lib/emails";
@@ -52,12 +53,32 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
   }
   const location = locationPrefs.some((l) => l.value === values.location_pref) ? values.location_pref : null;
 
+  // The sender becomes a client (or is matched to an existing one by email)
+  // and the message is filed under them, so it shows up in the studio's client list.
   let inquiry: Inquiry | null = null;
   try {
+    const existing = one<{ id: string }>(
+      await db()`select id from clients where lower(email) = lower(${values.email}) limit 1`
+    );
+    let clientId = existing?.id;
+    if (clientId) {
+      await db()`
+        update clients
+        set phone = coalesce(phone, ${values.phone || null}), archived = false
+        where id = ${clientId}`;
+    } else {
+      const created = one<{ id: string }>(
+        await db()`
+          insert into clients (name, email, phone)
+          values (${values.name}, ${values.email}, ${values.phone || null})
+          returning id`
+      );
+      clientId = created!.id;
+    }
     inquiry = one<Inquiry>(
       await db()`
-        insert into inquiries (name, email, phone, package_slug, message, session_type, people_count, location_pref, town, timing, source)
-        values (${values.name}, ${values.email}, ${values.phone || null}, ${values.package || null}, ${values.message || null},
+        insert into inquiries (client_id, name, email, phone, package_slug, message, session_type, people_count, location_pref, town, timing, source)
+        values (${clientId}, ${values.name}, ${values.email}, ${values.phone || null}, ${values.package || null}, ${values.message || null},
                 ${values.session_type}, ${people}, ${location}, ${values.town || null}, ${values.timing || null}, ${values.source || null})
         returning *`
     );
@@ -68,6 +89,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
       values,
     };
   }
+  revalidatePath("/admin/clients");
 
   // Best effort: the inquiry is saved even if email is not configured or fails.
   let emailed = false;

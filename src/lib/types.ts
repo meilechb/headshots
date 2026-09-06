@@ -9,7 +9,31 @@ export type Client = {
   phone: string | null;
   company: string | null;
   notes: string | null;
+  archived: boolean;
   created_at: string;
+};
+
+/**
+ * Where a client is in the pipeline. Derived from their sessions and
+ * galleries, never set by hand (except "archived").
+ */
+export const clientStages = [
+  "lead",
+  "awaiting_payment",
+  "booked",
+  "proofing",
+  "delivered",
+  "archived",
+] as const;
+export type ClientStage = (typeof clientStages)[number];
+
+export const clientStageLabels: Record<ClientStage, string> = {
+  lead: "New lead",
+  awaiting_payment: "Awaiting payment",
+  booked: "Booked",
+  proofing: "Proofs out",
+  delivered: "Delivered",
+  archived: "Archived",
 };
 
 export type Package = {
@@ -29,6 +53,7 @@ export type InquiryStatus = "new" | "contacted" | "booked" | "closed";
 
 export type Inquiry = {
   id: string;
+  client_id: string | null;
   name: string;
   email: string;
   phone: string | null;
@@ -107,6 +132,18 @@ export type Order = {
 
 export type GalleryKind = "proof" | "final";
 export type GalleryStatus = "draft" | "published" | "archived";
+
+export const galleryKindLabels: Record<GalleryKind, string> = {
+  proof: "Proofs",
+  final: "Final photos",
+};
+
+/** What the studio sees. "Live" means the client can open it. */
+export const galleryStatusLabels: Record<GalleryStatus, string> = {
+  draft: "Draft",
+  published: "Live",
+  archived: "Closed",
+};
 
 export type Gallery = {
   id: string;

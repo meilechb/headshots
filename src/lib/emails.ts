@@ -33,7 +33,7 @@ export function inquirySummary(q: Inquiry, packageName?: string | null) {
 export function inquiryNotification(q: Inquiry, packageName?: string | null) {
   return {
     subject: `New inquiry: ${q.name} (${labelSessionType(q.session_type)})`,
-    text: `${inquirySummary(q, packageName)}\n\nOpen in the studio: ${site.url}/admin/inquiries\nReply to this email to answer ${q.name.split(" ")[0]} directly.`,
+    text: `${inquirySummary(q, packageName)}\n\nOpen in the studio: ${site.url}/admin/clients${q.client_id ? `/${q.client_id}` : ""}\nReply to this email to answer ${q.name.split(" ")[0]} directly.`,
   };
 }
 
