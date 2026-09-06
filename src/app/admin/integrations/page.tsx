@@ -71,7 +71,7 @@ export default async function IntegrationsPage() {
         <h2 className="font-medium">3. How it works in Lightroom</h2>
         <ul className="mt-3 space-y-2 text-ink-2">
           <li><strong>One published collection = one gallery.</strong> Right-click the service → Create Published Collection, pick the client (or type a new one), choose Proofs or Finals.</li>
-          <li><strong>Publish</strong> uploads full-size JPEGs; the site makes web previews. The gallery is created as a draft with its link and access code; publish it from <Link className="underline" href="/admin/galleries">Galleries</Link> or it goes live automatically when the collection setting “Publish gallery to client” is on.</li>
+          <li><strong>Publish</strong> uploads full-size JPEGs; the site makes web previews. The gallery is created as a draft with its link and access code; publish it from <Link className="underline" href="/admin/galleries">Galleries</Link> or it goes live automatically when the collection setting “Make the gallery visible to the client as soon as photos are published” is on.</li>
           <li><strong>Edited photos</strong> show as “Modified Photos to Re-Publish”; re-publishing replaces the file and keeps the client’s notes.</li>
           <li><strong>Notes and favorites</strong> appear in the Library’s Comments panel for the selected photo. Favorites get the keyword “Client Favorite” so you can filter and retouch them.</li>
           <li><strong>Removing a photo</strong> from the collection deletes it from the gallery. Deleting the collection archives the gallery.</li>
