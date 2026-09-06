@@ -22,6 +22,36 @@ function extOf(file: File) {
 }
 
 /**
+ * The upload library hides the server's reason when the token request fails.
+ * Repeat that request and report what the server actually said.
+ */
+async function explainTokenFailure(handleUploadUrl: string, file: File) {
+  try {
+    const res = await fetch(handleUploadUrl, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        type: "blob.generate-client-token",
+        payload: { pathname: `probe/${baseName(file.name)}.${extOf(file)}`, clientPayload: null, multipart: false },
+      }),
+    });
+    const text = await res.text();
+    let detail = text.slice(0, 300);
+    try {
+      const parsed = JSON.parse(text) as { error?: string; clientToken?: string };
+      if (parsed.error) detail = parsed.error;
+      else if (parsed.clientToken) detail = "the server issued a token on retry; try the upload again";
+    } catch {
+      /* not JSON: keep raw text */
+    }
+    if (/Not authenticated/i.test(detail)) return "Your admin session has expired. Sign in again and retry.";
+    return `Upload token request failed (HTTP ${res.status}): ${detail}`;
+  } catch (e) {
+    return `Upload token request failed: ${e instanceof Error ? e.message : String(e)}`;
+  }
+}
+
+/**
  * Browser → Vercel Blob upload of the original file (token exchange at
  * /api/upload/[store]), then the server makes the web-size version and
  * records it. No image decoding happens in the browser, so any size works.
@@ -70,7 +100,14 @@ export function Uploader({ target }: { target: Target }) {
         }
         update({ status: "done" });
       } catch (err) {
-        update({ status: "error", message: err instanceof Error ? err.message : "Upload failed" });
+        let message = err instanceof Error ? err.message : "Upload failed";
+        if (/retrieve the client token/i.test(message)) {
+          message = await explainTokenFailure(
+            target.kind === "gallery" ? "/api/upload/galleries" : "/api/upload/portfolio",
+            file
+          );
+        }
+        update({ status: "error", message });
       }
     }
 

@@ -48,7 +48,7 @@ cp .env.example .env.local
 1. Import the GitHub repo at <https://vercel.com/new> and deploy once (it works with no env vars; the public pages just show placeholders).
 2. In the project, open **Storage → Create Database → Blob** twice:
    - name `galleries`, access **Private** → it adds `BLOB_READ_WRITE_TOKEN` to the project
-   - name `portfolio`, access **Public** → in *Advanced Options* set the env var prefix to `PORTFOLIO` so it adds `PORTFOLIO_BLOB_READ_WRITE_TOKEN`
+   - name `portfolio`, access **Public** → in *Advanced Options* set the env var prefix to `PORTFOLIO` so it adds `PORTFOLIO_READ_WRITE_TOKEN` (the code also accepts `PORTFOLIO_BLOB_READ_WRITE_TOKEN`)
 3. **Settings → Environment Variables**: add `DATABASE_URL`, `NEXT_PUBLIC_SITE_URL`, the admin and session values from step 3, and the Stripe keys from step 4.
 4. **Settings → Domains**: add `meilechbiller.com` and `www.meilechbiller.com` and create the DNS records Vercel shows you.
 5. Redeploy.

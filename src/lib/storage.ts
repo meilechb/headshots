@@ -9,17 +9,25 @@ import { del, get } from "@vercel/blob";
  */
 export type Store = "galleries" | "portfolio";
 
+/**
+ * Env var names. The galleries store uses Vercel's default BLOB_READ_WRITE_TOKEN.
+ * The portfolio store is connected with the env var prefix "PORTFOLIO"; Vercel
+ * then names its token PORTFOLIO_READ_WRITE_TOKEN. PORTFOLIO_BLOB_READ_WRITE_TOKEN
+ * is accepted as well for setups that pasted the token by hand.
+ */
+const TOKEN_VARS: Record<Store, string[]> = {
+  galleries: ["BLOB_READ_WRITE_TOKEN"],
+  portfolio: ["PORTFOLIO_READ_WRITE_TOKEN", "PORTFOLIO_BLOB_READ_WRITE_TOKEN"],
+};
+
 export function blobToken(store: Store) {
-  const token =
-    store === "portfolio"
-      ? (process.env.PORTFOLIO_BLOB_READ_WRITE_TOKEN ?? process.env.BLOB_READ_WRITE_TOKEN)
-      : process.env.BLOB_READ_WRITE_TOKEN;
-  if (!token) {
-    throw new Error(
-      `Blob token for the ${store} store is not set (BLOB_READ_WRITE_TOKEN / PORTFOLIO_BLOB_READ_WRITE_TOKEN).`
-    );
+  for (const name of TOKEN_VARS[store]) {
+    const value = process.env[name]?.trim();
+    if (value) return value;
   }
-  return token;
+  throw new Error(
+    `The ${store} storage token is not set. Add ${TOKEN_VARS[store].join(" or ")} to the environment variables.`
+  );
 }
 
 export function storageConfigured() {
