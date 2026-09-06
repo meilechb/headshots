@@ -121,7 +121,7 @@ export default async function OrderDetailPage({
           </section>
         </div>
 
-        <form action={updateOrder.bind(null, order.id)} className="card h-fit space-y-4 p-5">
+        <form key={`${order.status}-${order.updated_at}`} action={updateOrder.bind(null, order.id)} className="card h-fit space-y-4 p-5">
           <h2 className="font-medium">Details</h2>
           <div>
             <label htmlFor="title" className="label">Title</label>

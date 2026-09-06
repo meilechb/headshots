@@ -107,7 +107,11 @@ export default async function GalleryDetailPage({
           ) : null}
         </section>
 
-        <form action={updateGallery.bind(null, gallery.id)} className="card space-y-4 p-5 lg:col-span-2">
+        <form
+          key={`${gallery.status}-${gallery.kind}-${gallery.allow_downloads}-${gallery.expires_at ?? ""}`}
+          action={updateGallery.bind(null, gallery.id)}
+          className="card space-y-4 p-5 lg:col-span-2"
+        >
           <h2 className="font-medium">Settings</h2>
           <div className="grid gap-4 sm:grid-cols-[1fr_auto_auto]">
             <div>

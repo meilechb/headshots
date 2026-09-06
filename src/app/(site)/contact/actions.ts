@@ -2,7 +2,8 @@
 
 import { db } from "@/lib/db";
 
-export type InquiryState = { ok?: boolean; error?: string };
+export type InquiryValues = { name: string; email: string; phone: string; package: string; message: string };
+export type InquiryState = { ok?: boolean; error?: string; values?: InquiryValues };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,8 +22,9 @@ export async function submitInquiry(
   const packageSlug = String(formData.get("package") ?? "").trim().slice(0, 60);
   const message = String(formData.get("message") ?? "").trim().slice(0, 4000);
 
-  if (!name) return { error: "Please tell me your name." };
-  if (!EMAIL_RE.test(email)) return { error: "Please enter a valid email." };
+  const values: InquiryValues = { name, email, phone, package: packageSlug, message };
+  if (!name) return { error: "Please tell me your name.", values };
+  if (!EMAIL_RE.test(email)) return { error: "Please enter a valid email.", values };
 
   try {
     await db()`
@@ -32,6 +34,7 @@ export async function submitInquiry(
     return {
       error:
         "Something went wrong sending your message. Email me directly and I’ll reply the same day.",
+      values,
     };
   }
 

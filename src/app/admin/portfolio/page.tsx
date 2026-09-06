@@ -52,7 +52,7 @@ export default async function PortfolioAdminPage({
                   <span className="absolute right-2 top-2 rounded bg-brass px-1.5 py-0.5 text-[11px] text-ink">Featured</span>
                 ) : null}
               </div>
-              <form action={updatePortfolioImage.bind(null, img.id)} className="space-y-3 p-4 text-sm">
+              <form key={`${img.category}-${img.is_featured}-${img.is_published}-${img.sort_order}-${img.alt}`} action={updatePortfolioImage.bind(null, img.id)} className="space-y-3 p-4 text-sm">
                 <div>
                   <label htmlFor={`alt-${img.id}`} className="label">Alt text</label>
                   <input id={`alt-${img.id}`} name="alt" defaultValue={img.alt} className="input py-1.5" />

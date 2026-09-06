@@ -15,6 +15,8 @@ export function ContactForm({
     {}
   );
 
+  const v = state.values;
+
   if (state.ok) {
     return (
       <div className="card p-8">
@@ -35,13 +37,13 @@ export function ContactForm({
           <label htmlFor="name" className="label">
             Name
           </label>
-          <input id="name" name="name" required className="input" autoComplete="name" />
+          <input id="name" name="name" required className="input" autoComplete="name" defaultValue={v?.name ?? ""} />
         </div>
         <div>
           <label htmlFor="email" className="label">
             Email
           </label>
-          <input id="email" name="email" type="email" required className="input" autoComplete="email" />
+          <input id="email" name="email" type="email" required className="input" autoComplete="email" defaultValue={v?.email ?? ""} />
         </div>
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
@@ -49,7 +51,7 @@ export function ContactForm({
           <label htmlFor="phone" className="label">
             Phone <span className="text-muted">(optional)</span>
           </label>
-          <input id="phone" name="phone" type="tel" className="input" autoComplete="tel" />
+          <input id="phone" name="phone" type="tel" className="input" autoComplete="tel" defaultValue={v?.phone ?? ""} />
         </div>
         <div>
           <label htmlFor="package" className="label">
@@ -58,7 +60,7 @@ export function ContactForm({
           <select
             id="package"
             name="package"
-            defaultValue={defaultPackage ?? ""}
+            defaultValue={v?.package ?? defaultPackage ?? ""}
             className="input"
           >
             <option value="">Not sure yet</option>
@@ -79,6 +81,7 @@ export function ContactForm({
           name="message"
           rows={5}
           className="input"
+          defaultValue={v?.message ?? ""}
           placeholder="LinkedIn, company website, a team of 12, an acting reel…"
         />
       </div>

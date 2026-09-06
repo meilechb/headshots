@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Prints an ADMIN_PASSWORD_HASH for .env / Vercel. Usage:
+// Prints an ADMIN_PASSWORD_HASH for .env / Vercel. Colons are used as separators
+// because Next.js expands `$VAR` references inside .env files. Usage:
 //   npm run hash-password -- "your strong password"
 import { randomBytes, scryptSync } from "node:crypto";
 
@@ -11,4 +12,4 @@ if (!password || password.length < 10) {
 
 const salt = randomBytes(16).toString("base64url");
 const hash = scryptSync(password, salt, 64, { N: 16384, r: 8, p: 1 }).toString("base64url");
-console.log(`ADMIN_PASSWORD_HASH=scrypt$16384$${salt}$${hash}`);
+console.log(`ADMIN_PASSWORD_HASH=scrypt:16384:${salt}:${hash}`);

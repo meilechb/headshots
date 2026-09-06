@@ -18,14 +18,14 @@ export function authConfigured() {
 
 /**
  * Verifies a password against ADMIN_PASSWORD_HASH produced by
- * `npm run hash-password`. Format: scrypt$N$salt$hash (base64url).
+ * `npm run hash-password`. Format: scrypt:N:salt:hash (base64url).
  */
 export function verifyAdminCredentials(email: string, password: string) {
   const expectedEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
   const stored = process.env.ADMIN_PASSWORD_HASH;
   if (!expectedEmail || !stored) return false;
 
-  const [scheme, nStr, salt, hash] = stored.split("$");
+  const [scheme, nStr, salt, hash] = stored.split(":");
   if (scheme !== "scrypt" || !nStr || !salt || !hash) return false;
 
   const expected = Buffer.from(hash, "base64url");

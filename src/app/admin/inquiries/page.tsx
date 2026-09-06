@@ -41,7 +41,7 @@ export default async function InquiriesPage() {
                   ) : null}
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <form action={updateInquiryStatus.bind(null, q.id)} className="flex items-center gap-2">
+                  <form key={q.status} action={updateInquiryStatus.bind(null, q.id)} className="flex items-center gap-2">
                     <select name="status" defaultValue={q.status} className="input w-auto py-1.5 text-xs">
                       {statuses.map((s) => (
                         <option key={s} value={s}>{s}</option>

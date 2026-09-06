@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { authConfigured, verifyAdminCredentials } from "@/lib/auth";
 import { createSession } from "@/lib/session";
 
-export type LoginState = { error?: string };
+export type LoginState = { error?: string; email?: string };
 
 export async function login(
   _prev: LoginState,
@@ -15,7 +15,7 @@ export async function login(
   const next = String(formData.get("next") ?? "/admin");
 
   if (!email || !password) {
-    return { error: "Enter your email and password." };
+    return { error: "Enter your email and password.", email };
   }
   if (!authConfigured()) {
     return {
@@ -24,7 +24,7 @@ export async function login(
     };
   }
   if (!verifyAdminCredentials(email, password)) {
-    return { error: "Incorrect email or password." };
+    return { error: "Incorrect email or password.", email };
   }
 
   await createSession(email.trim().toLowerCase());
