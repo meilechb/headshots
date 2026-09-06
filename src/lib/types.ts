@@ -34,9 +34,32 @@ export type Inquiry = {
   phone: string | null;
   package_slug: string | null;
   message: string | null;
+  session_type: string | null;
+  people_count: number | null;
+  timing: string | null;
+  location_pref: string | null;
+  town: string | null;
+  source: string | null;
+  notes: string | null;
   status: InquiryStatus;
   created_at: string;
+  updated_at: string;
 };
+
+export const sessionTypes = [
+  { value: "individual", label: "Headshot for myself (business / LinkedIn)" },
+  { value: "team", label: "Headshots for a team or office" },
+  { value: "real-estate", label: "Real estate / sales photos" },
+  { value: "medical", label: "Medical or professional practice" },
+  { value: "actor", label: "Actor headshots" },
+  { value: "other", label: "Something else" },
+] as const;
+
+export const locationPrefs = [
+  { value: "studio", label: "Your studio in Spring Valley" },
+  { value: "on-site", label: "At my office or location" },
+  { value: "either", label: "Either / not sure" },
+] as const;
 
 export const orderStatuses = [
   "draft",

@@ -5,6 +5,7 @@ import { MobileNav } from "./mobile-nav";
 export const navItems = [
   { href: "/portfolio", label: "Portfolio" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/headshots", label: "Areas" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;
@@ -18,11 +19,11 @@ export function SiteHeader() {
             {site.name}
           </span>
           <span className="mt-[3px] text-[10px] font-normal normal-case tracking-[0.3em] uppercase text-muted">
-            Headshots
+            Headshots · Rockland County
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">
           {navItems.map((item) => (
             <Link
               key={item.href}

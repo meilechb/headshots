@@ -4,6 +4,8 @@ import { getGalleryDetail } from "@/lib/data/admin";
 import { site } from "@/lib/site";
 import { ConfirmSubmit, CopyButton } from "@/components/admin/ui";
 import { Uploader } from "@/components/admin/uploader";
+import { EmailGalleryButton } from "@/components/admin/email-gallery-button";
+import { emailConfigured } from "@/lib/email";
 import { PhotoManager } from "@/components/admin/photo-manager";
 import {
   deleteGallery,
@@ -91,14 +93,17 @@ export default async function GalleryDetailPage({
             <CopyButton value={gallery.access_code ?? ""} />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
+            {emailConfigured() ? (
+              <EmailGalleryButton galleryId={gallery.id} clientEmail={gallery.client.email} />
+            ) : null}
             <a
               href={`mailto:${gallery.client.email}?subject=${encodeURIComponent(`${gallery.kind === "proof" ? "Your proofs are ready" : "Your final photos are ready"} — ${site.name}`)}&body=${encodeURIComponent(emailBody)}`}
-              className="btn-primary px-3 py-1.5 text-xs"
+              className={`${emailConfigured() ? "btn-secondary" : "btn-primary"} px-3 py-2 text-xs`}
             >
-              Email link + code
+              {emailConfigured() ? "Open in mail app" : "Email link + code"}
             </a>
             <form action={regenerateAccessCode.bind(null, gallery.id)}>
-              <button type="submit" className="btn-secondary px-3 py-1.5 text-xs">New code</button>
+              <button type="submit" className="btn-secondary px-3 py-2 text-xs">New code</button>
             </form>
           </div>
           <form action={setAccessCode.bind(null, gallery.id)} className="mt-3 flex gap-2">

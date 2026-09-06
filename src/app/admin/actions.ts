@@ -1,8 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { site } from "@/lib/site";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
+import { emailConfigured, sendEmail } from "@/lib/email";
+import { galleryReadyEmail } from "@/lib/emails";
 import { db, one, rows } from "@/lib/db";
 import { generateAccessCode, normalizeCode } from "@/lib/gallery-access";
 import { deleteBlobs } from "@/lib/storage";
@@ -36,7 +39,7 @@ export async function updateInquiryStatus(id: string, formData: FormData) {
   await requireAdmin();
   const status = str(formData, "status");
   if (!["new", "contacted", "booked", "closed"].includes(status)) fail("Bad status");
-  await db()`update inquiries set status = ${status} where id = ${id}`;
+  await db()`update inquiries set status = ${status}, updated_at = now() where id = ${id}`;
   revalidatePath("/admin");
   revalidatePath("/admin/inquiries");
 }
@@ -67,10 +70,25 @@ export async function convertInquiryToClient(id: string) {
     clientId = created!.id;
   }
 
-  await db()`update inquiries set status = 'contacted' where id = ${id}`;
+  await db()`update inquiries set status = 'contacted', updated_at = now() where id = ${id}`;
   revalidatePath("/admin/inquiries");
   revalidatePath("/admin/clients");
   redirect(`/admin/clients/${clientId}`);
+}
+
+export async function updateInquiryNotes(id: string, formData: FormData) {
+  await requireAdmin();
+  const notes = str(formData, "notes", 4000);
+  await db()`update inquiries set notes = ${notes || null}, updated_at = now() where id = ${id}`;
+  revalidatePath("/admin/inquiries");
+}
+
+export async function setInquiryStatus(id: string, status: string) {
+  await requireAdmin();
+  if (!["new", "contacted", "booked", "closed"].includes(status)) fail("Bad status");
+  await db()`update inquiries set status = ${status}, updated_at = now() where id = ${id}`;
+  revalidatePath("/admin");
+  revalidatePath("/admin/inquiries");
 }
 
 export async function deleteInquiry(id: string) {
@@ -512,4 +530,36 @@ export async function revokeApiToken(id: string) {
   await requireAdmin();
   await db()`delete from api_tokens where id = ${id}`;
   revalidatePath("/admin/integrations");
+}
+
+// ------------------------------------------------------------- gallery email
+
+export type GalleryEmailState = { ok?: boolean; error?: string };
+
+/** Emails the gallery link and access code to the client (requires RESEND_API_KEY). */
+export async function emailGalleryLink(galleryId: string): Promise<GalleryEmailState> {
+  await requireAdmin();
+  if (!emailConfigured()) return { error: "Email is not set up yet. Use the mail-app button instead." };
+  const g = one<{
+    slug: string; kind: "proof" | "final"; access_code: string | null; expires_at: string | null; status: string;
+    client_name: string; client_email: string;
+  }>(
+    await db()`
+      select g.slug, g.kind, g.access_code, g.expires_at, g.status, c.name as client_name, c.email as client_email
+      from galleries g join clients c on c.id = g.client_id
+      where g.id = ${galleryId} limit 1`
+  );
+  if (!g) return { error: "Gallery not found." };
+  if (g.status !== "published") return { error: "Publish the gallery first so the link works." };
+  if (!g.access_code) return { error: "The gallery has no access code." };
+  const mail = galleryReadyEmail({
+    clientName: g.client_name,
+    kind: g.kind,
+    link: `${site.url}/g/${g.slug}`,
+    code: g.access_code,
+    expiresAt: g.expires_at,
+  });
+  const result = await sendEmail({ to: g.client_email, subject: mail.subject, text: mail.text });
+  if (!result.ok) return { error: result.error ?? "Sending failed." };
+  return { ok: true };
 }

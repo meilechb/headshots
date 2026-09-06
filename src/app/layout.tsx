@@ -19,20 +19,23 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Headshot Photography`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} | Headshot Photographer in Rockland County, NY`,
+    template: `%s | ${site.name}`,
   },
   description: site.description,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     siteName: site.legalName,
-    title: `${site.name} — Headshot Photography`,
+    title: `${site.name} | Headshot Photographer in Rockland County, NY`,
     description: site.description,
     url: site.url,
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
   },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

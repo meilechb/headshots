@@ -37,6 +37,16 @@ create table if not exists inquiries (
   created_at timestamptz not null default now()
 );
 
+-- Inquiry details added later; safe to re-run.
+alter table inquiries add column if not exists session_type text;
+alter table inquiries add column if not exists people_count integer;
+alter table inquiries add column if not exists timing text;
+alter table inquiries add column if not exists location_pref text;
+alter table inquiries add column if not exists town text;
+alter table inquiries add column if not exists source text;
+alter table inquiries add column if not exists notes text;
+alter table inquiries add column if not exists updated_at timestamptz not null default now();
+
 create sequence if not exists order_number_seq start 1001;
 
 create table if not exists orders (

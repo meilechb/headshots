@@ -1,4 +1,7 @@
 import "server-only";
+import { sendEmail } from "@/lib/email";
+import { paymentReceiptEmail } from "@/lib/emails";
+import { formatMoney } from "@/lib/types";
 
 import { db, one, UUID_RE } from "@/lib/db";
 import type { Client, Order } from "@/lib/types";
@@ -31,13 +34,32 @@ export async function markOrderPaid(input: {
   paymentIntentId: string | null;
 }) {
   if (!UUID_RE.test(input.orderId)) return;
-  await db()`
-    update orders
-    set status = 'paid',
-        paid_at = now(),
-        stripe_checkout_session_id = ${input.sessionId},
-        stripe_payment_intent_id = ${input.paymentIntentId},
-        updated_at = now()
-    where id = ${input.orderId}
-      and status in ('draft', 'pending_payment')`;
+  const updated = one<{ order_number: number; title: string; amount_cents: number; currency: string; shoot_date: string | null; client_id: string }>(
+    await db()`
+      update orders
+      set status = 'paid',
+          paid_at = now(),
+          stripe_checkout_session_id = ${input.sessionId},
+          stripe_payment_intent_id = ${input.paymentIntentId},
+          updated_at = now()
+      where id = ${input.orderId}
+        and status in ('draft', 'pending_payment')
+      returning order_number, title, amount_cents, currency, shoot_date, client_id`
+  );
+  if (!updated) return; // already paid: no second receipt
+
+  // Receipt is best effort; payment is recorded regardless.
+  const client = one<{ name: string; email: string }>(
+    await db()`select name, email from clients where id = ${updated.client_id} limit 1`
+  );
+  if (client) {
+    const mail = paymentReceiptEmail({
+      clientName: client.name,
+      orderNumber: updated.order_number,
+      title: updated.title,
+      amount: formatMoney(updated.amount_cents, updated.currency),
+      shootDate: updated.shoot_date,
+    });
+    await sendEmail({ to: client.email, subject: mail.subject, text: mail.text });
+  }
 }

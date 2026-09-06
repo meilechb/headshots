@@ -3,9 +3,10 @@ import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { getPortfolio } from "@/lib/data/public";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  title: "Headshot Portfolio, Rockland County, NY",
   description:
-    "Selected headshots: corporate, personal brand, actors, teams and creative portraits.",
+    "Recent headshots photographed in Rockland County, NY: business and LinkedIn headshots, team photos, actor headshots and personal brand portraits.",
+  alternates: { canonical: "/portfolio" },
 };
 
 export default async function PortfolioPage() {

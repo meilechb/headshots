@@ -123,3 +123,19 @@ npm run db:migrate     # apply db/schema.sql to DATABASE_URL
 npm run db:seed        # schema + starter packages
 npm run hash-password -- "password"
 ```
+
+
+## Email (Resend)
+
+Emails are optional. Without them the site still saves inquiries and shows mailto links in the admin.
+
+1. Create a free account at resend.com and add your domain (Resend shows the DNS records to add).
+2. Create an API key and set `RESEND_API_KEY` in Vercel.
+3. Set `EMAIL_FROM` to an address on the verified domain, for example `Meilech Biller <hello@meilechbiller.com>`.
+4. Optionally set `INQUIRY_NOTIFY_EMAIL` if new-inquiry alerts should go somewhere other than `ADMIN_EMAIL`.
+
+What gets sent: a notification to you and an automatic confirmation to the sender for every inquiry, the gallery link and access code when you press the button on a gallery, and a receipt when a client pays.
+
+## Local SEO
+
+Service-area pages live at `/headshots/<town>` and are generated from `src/lib/areas.ts`. Business details for structured data (address, phone, social profiles) come from `src/lib/site.ts`; fill in the street address and phone when they are final. After the real domain is live: verify the site in Google Search Console and Bing Webmaster Tools, submit `/sitemap.xml`, and create a Google Business Profile with the same name, address and phone.
