@@ -120,7 +120,7 @@ npm run dev            # start locally
 npm run lint           # eslint
 npm run typecheck      # tsc --noEmit
 npm run build          # production build
-npm run db:migrate     # apply db/schema.sql to DATABASE_URL
+npm run db:migrate     # apply db/schema.sql to DATABASE_URL (also runs automatically at the start of `npm run build`, so every Vercel deploy keeps the database schema current)
 npm run db:seed        # schema + starter packages
 npm run hash-password -- "password"
 ```
