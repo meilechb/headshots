@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getPhotoForDelivery, isGalleryExpired } from "@/lib/data/galleries";
 import { hasGalleryAccess } from "@/lib/gallery-access";
-import { UUID_RE } from "@/lib/db";
+import { dbConfigured, UUID_RE } from "@/lib/db";
 import { getPrivateBlob } from "@/lib/storage";
 
 /**
@@ -19,6 +19,9 @@ export async function GET(
 ) {
   const { id } = await params;
   if (!UUID_RE.test(id)) return new NextResponse("Not found", { status: 404 });
+  if (!dbConfigured()) {
+    return new NextResponse("Database not configured", { status: 503 });
+  }
 
   const photo = await getPhotoForDelivery(id);
   if (!photo) return new NextResponse("Not found", { status: 404 });
