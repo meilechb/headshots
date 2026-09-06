@@ -5,7 +5,6 @@ import { MobileNav } from "./mobile-nav";
 export const navItems = [
   { href: "/portfolio", label: "Portfolio" },
   { href: "/pricing", label: "Pricing" },
-  { href: "/headshots", label: "Areas" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ] as const;

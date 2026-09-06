@@ -58,11 +58,7 @@ export default async function AboutPage() {
           <p>
             Sessions are available on weekdays, weekday evenings and Sundays.
             The studio is closed Friday afternoon and Saturday. On-location
-            sessions cover all of{" "}
-            <Link href="/headshots/rockland-county" className="underline hover:text-brass-2">
-              Rockland County
-            </Link>
-            .
+            sessions cover all of Rockland County.
           </p>
         </div>
         <div className="mt-10 flex flex-wrap gap-3">

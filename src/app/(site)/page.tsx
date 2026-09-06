@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { JsonLd } from "@/components/seo/json-ld";
-import { townAreas, type Faq } from "@/lib/areas";
+import type { Faq } from "@/lib/areas";
 import { getActivePackages, getFeaturedPortfolio } from "@/lib/data/public";
 import { faqJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -202,35 +202,6 @@ export default async function HomePage() {
         <Link href="/pricing" className="btn-secondary mt-6 sm:hidden">
           All packages
         </Link>
-      </section>
-
-      {/* Areas */}
-      <section className="border-t border-line bg-paper-2/50" aria-labelledby="areas">
-        <div className="container-x py-16 md:py-20">
-          <h2 id="areas" className="font-display text-3xl tracking-tight sm:text-4xl">
-            Where I photograph
-          </h2>
-          <p className="mt-3 max-w-xl text-ink-2">
-            The studio is in {site.address.locality}. On-location sessions
-            cover all of{" "}
-            <Link href="/headshots/rockland-county" className="underline hover:text-brass-2">
-              Rockland County
-            </Link>
-            , including:
-          </p>
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {townAreas.map((a) => (
-              <li key={a.slug}>
-                <Link
-                  href={`/headshots/${a.slug}`}
-                  className="inline-flex min-h-10 items-center border border-line px-4 py-2 text-sm hover:border-ink"
-                >
-                  {a.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
       </section>
 
       {/* FAQ */}

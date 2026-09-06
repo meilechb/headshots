@@ -8,10 +8,17 @@ export function ContactForm({
   packages,
   defaultPackage,
   email,
+  defaultTown = "",
+  defaultLocation = "",
+  compact = false,
 }: {
   packages: { slug: string; name: string }[];
   defaultPackage?: string;
   email: string;
+  defaultTown?: string;
+  defaultLocation?: string;
+  /** Landing pages: no card chrome, fewer optional fields. */
+  compact?: boolean;
 }) {
   const [state, action, pending] = useActionState<InquiryState, FormData>(submitInquiry, {});
   const v = state.values;
@@ -20,7 +27,7 @@ export function ContactForm({
 
   if (state.ok) {
     return (
-      <div className="card p-6 sm:p-8">
+      <div className={compact ? "" : "card p-6 sm:p-8"}>
         <h2 className="font-display text-2xl">Message received</h2>
         <p className="mt-3 text-ink-2">
           {state.emailed
@@ -41,7 +48,7 @@ export function ContactForm({
   }
 
   return (
-    <form action={action} className="card space-y-5 p-6 sm:p-8">
+    <form action={action} className={compact ? "space-y-4" : "card space-y-5 p-6 sm:p-8"}>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="label">Name</label>
@@ -87,7 +94,7 @@ export function ContactForm({
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="location_pref" className="label">Where?</label>
-          <select id="location_pref" name="location_pref" className="input" defaultValue={v?.location_pref ?? (showPeople ? "on-site" : "")}>
+          <select id="location_pref" name="location_pref" className="input" defaultValue={v?.location_pref ?? (showPeople ? "on-site" : defaultLocation)}>
             <option value="">Not sure yet</option>
             {locationPrefs.map((l) => (
               <option key={l.value} value={l.value}>{l.label}</option>
@@ -96,11 +103,11 @@ export function ContactForm({
         </div>
         <div>
           <label htmlFor="town" className="label">Your town <span className="text-muted">(optional)</span></label>
-          <input id="town" name="town" className="input" autoComplete="address-level2" defaultValue={v?.town ?? ""} placeholder="Monsey, Nanuet, New City…" />
+          <input id="town" name="town" className="input" autoComplete="address-level2" defaultValue={v?.town ?? defaultTown} placeholder="Monsey, Nanuet, New City…" />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className={`grid grid-cols-1 gap-5 sm:grid-cols-2 ${compact ? "hidden" : ""}`}>
         <div>
           <label htmlFor="package" className="label">Package <span className="text-muted">(optional)</span></label>
           <select id="package" name="package" defaultValue={v?.package ?? defaultPackage ?? ""} className="input">
@@ -128,7 +135,7 @@ export function ContactForm({
         />
       </div>
 
-      <div>
+      <div className={compact ? "hidden" : ""}>
         <label htmlFor="source" className="label">How did you hear about me? <span className="text-muted">(optional)</span></label>
         <input id="source" name="source" className="input" defaultValue={v?.source ?? ""} placeholder="Google, a friend, Instagram…" />
       </div>

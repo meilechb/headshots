@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { townAreas } from "@/lib/areas";
 import { site, socialLinks } from "@/lib/site";
 
 export function SiteFooter() {
   const socials = socialLinks();
   return (
     <footer className="mt-24 border-t border-line bg-paper-2/60">
-      <div className="container-x grid grid-cols-1 gap-10 py-14 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div className="container-x grid grid-cols-1 gap-10 py-14 md:grid-cols-[1.6fr_1fr_1fr]">
         <div>
           <p className="font-display text-2xl tracking-tight">{site.name}</p>
           <p className="mt-3 max-w-sm text-sm leading-6 text-muted">
@@ -45,19 +44,6 @@ export function SiteFooter() {
             <li><Link href="/pricing" className="inline-block py-1 hover:text-brass-2">Pricing</Link></li>
             <li><Link href="/about" className="inline-block py-1 hover:text-brass-2">About</Link></li>
             <li><Link href="/contact" className="inline-block py-1 hover:text-brass-2">Book a session</Link></li>
-          </ul>
-        </div>
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Areas</p>
-          <ul className="mt-3 space-y-1.5 text-sm">
-            <li><Link href="/headshots/rockland-county" className="inline-block py-1 hover:text-brass-2">Rockland County</Link></li>
-            {townAreas.map((a) => (
-              <li key={a.slug}>
-                <Link href={`/headshots/${a.slug}`} className="inline-block py-1 hover:text-brass-2">
-                  {a.name}
-                </Link>
-              </li>
-            ))}
           </ul>
         </div>
         <div>

@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: base, lastModified: updated, changeFrequency: "monthly", priority: 1 },
     { url: `${base}/portfolio`, lastModified: updated, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/pricing`, lastModified: updated, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/headshots`, lastModified: updated, changeFrequency: "monthly", priority: 0.8 },
     ...areas.map((a) => ({
       url: `${base}/headshots/${a.slug}`,
       lastModified: updated,
