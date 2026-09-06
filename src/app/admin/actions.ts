@@ -4,6 +4,9 @@ import { revalidatePath } from "next/cache";
 import { redirect, unstable_rethrow } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { db, one, rows } from "@/lib/db";
+import { emailConfigured, sendEmail } from "@/lib/email";
+import { galleryReadyEmail } from "@/lib/emails";
+import { site } from "@/lib/site";
 import { generateAccessCode } from "@/lib/gallery-access";
 import { deleteBlobs } from "@/lib/storage";
 import { describeImageError, downloadBlob, makeWebVersion, putJpeg } from "@/lib/images";
@@ -524,4 +527,36 @@ export async function revokeApiToken(id: string) {
   await requireAdmin();
   await db()`delete from api_tokens where id = ${id}`;
   revalidatePath("/admin/integrations");
+}
+
+// ------------------------------------------------------------- gallery email
+
+export type GalleryEmailState = { ok?: boolean; error?: string };
+
+/** Emails the gallery link and access code to the client (requires RESEND_API_KEY). */
+export async function emailGalleryLink(galleryId: string): Promise<GalleryEmailState> {
+  await requireAdmin();
+  if (!emailConfigured()) return { error: "Email is not set up yet. Use the mail-app button instead." };
+  const g = one<{
+    slug: string; kind: "proof" | "final"; access_code: string | null; expires_at: string | null; status: string;
+    client_name: string; client_email: string;
+  }>(
+    await db()`
+      select g.slug, g.kind, g.access_code, g.expires_at, g.status, c.name as client_name, c.email as client_email
+      from galleries g join clients c on c.id = g.client_id
+      where g.id = ${galleryId} limit 1`
+  );
+  if (!g) return { error: "Gallery not found." };
+  if (g.status !== "published") return { error: "Make the gallery live first so the link works." };
+  if (!g.access_code) return { error: "The gallery has no access code." };
+  const mail = galleryReadyEmail({
+    clientName: g.client_name,
+    kind: g.kind,
+    link: `${site.url}/g/${g.slug}`,
+    code: g.access_code,
+    expiresAt: g.expires_at,
+  });
+  const result = await sendEmail({ to: g.client_email, subject: mail.subject, text: mail.text });
+  if (!result.ok) return { error: result.error ?? "Sending failed." };
+  return { ok: true };
 }

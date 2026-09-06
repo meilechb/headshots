@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getClient, listPackages } from "@/lib/data/admin";
 import { site } from "@/lib/site";
+import { labelLocation, labelSessionType } from "@/lib/emails";
 import { formatMoney, galleryKindLabels, type ClientStage } from "@/lib/types";
 import { GalleryStatusBadge, StageBadge, formatDate } from "@/components/admin/badges";
 import { ActionForm, Field, SubmitButton } from "@/components/admin/form";
@@ -48,6 +49,22 @@ export default async function ClientPage({
     slug ? packages.find((p) => p.slug === slug)?.name ?? slug : null;
   const firstName = client.name.split(" ")[0];
   const canDelete = sessions.length === 0 && galleries.length === 0;
+  const latest = messages[0];
+  const replyBody = latest
+    ? `Hi ${firstName},
+
+Thanks for your message about ${labelSessionType(latest.session_type).toLowerCase()}.
+
+I have the following dates open${latest.timing ? ` (you mentioned: ${latest.timing})` : ""}:
+- 
+- 
+
+Pricing is on ${site.url}/pricing. Once you pick a date I send a payment link to hold it, plus a short note on what to wear.
+
+${site.name}
+${site.url}`
+    : `Hi ${firstName},\n\n`;
+  const replyHref = `mailto:${client.email}?subject=${encodeURIComponent(`Your headshot session — ${site.name}`)}&body=${encodeURIComponent(replyBody)}`;
 
   return (
     <div className="space-y-8">
@@ -95,10 +112,7 @@ export default async function ClientPage({
           <section className="card p-5">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-medium">Messages</h2>
-              <a
-                href={`mailto:${client.email}?subject=${encodeURIComponent(`Re: your headshot inquiry — ${site.name}`)}&body=${encodeURIComponent(`Hi ${firstName},\n\nThanks for getting in touch.\n\n`)}`}
-                className="btn-secondary px-3 py-1.5 text-xs"
-              >
+              <a href={replyHref} className="btn-secondary px-3 py-1.5 text-xs">
                 Reply by email
               </a>
             </div>
@@ -111,7 +125,6 @@ export default async function ClientPage({
                     <div className="flex items-start justify-between gap-3 text-xs text-muted">
                       <span>
                         {formatDate(m.created_at, true)}
-                        {m.package_slug ? ` · interested in ${packageName(m.package_slug)}` : ""}
                         {m.status === "new" ? <span className="ml-2 text-brass-2">New</span> : null}
                       </span>
                       <form action={deleteMessage.bind(null, m.id)}>
@@ -120,9 +133,26 @@ export default async function ClientPage({
                         </ConfirmSubmit>
                       </form>
                     </div>
-                    <p className="mt-2 whitespace-pre-line text-sm">
-                      {m.message || <span className="text-muted">No message, just contact details.</span>}
-                    </p>
+                    <dl className="mt-2 grid grid-cols-1 gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
+                      {m.session_type ? (
+                        <div className="flex gap-2"><dt className="text-muted">Needs</dt><dd>{labelSessionType(m.session_type)}{m.people_count ? ` · ${m.people_count} people` : ""}</dd></div>
+                      ) : null}
+                      {m.location_pref || m.town ? (
+                        <div className="flex gap-2"><dt className="text-muted">Where</dt><dd>{[m.location_pref ? labelLocation(m.location_pref) : null, m.town].filter(Boolean).join(" · ")}</dd></div>
+                      ) : null}
+                      {m.package_slug ? (
+                        <div className="flex gap-2"><dt className="text-muted">Package</dt><dd>{packageName(m.package_slug)}</dd></div>
+                      ) : null}
+                      {m.timing ? (
+                        <div className="flex gap-2"><dt className="text-muted">When</dt><dd>{m.timing}</dd></div>
+                      ) : null}
+                      {m.source ? (
+                        <div className="flex gap-2"><dt className="text-muted">Heard via</dt><dd>{m.source}</dd></div>
+                      ) : null}
+                    </dl>
+                    {m.message ? (
+                      <p className="mt-3 whitespace-pre-line border-l-2 border-line pl-3 text-sm">{m.message}</p>
+                    ) : null}
                   </li>
                 ))}
               </ul>

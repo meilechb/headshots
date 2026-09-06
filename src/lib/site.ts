@@ -14,13 +14,35 @@ export const site = {
   name: "Meilech Biller",
   legalName: "Meilech Biller Headshot Photography",
   shortName: "MB Headshots",
-  tagline: "Headshots that look like you on your best day.",
+  founder: "Meilech Biller",
+  tagline: "Professional headshots in Rockland County, NY.",
   description:
-    "Professional headshot photography for executives, teams, actors and personal brands. Studio and on-location sessions, fast turnaround, retouched files delivered online.",
+    "Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.",
   url: resolveSiteUrl(),
   email: "hello@meilechbiller.com",
+  // Leave phone empty to hide it everywhere. Format: +1 845 555 0100
   phone: "",
-  location: "New York",
-  instagram: "https://instagram.com/",
-  linkedin: "https://linkedin.com/",
-} as const;
+  // Region shown in copy. The street address is only used for structured data
+  // and the contact page; leave street/postalCode empty until confirmed.
+  location: "Rockland County, NY",
+  address: {
+    street: "",
+    locality: "Spring Valley",
+    region: "NY",
+    postalCode: "",
+    country: "US",
+  },
+  // Social profiles. Empty strings are left out of the page and the structured data.
+  instagram: "",
+  linkedin: "",
+  googleBusinessProfile: "",
+};
+
+/** Social links that are actually set. */
+export function socialLinks() {
+  return [
+    { label: "Instagram", href: site.instagram },
+    { label: "LinkedIn", href: site.linkedin },
+    { label: "Google", href: site.googleBusinessProfile },
+  ].filter((l) => l.href);
+}

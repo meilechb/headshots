@@ -86,11 +86,12 @@ After editing plugin files run `node scripts/plugin-zip.mjs` to refresh `public/
 
 ## Day-to-day workflow
 
-1. **Inquiry** arrives from the contact form → `/admin/inquiries` → *Make client*.
-2. **Order** → `/admin/orders/new` (client, package, amount, date). Copy the payment link from the order page and email it. Stripe → webhook → order shows **Paid**.
-3. After the shoot: **New gallery** (type *Proofs*) → drag in the first edits → **Publish** → *Email link + code*. Clients mark favorites and leave notes per photo; you reply inline and resolve them.
-4. Retouch the picks → **New gallery** (type *Final*, downloads on) → upload → publish → send.
-5. Move the order to **Final delivered** / **Completed**.
+Everything about a person lives on their page under `/admin/clients`. Stages (New lead → Awaiting payment → Booked → Proofs out → Delivered) are worked out from the data; nothing is set by hand except Archive.
+
+1. **Message** arrives from the contact form. The sender becomes a client (or is matched by email) and shows up as a **New lead** with a dot for the unread message.
+2. Open the client → **Reply by email** → **Set up a session** (pick a package; title, price and note fill in). Copy or email the payment link. Stripe → webhook → the session shows **Paid**. Cash or Zelle: **Mark paid**.
+3. After the shoot: **New proofs gallery** → drag in the first edits → **Make live** → *Email link + code*. Clients mark favorites and leave notes per photo; you reply inline and resolve them.
+4. Retouch the picks → **New final gallery** (downloads on) → upload → make live → send.
 
 Portfolio images for the public site are managed at `/admin/portfolio` (featured images feed the home page hero and “Recent sessions”).
 
@@ -123,3 +124,19 @@ npm run db:migrate     # apply db/schema.sql to DATABASE_URL
 npm run db:seed        # schema + starter packages
 npm run hash-password -- "password"
 ```
+
+
+## Email (Resend)
+
+Emails are optional. Without them the site still saves inquiries and shows mailto links in the admin.
+
+1. Create a free account at resend.com and add your domain (Resend shows the DNS records to add).
+2. Create an API key and set `RESEND_API_KEY` in Vercel.
+3. Set `EMAIL_FROM` to an address on the verified domain, for example `Meilech Biller <hello@meilechbiller.com>`.
+4. Optionally set `INQUIRY_NOTIFY_EMAIL` if new-inquiry alerts should go somewhere other than `ADMIN_EMAIL`.
+
+What gets sent: a notification to you and an automatic confirmation to the sender for every inquiry, the gallery link and access code when you press the button on a gallery, and a receipt when a client pays.
+
+## Local SEO
+
+Service-area pages live at `/headshots/<town>` and are generated from `src/lib/areas.ts`. Business details for structured data (address, phone, social profiles) come from `src/lib/site.ts`; fill in the street address and phone when they are final. After the real domain is live: verify the site in Google Search Console and Bing Webmaster Tools, submit `/sitemap.xml`, and create a Google Business Profile with the same name, address and phone.

@@ -8,6 +8,8 @@ import { ActionForm, Field, SubmitButton } from "@/components/admin/form";
 import { ConfirmSubmit, CopyButton } from "@/components/admin/ui";
 import { Uploader } from "@/components/admin/uploader";
 import { PhotoManager } from "@/components/admin/photo-manager";
+import { EmailGalleryButton } from "@/components/admin/email-gallery-button";
+import { emailConfigured } from "@/lib/email";
 import { deleteGallery, regenerateAccessCode, setGalleryStatus, updateGallery } from "../../actions";
 
 // Image processing in server actions can exceed the default function timeout.
@@ -30,6 +32,7 @@ export default async function GalleryDetailPage({
     0
   );
   const firstName = gallery.client.name.split(" ")[0];
+  const canEmail = emailConfigured();
   const emailSubject =
     gallery.kind === "proof" ? `Your proofs are ready — ${site.name}` : `Your final photos are ready — ${site.name}`;
   const emailBody =
@@ -96,11 +99,14 @@ export default async function GalleryDetailPage({
             <CopyButton value={gallery.access_code ?? ""} />
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
+            {canEmail ? (
+              <EmailGalleryButton galleryId={gallery.id} clientEmail={gallery.client.email} />
+            ) : null}
             <a
               href={`mailto:${gallery.client.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
-              className="btn-primary px-3 py-1.5 text-xs"
+              className={`${canEmail ? "btn-secondary" : "btn-primary"} px-3 py-1.5 text-xs`}
             >
-              Email link + code
+              {canEmail ? "Open in mail app" : "Email link + code"}
             </a>
             <form action={regenerateAccessCode.bind(null, gallery.id)}>
               <SubmitButton className="btn-secondary px-3 py-1.5 text-xs" pendingLabel="…">
