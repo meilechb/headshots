@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f6f3ee;
+  --color-paper-2: #ece7df;
+  --color-paper-3: #e1dacd;
+  --color-ink: #17140f;
+  --color-ink-2: #3a352d;
+  --color-muted: #7a736a;
+  --color-line: #d9d1c4;
+  --color-brass: #a8875a;
+  --color-brass-2: #8c6f47;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+
+  --shadow-soft: 0 1px 2px rgb(23 20 15 / 0.06), 0 12px 32px -12px rgb(23 20 15 / 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-brass);
+  color: white;
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+  .eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.18em] text-brass;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-paper transition hover:bg-ink-2 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 bg-transparent px-5 py-3 text-sm font-medium text-ink transition hover:border-ink hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-ink-2 transition hover:bg-ink/5 hover:text-ink disabled:opacity-60;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink-2;
+  }
+  .input {
+    @apply block w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10;
+  }
+  .card {
+    @apply rounded-2xl border border-line bg-white shadow-soft;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium;
+  }
+}
+
+/* Masonry-style columns for the portfolio grid */
+.masonry {
+  column-gap: 1rem;
+  columns: 1;
+}
+@media (min-width: 640px) {
+  .masonry {
+    columns: 2;
+  }
+}
+@media (min-width: 1024px) {
+  .masonry {
+    columns: 3;
+  }
+}
+.masonry > * {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
