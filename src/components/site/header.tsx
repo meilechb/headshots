@@ -17,7 +17,7 @@ export function SiteHeader() {
           <span className="font-display text-sm tracking-[0.24em]">
             {site.name}
           </span>
-          <span className="mt-[3px] text-[9px] font-normal normal-case tracking-[0.3em] uppercase text-muted">
+          <span className="mt-[3px] text-[10px] font-normal normal-case tracking-[0.3em] uppercase text-muted">
             Headshots
           </span>
         </Link>

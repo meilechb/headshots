@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { portfolioCategories } from "@/lib/site";
+import { useSwipe } from "@/lib/use-swipe";
 
 export type GridImage = {
   id: string;
@@ -60,6 +61,7 @@ export function PortfolioGrid({
       ),
     [filtered.length]
   );
+  const swipe = useSwipe(step);
 
   useEffect(() => {
     if (active === null) return;
@@ -85,7 +87,7 @@ export function PortfolioGrid({
               key={c.slug}
               type="button"
               onClick={() => setCategory(c.slug)}
-              className={`border px-4 py-2 text-xs uppercase tracking-[0.08em] transition ${
+              className={`min-h-10 border px-4 py-2 text-xs uppercase tracking-[0.08em] transition ${
                 category === c.slug
                   ? "border-ink bg-ink text-paper"
                   : "border-line text-ink-2 hover:border-ink"
@@ -145,14 +147,15 @@ export function PortfolioGrid({
           role="dialog"
           aria-modal="true"
           aria-label="Photo viewer"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505]/95 p-4"
+          className="fixed inset-0 z-50 flex h-[100dvh] items-center justify-center bg-[#050505]/95 p-3 sm:p-4"
           onClick={close}
+          {...swipe}
         >
           <button
             type="button"
             onClick={close}
             aria-label="Close"
-            className="absolute right-4 top-4 rounded-full bg-white/10 p-2 text-white hover:bg-white/20"
+            className="absolute right-3 top-[max(0.75rem,env(safe-area-inset-top))] z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -162,7 +165,7 @@ export function PortfolioGrid({
             type="button"
             onClick={(e) => { e.stopPropagation(); step(-1); }}
             aria-label="Previous"
-            className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+            className="absolute left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20 sm:left-4"
           >
             ‹
           </button>
@@ -170,12 +173,12 @@ export function PortfolioGrid({
             type="button"
             onClick={(e) => { e.stopPropagation(); step(1); }}
             aria-label="Next"
-            className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+            className="absolute right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20 sm:right-4"
           >
             ›
           </button>
           <div
-            className="relative h-[85vh] w-full max-w-5xl"
+            className="relative h-[80dvh] w-full max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
             {filtered[active].url ? (

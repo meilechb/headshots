@@ -151,7 +151,7 @@ export default async function HomePage() {
           </Link>
         </div>
         {packages.length ? (
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {packages.slice(0, 3).map((p) => (
               <div
                 key={p.id}
@@ -160,7 +160,7 @@ export default async function HomePage() {
                 }`}
               >
                 {p.is_featured ? (
-                  <span className="absolute right-3.5 top-3.5 bg-ink px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.1em] text-paper">
+                  <span className="absolute right-3.5 top-3.5 bg-ink px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em] text-paper">
                     Most popular
                   </span>
                 ) : null}

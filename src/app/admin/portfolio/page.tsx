@@ -43,7 +43,7 @@ export default async function PortfolioAdminPage({
       {images.length === 0 ? (
         <p className="text-sm text-muted">Nothing uploaded yet. Sample tiles show on the site until you do.</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {images.map((img) => (
             <div key={img.id} className="card overflow-hidden">
               <div className="relative aspect-[4/5] bg-paper-2">

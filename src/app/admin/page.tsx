@@ -29,7 +29,7 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {stats.map((s) => (
           <Link key={s.label} href={s.href} className="card p-5 transition hover:border-ink/30">
             <p className="text-sm text-muted">{s.label}</p>
@@ -38,11 +38,11 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <section className="card p-5">
           <div className="flex items-center justify-between">
             <h2 className="font-medium">Recent client notes</h2>
-            <Link href="/admin/galleries" className="text-xs text-muted hover:text-ink">
+            <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
               All galleries →
             </Link>
           </div>
@@ -83,7 +83,7 @@ export default async function AdminDashboard() {
         <section className="card p-5">
           <div className="flex items-center justify-between">
             <h2 className="font-medium">Recent orders</h2>
-            <Link href="/admin/orders" className="text-xs text-muted hover:text-ink">
+            <Link href="/admin/orders" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
               All orders →
             </Link>
           </div>

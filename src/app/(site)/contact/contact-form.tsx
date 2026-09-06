@@ -32,7 +32,7 @@ export function ContactForm({
 
   return (
     <form action={action} className="card space-y-5 p-6 sm:p-8">
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="label">
             Name
@@ -46,7 +46,7 @@ export function ContactForm({
           <input id="email" name="email" type="email" required className="input" autoComplete="email" defaultValue={v?.email ?? ""} />
         </div>
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="phone" className="label">
             Phone <span className="text-muted">(optional)</span>

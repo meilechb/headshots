@@ -14,24 +14,24 @@ export function SiteFooter() {
         </div>
         <div>
           <p className="eyebrow">Studio</p>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-3 space-y-1.5 text-sm">
             <li>
-              <Link href="/portfolio" className="hover:text-brass-2">
+              <Link href="/portfolio" className="inline-block py-2 hover:text-brass-2">
                 Portfolio
               </Link>
             </li>
             <li>
-              <Link href="/pricing" className="hover:text-brass-2">
+              <Link href="/pricing" className="inline-block py-2 hover:text-brass-2">
                 Pricing
               </Link>
             </li>
             <li>
-              <Link href="/about" className="hover:text-brass-2">
+              <Link href="/about" className="inline-block py-2 hover:text-brass-2">
                 About
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-brass-2">
+              <Link href="/contact" className="inline-block py-2 hover:text-brass-2">
                 Book a session
               </Link>
             </li>
@@ -39,19 +39,19 @@ export function SiteFooter() {
         </div>
         <div>
           <p className="eyebrow">Clients</p>
-          <ul className="mt-4 space-y-2.5 text-sm">
+          <ul className="mt-3 space-y-1.5 text-sm">
             <li>
-              <Link href="/g" className="hover:text-brass-2">
+              <Link href="/g" className="inline-block py-2 hover:text-brass-2">
                 Open your gallery
               </Link>
             </li>
             <li>
-              <a href={`mailto:${site.email}`} className="hover:text-brass-2">
+              <a href={`mailto:${site.email}`} className="inline-block py-2 hover:text-brass-2">
                 {site.email}
               </a>
             </li>
             <li>
-              <Link href="/login" className="text-muted hover:text-brass-2">
+              <Link href="/login" className="inline-block py-2 text-muted hover:text-brass-2">
                 Studio login
               </Link>
             </li>

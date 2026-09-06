@@ -61,15 +61,15 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                   </p>
                   <div className="flex shrink-0 gap-0.5">
                     <form action={movePhoto.bind(null, p.id, -1)}>
-                      <button type="submit" className="btn-ghost px-1.5 py-0.5 text-xs" aria-label="Move earlier" disabled={i === 0}>↑</button>
+                      <button type="submit" className="btn-ghost min-h-9 px-2 py-1 text-xs" aria-label="Move earlier" disabled={i === 0}>↑</button>
                     </form>
                     <form action={movePhoto.bind(null, p.id, 1)}>
-                      <button type="submit" className="btn-ghost px-1.5 py-0.5 text-xs" aria-label="Move later" disabled={i === photos.length - 1}>↓</button>
+                      <button type="submit" className="btn-ghost min-h-9 px-2 py-1 text-xs" aria-label="Move later" disabled={i === photos.length - 1}>↓</button>
                     </form>
                     <button
                       type="button"
                       onClick={() => setOpen(expanded ? null : p.id)}
-                      className="btn-ghost px-1.5 py-0.5 text-xs"
+                      className="btn-ghost min-h-9 px-2 py-1 text-xs"
                     >
                       {expanded ? "Close" : "Notes"}
                     </button>

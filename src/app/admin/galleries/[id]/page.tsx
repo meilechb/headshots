@@ -42,7 +42,7 @@ export default async function GalleryDetailPage({
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Link href="/admin/galleries" className="text-xs text-muted hover:text-ink">← Galleries</Link>
+          <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">← Galleries</Link>
           <h1 className="mt-2 font-display text-3xl">{gallery.title}</h1>
           <p className="mt-1 text-sm text-muted">
             <Link href={`/admin/clients/${gallery.client.id}`} className="underline">{gallery.client.name}</Link>
@@ -55,7 +55,7 @@ export default async function GalleryDetailPage({
             {openNotes ? ` · ${openNotes} open note${openNotes === 1 ? "" : "s"}` : ""}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <span className={`badge ${gallery.status === "published" ? "border-success/40 text-success" : "border-line text-muted"}`}>
             {gallery.status}
           </span>
@@ -76,16 +76,16 @@ export default async function GalleryDetailPage({
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <section className="card p-5 lg:col-span-1">
           <h2 className="font-medium">Share with client</h2>
           <p className="mt-1 text-xs text-muted">The client needs both the link and the code.</p>
           <div className="mt-3 flex items-center gap-2">
-            <code className="flex-1 truncate border border-line bg-paper-2 px-3 py-2 text-xs">{link}</code>
+            <code className="min-w-0 flex-1 truncate border border-line bg-paper-2 px-3 py-2 text-xs">{link}</code>
             <CopyButton value={link} />
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <code className="flex-1 border border-line bg-paper-2 px-3 py-2 font-mono text-base tracking-[0.3em]">
+            <code className="min-w-0 flex-1 truncate border border-line bg-paper-2 px-3 py-2 font-mono text-base tracking-[0.3em]">
               {gallery.access_code ?? "—"}
             </code>
             <CopyButton value={gallery.access_code ?? ""} />
@@ -116,7 +116,7 @@ export default async function GalleryDetailPage({
           className="card space-y-4 p-5 lg:col-span-2"
         >
           <h2 className="font-medium">Settings</h2>
-          <div className="grid gap-4 sm:grid-cols-[1fr_auto_auto]">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto_auto]">
             <div>
               <label htmlFor="title" className="label">Title</label>
               <input id="title" name="title" defaultValue={gallery.title} required className="input" />
@@ -141,7 +141,7 @@ export default async function GalleryDetailPage({
             <label htmlFor="welcome_message" className="label">Welcome message <span className="text-muted">(shown above the photos)</span></label>
             <textarea id="welcome_message" name="welcome_message" rows={2} defaultValue={gallery.welcome_message ?? ""} className="input" />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" name="allow_downloads" defaultChecked={gallery.allow_downloads} className="h-4 w-4" />
               Allow downloads (final galleries)
@@ -157,7 +157,7 @@ export default async function GalleryDetailPage({
               />
             </div>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <button type="submit" className="btn-primary">Save settings</button>
             <ConfirmSubmit
               className="btn-danger"

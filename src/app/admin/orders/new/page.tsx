@@ -16,7 +16,7 @@ export default async function NewOrderPage({
 
   return (
     <div className="max-w-2xl">
-      <Link href="/admin/orders" className="text-xs text-muted hover:text-ink">← Orders</Link>
+      <Link href="/admin/orders" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">← Orders</Link>
       <h1 className="mt-2 font-display text-3xl">New order</h1>
       <p className="mt-2 text-sm text-muted">
         An order tracks one job from payment to final delivery. Once saved you get a payment link to send.
@@ -28,7 +28,7 @@ export default async function NewOrderPage({
         </p>
       ) : (
         <form action={createOrder} className="card mt-8 space-y-5 p-6">
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="client_id" className="label">Client</label>
               <select id="client_id" name="client_id" defaultValue={client ?? ""} required className="input">
@@ -52,7 +52,7 @@ export default async function NewOrderPage({
             <label htmlFor="title" className="label">Title</label>
             <input id="title" name="title" required className="input" placeholder="Professional headshot session" />
           </div>
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
             <div>
               <label htmlFor="amount" className="label">Amount (USD)</label>
               <input id="amount" name="amount" inputMode="decimal" required className="input" placeholder="495" />

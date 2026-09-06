@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useSwipe } from "@/lib/use-swipe";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { zipSync } from "fflate";
 import { addClientComment, lockGallery, toggleSelection } from "./actions";
@@ -156,7 +157,7 @@ export function GalleryView({
             </button>
           ) : null}
           <form action={() => lockGallery(slug)}>
-            <button type="submit" className="btn-ghost">
+            <button type="submit" className="btn-ghost min-h-10">
               Lock gallery
             </button>
           </form>
@@ -237,6 +238,7 @@ function Lightbox({
   const [note, setNote] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const swipe = useSwipe(onStep);
 
   function submitNote() {
     setError(null);
@@ -260,9 +262,9 @@ function Lightbox({
       role="dialog"
       aria-modal="true"
       aria-label={photo.filename}
-      className="fixed inset-0 z-50 flex flex-col bg-[#050505]/95 text-ink md:flex-row"
+      className="fixed inset-0 z-50 flex h-[100dvh] flex-col bg-[#050505]/95 text-ink md:flex-row"
     >
-      <div className="relative flex-1" onClick={onClose}>
+      <div className="relative min-h-0 flex-1" onClick={onClose} {...swipe}>
         <div
           className="absolute inset-4 md:inset-8"
           onClick={(e) => e.stopPropagation()}
@@ -280,7 +282,7 @@ function Lightbox({
           type="button"
           onClick={(e) => { e.stopPropagation(); onStep(-1); }}
           aria-label="Previous"
-          className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-3 py-2 text-xl hover:bg-white/20"
+          className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl hover:bg-white/20"
         >
           ‹
         </button>
@@ -288,23 +290,23 @@ function Lightbox({
           type="button"
           onClick={(e) => { e.stopPropagation(); onStep(1); }}
           aria-label="Next"
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/10 px-3 py-2 text-xl hover:bg-white/20"
+          className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-2xl hover:bg-white/20"
         >
           ›
         </button>
-        <span className="absolute left-4 top-4 text-xs text-white/60">
+        <span className="absolute left-4 top-[max(1rem,env(safe-area-inset-top))] text-xs text-white/60">
           {index + 1} / {total}
         </span>
       </div>
 
-      <aside className="flex max-h-[45vh] w-full flex-col border-t border-white/10 bg-paper-2 md:max-h-none md:w-[360px] md:border-l md:border-t-0">
+      <aside className="flex max-h-[50dvh] w-full flex-col border-t border-white/10 bg-paper-2 pb-[env(safe-area-inset-bottom)] md:max-h-none md:w-[360px] md:border-l md:border-t-0 md:pb-0">
         <div className="flex items-center justify-between gap-3 border-b border-white/10 p-4">
           <p className="truncate text-sm font-medium">{photo.filename}</p>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-full bg-white/10 p-2 hover:bg-white/20"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
           >
             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden>
               <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
@@ -317,7 +319,7 @@ function Lightbox({
             type="button"
             onClick={toggleFavorite}
             disabled={pending}
-            className={`flex-1 border px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] transition ${
+            className={`min-h-11 flex-1 border px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] transition ${
               photo.selected
                 ? "border-[oklch(0.65_0.16_20)] bg-[oklch(0.65_0.16_20)] text-white"
                 : "border-white/30 bg-transparent hover:bg-white/10"
@@ -329,7 +331,7 @@ function Lightbox({
             <a
               href={photo.downloadUrl}
               download={photo.filename}
-              className="border border-white/30 bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] text-paper hover:opacity-85"
+              className="inline-flex min-h-11 items-center border border-white/30 bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] text-paper hover:opacity-85"
             >
               Download
             </a>
@@ -372,9 +374,9 @@ function Lightbox({
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
-            rows={3}
+            rows={2}
             placeholder="Leave a note on this photo…"
-            className="w-full border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder:text-white/40 focus:border-white/40 focus:outline-none"
+            className="w-full border border-white/15 bg-white/5 px-3 py-2 text-base md:text-sm placeholder:text-white/40 focus:border-white/40 focus:outline-none"
           />
           {error ? (
             <p role="alert" className="mt-2 text-xs text-red-300">
@@ -385,7 +387,7 @@ function Lightbox({
             type="button"
             onClick={submitNote}
             disabled={pending || !note.trim()}
-            className="mt-2 w-full bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] text-paper hover:opacity-85 disabled:opacity-50"
+            className="mt-2 min-h-11 w-full bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] text-paper hover:opacity-85 disabled:opacity-50"
           >
             {pending ? "Saving…" : "Send note"}
           </button>

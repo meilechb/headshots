@@ -19,7 +19,7 @@ export default async function ClientDetailPage({
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Link href="/admin/clients" className="text-xs text-muted hover:text-ink">← Clients</Link>
+          <Link href="/admin/clients" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">← Clients</Link>
           <h1 className="mt-2 font-display text-3xl">{client.name}</h1>
           <p className="mt-1 text-sm text-muted">
             <a href={`mailto:${client.email}`} className="underline">{client.email}</a>
@@ -37,7 +37,7 @@ export default async function ClientDetailPage({
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr]">
         <div className="space-y-8">
           <section className="card p-5">
             <h2 className="font-medium">Orders</h2>
@@ -88,7 +88,7 @@ export default async function ClientDetailPage({
             <label htmlFor="email" className="label">Email</label>
             <input id="email" name="email" type="email" defaultValue={client.email} required className="input" />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="phone" className="label">Phone</label>
               <input id="phone" name="phone" defaultValue={client.phone ?? ""} className="input" />

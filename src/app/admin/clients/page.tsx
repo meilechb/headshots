@@ -6,7 +6,7 @@ export default async function ClientsPage() {
   const clients = await listClients();
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
       <div>
         <p className="eyebrow">People</p>
         <h1 className="mt-2 font-display text-3xl">Clients</h1>
@@ -56,7 +56,7 @@ export default async function ClientsPage() {
           <label htmlFor="email" className="label">Email</label>
           <input id="email" name="email" type="email" required className="input" />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="phone" className="label">Phone</label>
             <input id="phone" name="phone" className="input" />

@@ -7,7 +7,7 @@ function PackageForm({ pkg }: { pkg?: Package }) {
   return (
     <form action={upsertPackage} className="card space-y-4 p-5">
       {pkg ? <input type="hidden" name="id" value={pkg.id} /> : null}
-      <div className="grid gap-4 sm:grid-cols-[1fr_1fr_auto]">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_1fr_auto]">
         <div>
           <label className="label" htmlFor={`name-${pkg?.id ?? "new"}`}>Name</label>
           <input id={`name-${pkg?.id ?? "new"}`} name="name" defaultValue={pkg?.name ?? ""} required className="input" />
@@ -25,7 +25,7 @@ function PackageForm({ pkg }: { pkg?: Package }) {
         <label className="label" htmlFor={`description-${pkg?.id ?? "new"}`}>Description</label>
         <input id={`description-${pkg?.id ?? "new"}`} name="description" defaultValue={pkg?.description ?? ""} className="input" />
       </div>
-      <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_auto]">
         <div>
           <label className="label" htmlFor={`includes-${pkg?.id ?? "new"}`}>Includes <span className="text-muted">(one per line)</span></label>
           <textarea id={`includes-${pkg?.id ?? "new"}`} name="includes" rows={4} defaultValue={pkg?.includes.join("\n") ?? ""} className="input" />

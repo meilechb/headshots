@@ -54,7 +54,7 @@ export default async function PricingPage() {
                 }`}
               >
                 {p.is_featured ? (
-                  <span className="absolute right-3.5 top-3.5 bg-ink px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.1em] text-paper">
+                  <span className="absolute right-3.5 top-3.5 bg-ink px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.1em] text-paper">
                     Most popular
                   </span>
                 ) : null}

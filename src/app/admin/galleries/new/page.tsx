@@ -15,7 +15,7 @@ export default async function NewGalleryPage({
 
   return (
     <div className="max-w-2xl">
-      <Link href="/admin/galleries" className="text-xs text-muted hover:text-ink">← Galleries</Link>
+      <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">← Galleries</Link>
       <h1 className="mt-2 font-display text-3xl">New gallery</h1>
       <p className="mt-2 text-sm text-muted">
         A private link plus a 6-character access code is generated for you. Upload photos on the next screen, then publish.
@@ -45,7 +45,7 @@ export default async function NewGalleryPage({
               ))}
             </select>
           </div>
-          <div className="grid gap-5 sm:grid-cols-[1fr_auto]">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_auto]">
             <div>
               <label htmlFor="title" className="label">Title</label>
               <input id="title" name="title" required className="input" placeholder="Jane Doe — Proofs" />

@@ -18,7 +18,10 @@ export const adminNav = [
 export function AdminNav() {
   const pathname = usePathname();
   return (
-    <nav className="flex flex-wrap gap-0.5 md:flex-col" aria-label="Admin">
+    <nav
+      className="-mx-3 flex gap-0.5 overflow-x-auto px-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:flex-col md:overflow-visible md:px-0"
+      aria-label="Admin"
+    >
       {adminNav.map((item) => {
         const active =
           item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
@@ -26,7 +29,7 @@ export function AdminNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`px-3 py-2 text-xs uppercase tracking-[0.06em] transition ${
+            className={`shrink-0 whitespace-nowrap px-3 py-2.5 text-xs uppercase tracking-[0.06em] transition md:py-2 ${
               active ? "bg-ink text-paper" : "text-ink-2 hover:bg-ink/5 hover:text-ink"
             }`}
           >
@@ -52,7 +55,7 @@ export function CopyButton({ value, label = "Copy" }: { value: string; label?: s
           // Clipboard unavailable (insecure context); user can select the text.
         }
       }}
-      className="btn-secondary px-3 py-1.5 text-xs"
+      className="btn-secondary shrink-0 px-3 py-1.5 text-xs"
     >
       {copied ? "Copied" : label}
     </button>

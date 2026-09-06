@@ -34,7 +34,7 @@ export default async function OrderDetailPage({
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Link href="/admin/orders" className="text-xs text-muted hover:text-ink">← Orders</Link>
+          <Link href="/admin/orders" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">← Orders</Link>
           <h1 className="mt-2 font-display text-3xl">
             #{order.order_number} · {order.title}
           </h1>
@@ -56,7 +56,7 @@ export default async function OrderDetailPage({
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1fr]">
         <div className="space-y-8">
           <section className="card p-5">
             <h2 className="font-medium">Payment</h2>
@@ -127,7 +127,7 @@ export default async function OrderDetailPage({
             <label htmlFor="title" className="label">Title</label>
             <input id="title" name="title" defaultValue={order.title} required className="input" />
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
               <label htmlFor="amount" className="label">Amount (USD)</label>
               <input id="amount" name="amount" defaultValue={(order.amount_cents / 100).toFixed(2)} className="input" />
