@@ -34,10 +34,23 @@ export function verifyAccessCode(code: string, stored: string | null) {
   return a.length === b.length && a.length > 0 && timingSafeEqual(a, b);
 }
 
+/** Empty or whitespace-only values count as unset (Vercel keeps blank variables). */
+function envValue(name: string) {
+  const v = process.env[name]?.trim();
+  return v ? v : undefined;
+}
+
+const MIN_SECRET_LENGTH = 16;
+
+/**
+ * GALLERY_COOKIE_SECRET is optional. A placeholder or too-short value (an old
+ * example file used "change-me") is ignored in favour of SESSION_SECRET.
+ */
 function secret() {
-  const s = process.env.GALLERY_COOKIE_SECRET ?? process.env.SESSION_SECRET;
-  if (!s || s.length < 16) {
-    throw new Error("SESSION_SECRET must be set (32+ characters).");
+  const own = envValue("GALLERY_COOKIE_SECRET");
+  const s = own && own.length >= MIN_SECRET_LENGTH ? own : envValue("SESSION_SECRET");
+  if (!s || s.length < MIN_SECRET_LENGTH) {
+    throw new Error("SESSION_SECRET must be set (32+ characters) in the environment variables.");
   }
   return `gallery:${s}`;
 }

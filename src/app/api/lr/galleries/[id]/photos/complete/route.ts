@@ -1,4 +1,4 @@
-import { ApiError, json, loadGallery, makePreview, readJson, resolveUploadedBlob, serializePhoto, upsertLightroomPhoto, withApi } from "@/lib/lr";
+import { ApiError, galleryUrl, json, loadGallery, makePreview, readJson, resolveUploadedBlob, serializePhoto, upsertLightroomPhoto, withApi } from "@/lib/lr";
 
 export const maxDuration = 60;
 
@@ -34,5 +34,5 @@ export const POST = withApi(async (request, { params }: Ctx) => {
     size: uploaded.size,
   });
 
-  return json({ photo: serializePhoto(photo), replaced, gallery_url: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/g/${gallery.slug}` }, replaced ? 200 : 201);
+  return json({ photo: serializePhoto(photo), replaced, gallery_url: galleryUrl(gallery.slug) }, replaced ? 200 : 201);
 });
