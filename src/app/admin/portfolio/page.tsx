@@ -3,13 +3,14 @@ import { listPortfolioAdmin } from "@/lib/data/admin";
 import { ActionForm, Field } from "@/components/admin/form";
 import { ConfirmSubmit } from "@/components/admin/ui";
 import { Uploader } from "@/components/admin/uploader";
-import { deletePortfolioImage, updatePortfolioImage } from "../actions";
+import { getHeroImage } from "@/lib/data/settings";
+import { clearHeroImage, deletePortfolioImage, updatePortfolioImage, useAsHeroImage } from "../actions";
 
 // Image processing in server actions can exceed the default function timeout.
 export const maxDuration = 60;
 
 export default async function PortfolioAdminPage() {
-  const images = await listPortfolioAdmin();
+  const [images, hero] = await Promise.all([listPortfolioAdmin(), getHeroImage()]);
 
   return (
     <div className="space-y-8">
@@ -19,6 +20,31 @@ export default async function PortfolioAdminPage() {
           Everything published shows on the portfolio page. Featured photos also appear on the home and about pages.
         </p>
       </div>
+
+      <section className="card p-5" aria-labelledby="hero-heading">
+        <h2 id="hero-heading" className="font-medium">Home page header image</h2>
+        <p className="mt-1 text-xs text-muted">
+          Shown full-width behind the heading on the home page. Upload a wide photo here, or press “Use as header” on any portfolio photo below.
+          {hero ? "" : " Until one is set, the first featured photo is used."}
+        </p>
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-[1.2fr_1fr]">
+          <div className="relative aspect-[16/7] overflow-hidden bg-paper-3">
+            {hero ? (
+              <Image src={hero.url} alt={hero.alt || "Home page header image"} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover object-[center_30%]" />
+            ) : (
+              <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.2em] text-muted">No header image set</div>
+            )}
+          </div>
+          <div className="space-y-3">
+            <Uploader target={{ kind: "hero" }} />
+            {hero ? (
+              <ActionForm action={clearHeroImage} submitLabel="Remove header image" pendingLabel="Removing…" successMessage="Removed" buttonClassName="btn-ghost px-3 py-1.5 text-xs" className="space-y-0">
+                <span className="sr-only">Remove the home page header image</span>
+              </ActionForm>
+            ) : null}
+          </div>
+        </div>
+      </section>
 
       <Uploader target={{ kind: "portfolio" }} />
 
@@ -36,7 +62,17 @@ export default async function PortfolioAdminPage() {
                 {img.is_featured ? (
                   <span className="absolute right-2 top-2 bg-ink px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-paper">Featured</span>
                 ) : null}
+                {hero?.url === img.url ? (
+                  <span className="absolute bottom-2 left-2 bg-ink px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-paper">Home header</span>
+                ) : null}
               </div>
+              {hero?.url !== img.url ? (
+                <div className="border-b border-line px-4 py-2">
+                  <ActionForm action={useAsHeroImage.bind(null, img.id)} submitLabel="Use as header" pendingLabel="Setting…" successMessage="Set" buttonClassName="btn-ghost px-2 py-1 text-xs" className="space-y-0">
+                    <span className="sr-only">Use this photo as the home page header</span>
+                  </ActionForm>
+                </div>
+              ) : null}
               <ActionForm
                 key={`${img.is_featured}-${img.is_published}-${img.sort_order}-${img.alt}`}
                 action={updatePortfolioImage.bind(null, img.id)}

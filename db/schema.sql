@@ -189,3 +189,13 @@ update inquiries i
 set client_id = c.id
 from clients c
 where i.client_id is null and lower(c.email) = lower(i.email);
+
+-- ---------------------------------------------------------------------------
+-- Site settings: small key/value store for things the admin edits (home header image)
+-- ---------------------------------------------------------------------------
+
+create table if not exists site_settings (
+  key text primary key,
+  value text not null,
+  updated_at timestamptz not null default now()
+);

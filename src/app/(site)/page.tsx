@@ -4,6 +4,7 @@ import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { JsonLd } from "@/components/seo/json-ld";
 import type { Faq } from "@/lib/areas";
 import { getActivePackages, getFeaturedPortfolio } from "@/lib/data/public";
+import { getHeroImage } from "@/lib/data/settings";
 import { faqJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { formatMoney } from "@/lib/types";
@@ -43,70 +44,72 @@ const faqs: Faq[] = [
 ];
 
 export default async function HomePage() {
-  const [featured, packages] = await Promise.all([
+  const [featured, packages, chosenHero] = await Promise.all([
     getFeaturedPortfolio(6),
     getActivePackages(),
+    getHeroImage(),
   ]);
-  const hero = featured[0];
+  // Admin-chosen header image, otherwise the first featured portfolio photo.
+  const hero = chosenHero ?? featured[0] ?? null;
 
   return (
     <>
       <JsonLd data={faqJsonLd(faqs)} />
 
-      {/* Intro */}
-      <section className="container-x grid grid-cols-1 items-center gap-10 pb-16 pt-12 md:grid-cols-[1.1fr_0.9fr] md:pb-24 md:pt-20">
-        <div>
-          <h1 className="font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+      {/* Header: one full-width image with the text on top */}
+      <section className="relative isolate flex min-h-[78svh] items-end overflow-hidden bg-paper-3 md:min-h-[86svh]">
+        {hero ? (
+          <Image
+            src={hero.url}
+            alt={hero.alt || `Headshot photographed by ${site.name} in Rockland County, NY`}
+            fill
+            priority
+            sizes="100vw"
+            quality={85}
+            className="object-cover object-[center_30%]"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,#1c1c1e,#1c1c1e_14px,#161618_14px,#161618_28px)]" />
+        )}
+        {/* Darkens the lower half so the text stays readable on any photo. */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0e] via-[#0d0d0e]/55 to-[#0d0d0e]/10" aria-hidden />
+        <div className="container-x relative pb-14 pt-40 md:pb-20 md:pt-56">
+          <h1 className="max-w-3xl font-display text-4xl leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
             Stand out from the crowd
           </h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-ink-2">
+          <p className="mt-6 max-w-lg text-lg leading-8 text-white/80">
             I photograph headshots for business, LinkedIn, teams and actors.
             Sessions are in my studio in {site.address.locality} or at your
             office anywhere in Rockland County. Photos are delivered online
             within a few days.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/contact" className="btn-primary">
+            <Link href="/contact" className="btn-primary bg-white text-[#0d0d0e] hover:bg-white/85 hover:text-[#0d0d0e]">
               Book a session
             </Link>
-            <Link href="/portfolio" className="btn-secondary">
+            <Link href="/portfolio" className="btn-secondary border-white/40 text-white hover:bg-white hover:text-[#0d0d0e]">
               See photos
             </Link>
           </div>
-          <dl className="mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6 text-sm">
+          <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-white/20 pt-6 text-sm text-white">
             <div>
-              <dt className="text-muted">Turnaround</dt>
+              <dt className="text-white/60">Turnaround</dt>
               <dd className="mt-1 font-medium">2–3 business days</dd>
             </div>
             <div>
-              <dt className="text-muted">Where</dt>
+              <dt className="text-white/60">Where</dt>
               <dd className="mt-1 font-medium">Studio or your office</dd>
             </div>
             <div>
-              <dt className="text-muted">Delivery</dt>
+              <dt className="text-white/60">Delivery</dt>
               <dd className="mt-1 font-medium">Online gallery</dd>
             </div>
           </dl>
-        </div>
-
-        <div className="relative aspect-[4/5] overflow-hidden bg-paper-3">
-          {hero ? (
-            <Image
-              src={hero.url}
-              alt={hero.alt || `Headshot photographed by ${site.name} in Rockland County, NY`}
-              fill
-              sizes="(max-width: 768px) 100vw, 45vw"
-              fetchPriority="high"
-              loading="eager"
-              className="object-cover"
-            />
-          ) : (
-            <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,#1c1c1e,#1c1c1e_14px,#161618_14px,#161618_28px)]">
-              <div className="absolute inset-x-0 bottom-0 p-6 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-                Your photo goes here
-              </div>
-            </div>
-          )}
+          {!hero ? (
+            <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-white/50">
+              Header image: set one in Admin → Portfolio
+            </p>
+          ) : null}
         </div>
       </section>
 

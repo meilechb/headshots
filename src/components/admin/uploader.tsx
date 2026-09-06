@@ -3,11 +3,12 @@
 import { upload } from "@vercel/blob/client";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { finalizeGalleryPhoto, finalizePortfolioImage } from "@/app/admin/actions";
+import { finalizeGalleryPhoto, finalizeHeroImage, finalizePortfolioImage } from "@/app/admin/actions";
 
 type Target =
   | { kind: "gallery"; galleryId: string }
-  | { kind: "portfolio" };
+  | { kind: "portfolio" }
+  | { kind: "hero" };
 
 type Item = { name: string; status: "queued" | "uploading" | "processing" | "done" | "error"; message?: string };
 
@@ -64,7 +65,8 @@ export function Uploader({ target }: { target: Target }) {
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
-    const list = Array.from(files);
+    // The header image is a single picture; take the first file only.
+    const list = target.kind === "hero" ? Array.from(files).slice(0, 1) : Array.from(files);
     setItems(list.map((f) => ({ name: f.name, status: "queued" })));
     setBusy(true);
 
@@ -91,12 +93,16 @@ export function Uploader({ target }: { target: Target }) {
           await finalizeGalleryPhoto(target.galleryId, { url: blob.url, filename: file.name, size: file.size });
         } else {
           const blob = await upload(
-            `portfolio/incoming/${baseName(file.name)}-${stamp}.${extOf(file)}`,
+            `portfolio/incoming/${target.kind === "hero" ? "hero-" : ""}${baseName(file.name)}-${stamp}.${extOf(file)}`,
             file,
             { access: "public", handleUploadUrl: "/api/upload/portfolio", contentType: file.type }
           );
           update({ status: "processing" });
-          await finalizePortfolioImage({ url: blob.url, filename: file.name, size: file.size });
+          if (target.kind === "hero") {
+            await finalizeHeroImage({ url: blob.url, filename: file.name, size: file.size });
+          } else {
+            await finalizePortfolioImage({ url: blob.url, filename: file.name, size: file.size });
+          }
         }
         update({ status: "done" });
       } catch (err) {
@@ -128,19 +134,25 @@ export function Uploader({ target }: { target: Target }) {
         }}
       >
         <span className="text-sm font-medium">
-          {busy ? "Uploading…" : "Drop JPG / PNG / WebP files here, or click to choose"}
+          {busy
+            ? "Uploading…"
+            : target.kind === "hero"
+              ? "Drop one JPG / PNG / WebP here, or click to choose"
+              : "Drop JPG / PNG / WebP files here, or click to choose"}
         </span>
         <span className="mt-1 text-xs text-muted">
           {target.kind === "gallery"
             ? "Originals are kept for download; a web-size copy is made for browsing."
-            : "Images are resized to 2400px for the site."}
+            : target.kind === "hero"
+              ? "Use a wide photo. It is resized to 3000px and shown full-width behind the home page heading."
+              : "Images are resized to 2400px for the site."}
         </span>
         <input
           ref={inputRef}
           id={`uploader-${target.kind}`}
           type="file"
           accept="image/jpeg,image/png,image/webp"
-          multiple
+          multiple={target.kind !== "hero"}
           disabled={busy}
           onChange={(e) => handleFiles(e.target.files)}
           className="sr-only"

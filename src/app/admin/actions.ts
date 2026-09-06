@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { getHeroImage, HERO_KEY, setSetting } from "@/lib/data/settings";
 import { redirect, unstable_rethrow } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { db, one, rows } from "@/lib/db";
@@ -559,4 +560,59 @@ export async function emailGalleryLink(galleryId: string): Promise<GalleryEmailS
   const result = await sendEmail({ to: g.client_email, subject: mail.subject, text: mail.text });
   if (!result.ok) return { error: result.error ?? "Sending failed." };
   return { ok: true };
+}
+
+// -------------------------------------------------------------- home header
+
+const HERO_PREFIX = "portfolio/hero/";
+
+async function replaceHero(next: { url: string; width: number | null; height: number | null; alt: string } | null) {
+  const current = await getHeroImage();
+  await setSetting(HERO_KEY, next ? JSON.stringify(next) : null);
+  // Dedicated header uploads live under portfolio/hero/; portfolio photos used as
+  // the header are shared and must not be deleted here.
+  if (current && current.url !== next?.url && new URL(current.url).pathname.startsWith(`/${HERO_PREFIX}`)) {
+    await deleteBlobs("portfolio", [current.url]);
+  }
+  revalidatePath("/");
+  revalidatePath("/admin/portfolio");
+}
+
+/** Browser upload finished: make a 3000px version and set it as the home header. */
+export async function finalizeHeroImage(meta: BrowserUploadMeta) {
+  await requireAdmin();
+  assertBlobUrl(meta.url, "portfolio", "portfolio/incoming/");
+  let web;
+  try {
+    web = await makeWebVersion(await downloadBlob(meta.url, "portfolio"), 3000, 0.86 * 100);
+  } catch (error) {
+    await deleteBlobs("portfolio", [meta.url]);
+    fail(describeImageError(error));
+  }
+  const stored = await putJpeg("portfolio", `${HERO_PREFIX}${crypto.randomUUID()}.jpg`, web.buffer);
+  await deleteBlobs("portfolio", [meta.url]);
+  const scale = Math.min(1, 3000 / Math.max(web.width ?? 3000, web.height ?? 3000));
+  await replaceHero({
+    url: stored.url,
+    width: web.width ? Math.round(web.width * scale) : null,
+    height: web.height ? Math.round(web.height * scale) : null,
+    alt: meta.filename.replace(/\.[a-z0-9]+$/i, "").replace(/[-_]+/g, " ").slice(0, 200),
+  });
+}
+
+/** Use an existing portfolio photo as the home header. */
+export async function useAsHeroImage(imageId: string): Promise<ActionState> {
+  await requireAdmin();
+  const img = one<{ url: string; width: number | null; height: number | null; alt: string }>(
+    await db()`select url, width, height, alt from portfolio_images where id = ${imageId} limit 1`
+  );
+  if (!img) return { ok: false, error: "Image not found.", at: Date.now() };
+  await replaceHero(img);
+  return { ok: true, at: Date.now() };
+}
+
+export async function clearHeroImage(): Promise<ActionState> {
+  await requireAdmin();
+  await replaceHero(null);
+  return { ok: true, at: Date.now() };
 }
