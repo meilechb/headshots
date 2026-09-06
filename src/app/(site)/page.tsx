@@ -57,7 +57,7 @@ export default async function HomePage() {
       <section className="container-x grid grid-cols-1 items-center gap-10 pb-16 pt-12 md:grid-cols-[1.1fr_0.9fr] md:pb-24 md:pt-20">
         <div>
           <h1 className="font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-            Professional headshots in Rockland County, NY
+            Stand out from the crowd
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-8 text-ink-2">
             I photograph headshots for business, LinkedIn, teams and actors.
