@@ -1,30 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { portfolioCategories } from "@/lib/site";
+import { useCallback, useEffect, useState } from "react";
 import { useSwipe } from "@/lib/use-swipe";
 
 export type GridImage = {
   id: string;
   url: string;
   alt: string;
-  category: string;
   width: number | null;
   height: number | null;
 };
 
 // Shown until real work is uploaded in /admin/portfolio.
 const placeholders: GridImage[] = [
-  { id: "p1", url: "", alt: "Sample corporate headshot", category: "corporate", width: 4, height: 5 },
-  { id: "p2", url: "", alt: "Sample personal brand portrait", category: "personal-brand", width: 3, height: 4 },
-  { id: "p3", url: "", alt: "Sample actor headshot", category: "actors", width: 4, height: 5 },
-  { id: "p4", url: "", alt: "Sample team headshot", category: "teams", width: 1, height: 1 },
-  { id: "p5", url: "", alt: "Sample creative portrait", category: "creative", width: 3, height: 4 },
-  { id: "p6", url: "", alt: "Sample corporate headshot", category: "corporate", width: 4, height: 5 },
-  { id: "p7", url: "", alt: "Sample personal brand portrait", category: "personal-brand", width: 1, height: 1 },
-  { id: "p8", url: "", alt: "Sample actor headshot", category: "actors", width: 3, height: 4 },
-  { id: "p9", url: "", alt: "Sample team headshot", category: "teams", width: 4, height: 5 },
+  { id: "p1", url: "", alt: "Sample headshot", width: 4, height: 5 },
+  { id: "p2", url: "", alt: "Sample headshot", width: 3, height: 4 },
+  { id: "p3", url: "", alt: "Sample headshot", width: 4, height: 5 },
+  { id: "p4", url: "", alt: "Sample headshot", width: 1, height: 1 },
+  { id: "p5", url: "", alt: "Sample headshot", width: 3, height: 4 },
+  { id: "p6", url: "", alt: "Sample headshot", width: 4, height: 5 },
+  { id: "p7", url: "", alt: "Sample headshot", width: 1, height: 1 },
+  { id: "p8", url: "", alt: "Sample headshot", width: 3, height: 4 },
+  { id: "p9", url: "", alt: "Sample headshot", width: 4, height: 5 },
 ];
 
 const tones = [
@@ -33,33 +31,68 @@ const tones = [
   "repeating-linear-gradient(135deg,#1a1a1c,#1a1a1c 12px,#141416 12px,#141416 24px)",
 ];
 
+function Tile({
+  img,
+  index,
+  onOpen,
+}: {
+  img: GridImage;
+  index: number;
+  onOpen: () => void;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const w = img.width ?? 4;
+  const h = img.height ?? 5;
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group relative block w-full overflow-hidden bg-paper-2 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      style={{ aspectRatio: `${w} / ${h}` }}
+      aria-label={`Open ${img.alt || "photo"}`}
+    >
+      {img.url ? (
+        <Image
+          src={img.url}
+          alt={img.alt}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 33vw"
+          onLoad={() => setLoaded(true)}
+          className={`object-cover transition duration-700 ease-out group-hover:scale-[1.03] ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ) : (
+        <div
+          className="absolute inset-0 transition duration-700 ease-out group-hover:scale-[1.03]"
+          style={{ background: tones[index % tones.length] }}
+        />
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-paper-4/0 transition duration-500 group-hover:bg-paper-4/20" />
+    </button>
+  );
+}
+
 export function PortfolioGrid({
   images,
-  showFilters = true,
   limit,
 }: {
   images: GridImage[];
-  showFilters?: boolean;
   limit?: number;
 }) {
   const source = images.length ? images : placeholders;
   const usingPlaceholders = images.length === 0;
-  const [category, setCategory] = useState<string>("all");
+  const list = limit ? source.slice(0, limit) : source;
   const [active, setActive] = useState<number | null>(null);
-
-  const filtered = useMemo(() => {
-    const list =
-      category === "all" ? source : source.filter((i) => i.category === category);
-    return limit ? list.slice(0, limit) : list;
-  }, [source, category, limit]);
 
   const close = useCallback(() => setActive(null), []);
   const step = useCallback(
     (dir: 1 | -1) =>
       setActive((i) =>
-        i === null ? null : (i + dir + filtered.length) % filtered.length
+        i === null ? null : (i + dir + list.length) % list.length
       ),
-    [filtered.length]
+    [list.length]
   );
   const swipe = useSwipe(step);
 
@@ -80,25 +113,6 @@ export function PortfolioGrid({
 
   return (
     <div>
-      {showFilters ? (
-        <div className="mb-8 flex flex-wrap gap-2">
-          {[{ slug: "all", label: "All" }, ...portfolioCategories].map((c) => (
-            <button
-              key={c.slug}
-              type="button"
-              onClick={() => setCategory(c.slug)}
-              className={`min-h-10 border px-4 py-2 text-xs uppercase tracking-[0.08em] transition ${
-                category === c.slug
-                  ? "border-ink bg-ink text-paper"
-                  : "border-line text-ink-2 hover:border-ink"
-              }`}
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
-      ) : null}
-
       {usingPlaceholders ? (
         <p className="mb-6 text-sm text-muted">
           Sample layout. Upload your work in the studio dashboard to replace
@@ -107,42 +121,12 @@ export function PortfolioGrid({
       ) : null}
 
       <div className="masonry">
-        {filtered.map((img, i) => {
-          const w = img.width ?? 4;
-          const h = img.height ?? 5;
-          return (
-            <button
-              key={img.id}
-              type="button"
-              onClick={() => setActive(i)}
-              className="group relative block w-full overflow-hidden bg-paper-2 text-left"
-              style={{ aspectRatio: `${w} / ${h}` }}
-              aria-label={`Open ${img.alt || "photo"}`}
-            >
-              {img.url ? (
-                <Image
-                  src={img.url}
-                  alt={img.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition duration-500 group-hover:opacity-90"
-                />
-              ) : (
-                <div
-                  className="absolute inset-0"
-                  style={{ background: tones[i % tones.length] }}
-                >
-                  <div className="absolute inset-x-0 bottom-0 p-4 font-mono text-[10px] uppercase tracking-[0.14em] text-[#cfcfcf]">
-                    {img.category.replace("-", " ")}
-                  </div>
-                </div>
-              )}
-            </button>
-          );
-        })}
+        {list.map((img, i) => (
+          <Tile key={img.id} img={img} index={i} onOpen={() => setActive(i)} />
+        ))}
       </div>
 
-      {active !== null && filtered[active] ? (
+      {active !== null && list[active] ? (
         <div
           role="dialog"
           aria-modal="true"
@@ -181,10 +165,10 @@ export function PortfolioGrid({
             className="relative h-[80dvh] w-full max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {filtered[active].url ? (
+            {list[active].url ? (
               <Image
-                src={filtered[active].url}
-                alt={filtered[active].alt}
+                src={list[active].url}
+                alt={list[active].alt}
                 fill
                 sizes="100vw"
                 quality={90}
@@ -197,6 +181,9 @@ export function PortfolioGrid({
               />
             )}
           </div>
+          <p className="pointer-events-none absolute bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 font-mono text-[11px] tracking-[0.14em] text-white/60">
+            {active + 1} / {list.length}
+          </p>
         </div>
       ) : null}
     </div>

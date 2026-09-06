@@ -104,11 +104,9 @@ export default async function HomePage() {
             id: f.id,
             url: f.url,
             alt: f.alt,
-            category: f.category,
             width: f.width,
             height: f.height,
           }))}
-          showFilters={false}
           limit={6}
         />
         <Link href="/portfolio" className="btn-secondary mt-8 sm:hidden">
