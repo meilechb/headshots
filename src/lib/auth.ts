@@ -14,7 +14,15 @@ export type CurrentUser = {
  * Data Access Layer entry point for the signed-in user.
  * Cached per request so layouts, pages and actions can all call it.
  */
+export function supabaseConfigured() {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  );
+}
+
 export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
+  if (!supabaseConfigured()) return null;
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;

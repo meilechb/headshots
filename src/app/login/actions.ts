@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { supabaseConfigured } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
 export type LoginState = { error?: string };
@@ -16,6 +17,12 @@ export async function login(
 
   if (!email || !password) {
     return { error: "Enter your email and password." };
+  }
+  if (!supabaseConfigured()) {
+    return {
+      error:
+        "Supabase is not configured on this deployment yet. Add the NEXT_PUBLIC_SUPABASE_* environment variables.",
+    };
   }
 
   const supabase = await createClient();
