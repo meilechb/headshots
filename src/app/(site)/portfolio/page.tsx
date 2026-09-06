@@ -13,14 +13,9 @@ export default async function PortfolioPage() {
 
   return (
     <section className="container-x py-14 md:py-20">
-      <p className="eyebrow">Portfolio</p>
-      <h1 className="mt-3 max-w-2xl font-display text-4xl tracking-tight sm:text-5xl">
-        Faces, not templates.
+      <h1 className="font-display text-4xl tracking-tight sm:text-5xl">
+        Portfolio
       </h1>
-      <p className="mt-4 max-w-xl text-ink-2">
-        Every session is lit and directed for the person in front of the
-        camera. A selection of recent work.
-      </p>
       <div className="mt-10">
         <PortfolioGrid
           images={images.map((f) => ({
