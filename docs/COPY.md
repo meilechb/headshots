@@ -15,31 +15,31 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Meilech Biller | Headshot Photographer in Rockland County, NY
 - Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
-- H1: PROFESSIONAL HEADSHOTS IN ROCKLAND COUNTY, NY
+- H1: Stand out from the crowd
 - Text: I photograph headshots for business, LinkedIn, teams and actors. Sessions are in my studio in Spring Valley or at your office anywhere in Rockland County. Photos are delivered online within a few days.
-- Link: BOOK A SESSION
-- Link: SEE PHOTOS
+- Link: Book a session
+- Link: See photos
 - Term: Turnaround
 - Text: 2–3 business days
 - Term: Where
 - Text: Studio or your office
 - Term: Delivery
 - Text: Online gallery
-- Text: YOUR PHOTO GOES HERE
-- H2: RECENT WORK
-- Link: ALL PHOTOS →
+- Text: Your photo goes here  (placeholder, disappears once real photos are uploaded)
+- H2: Recent work
+- Link: All photos →
 - Text: Sample layout. Upload your work in the studio dashboard to replace these tiles.  (placeholder, disappears once real photos are uploaded)
 - Link: All photos
-- H2: HOW IT WORKS
+- H2: How it works
 - H3: Book
 - Text: Send the form or an email. I reply within one business day with dates, and you pick a package.
 - H3: Session
 - Text: 30 to 90 minutes in the studio or at your office. I direct posture and expression; you do not need experience in front of a camera.
 - H3: Pick and download
 - Text: Proofs go into a private online gallery within a day or two. Mark the ones you want, and the retouched files are ready to download a few days later.
-- H2: PRICING
+- H2: Pricing
 - Text: Every package includes retouching, an online proof gallery and full-resolution files. Prices are the same anywhere in Rockland County.
-- Link: ALL PACKAGES →
+- Link: All packages →
 - H3: Essential
 - Text: A focused 30-minute session for one polished, professional headshot.
 - Text: $295
@@ -47,8 +47,8 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - List item: 1 look, 1 background
 - List item: 2 retouched images
 - List item: Online proof gallery
-- Link: BOOK ESSENTIAL
-- Text: MOST BOOKED
+- Link: Book Essential
+- Text: Most booked
 - H3: Professional
 - Text: The most popular choice: more time, more looks, more images to choose from.
 - Text: $495
@@ -56,7 +56,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
 - List item: Online proof gallery with comments
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - H3: Executive
 - Text: An unhurried session with full creative direction and a complete image library.
 - Text: $895
@@ -64,9 +64,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - List item: Unlimited looks
 - List item: 10 retouched images
 - List item: On-location option
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Link: All packages
-- H2: COMMON QUESTIONS
+- H2: Common questions
 - Term: Where are sessions held?
 - Text: Individual sessions are in my studio in Spring Valley, NY. Team and office sessions are on-site anywhere in Rockland County, with no travel fee.
 - Term: How long until I get the photos?
@@ -84,7 +84,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshot Portfolio, Rockland County, NY | Meilech Biller
 - Search result description: Recent headshots photographed in Rockland County, NY: business and LinkedIn headshots, team photos, actor headshots and personal brand portraits.
-- H1: PORTFOLIO
+- H1: Portfolio
 - Text: Sample layout. Upload your work in the studio dashboard to replace these tiles.  (placeholder, disappears once real photos are uploaded)
 
 
@@ -92,7 +92,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshot Pricing and Packages, Rockland County, NY | Meilech Biller
 - Search result description: Headshot session prices in Rockland County, NY. Individual sessions from $295, team sessions per person. Retouching, online proof gallery and full-resolution files included.
-- H1: PRICING
+- H1: Pricing
 - Text: Every package includes retouching, an online proof gallery, and full-resolution files for personal and business use. Prices are the same for the studio in Spring Valley and for on-location sessions anywhere in Rockland County.
 - H2: Essential
 - Text: A focused 30-minute session for one polished, professional headshot.
@@ -103,8 +103,8 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - List item: 2 retouched images
 - List item: Online proof gallery
 - List item: Web + print resolution files
-- Link: BOOK ESSENTIAL
-- Text: MOST BOOKED
+- Link: Book Essential
+- Text: Most booked
 - H2: Professional
 - Text: The most popular choice: more time, more looks, more images to choose from.
 - Text: $495
@@ -115,7 +115,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - List item: Online proof gallery with comments
 - List item: LinkedIn crop included
 - List item: Web + print resolution files
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - H2: Executive
 - Text: An unhurried session with full creative direction and a complete image library.
 - Text: $895
@@ -126,18 +126,18 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - List item: On-location option
 - List item: Online proof gallery with comments
 - List item: Priority 48-hour turnaround
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - H2: Team & Office
 - Text: Consistent headshots for your whole team, on-site at your office.
-- Text: $150/ PERSON
+- Text: $150/ person
 - Text: Delivered in 5 business days
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
 - List item: Consistent lighting and background
 - List item: Shared team gallery
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS
+- Link: Book Team & Office
+- H2: Questions
 - Term: How do I pay?
 - Text: After we confirm a date you get a payment link. Cards, Apple Pay and Google Pay are accepted. Payment is due before the session.
 - Term: Is there a travel fee?
@@ -156,22 +156,22 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: About Meilech Biller, Rockland County Headshot Photographer | Meilech Biller
 - Search result description: About Meilech Biller, headshot photographer based in Spring Valley, NY. How sessions work, where they happen, and how photos are retouched and delivered.
-- Text: PORTRAIT
-- H1: ABOUT MEILECH BILLER
+- Text: portrait  (placeholder, disappears once real photos are uploaded)
+- H1: About Meilech Biller
 - Text: I am a headshot photographer based in Spring Valley, in Rockland County, NY. I photograph business owners, professionals, teams and actors, in my studio or at their office.
 - Text: A session is short and calm. I tell you where to stand, how to hold your shoulders and chin, and when the expression is right. Most people are surprised how quickly it goes. You do not need to know how to pose.
 - Text: Retouching is kept natural: skin is cleaned up, stray hairs and blemishes are removed, and the photo still looks like you. I do not reshape faces or bodies.
 - Text: Proofs are delivered to a private online gallery within a day or two. You mark your favorites and leave notes on any frame. The retouched files come to the same gallery, sized for the web and for print.
 - Text: Sessions are available on weekdays, weekday evenings and Sundays. The studio is closed Friday afternoon and Saturday. On-location sessions cover all of Rockland County.
-- Link: BOOK A SESSION
-- Link: SEE PHOTOS
+- Link: Book a session
+- Link: See photos
 
 
 ## Contact / Book a session  (`/contact`)
 
 - Browser tab title: Book a Headshot Session in Rockland County, NY | Meilech Biller
 - Search result description: Book a headshot session with Meilech Biller. Studio in Spring Valley, NY, or on-site at your office anywhere in Rockland County. Reply within one business day.
-- H1: BOOK A SESSION
+- H1: Book a session
 - Text: Fill out the form or email me. I reply within one business day with dates and a price. There is no obligation.
 - Term: Email
 - Link: hello@meilechbiller.com
@@ -182,10 +182,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Offices anywhere in Rockland County, no travel fee
 - Term: Hours
 - Text: Sunday to Thursday, plus Friday mornings. Evenings by arrangement.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -193,62 +193,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: PACKAGE (OPTIONAL)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: WHEN? (OPTIONAL)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: HOW DID YOU HEAR ABOUT ME? (OPTIONAL)
-- Placeholder: Google, a friend, Instagram…
-- Button: SEND
-- Text: No account needed. I reply by email within one business day.
-
-
-## Landing page: Rockland County  (`/headshots/rockland-county`)
-
-- Browser tab title: Headshot Photographer in Rockland County, NY
-- Search result description: Headshots for business, LinkedIn, teams and actors anywhere in Rockland County, NY. Studio in Spring Valley, on-site sessions in all five towns, no travel fee. Proofs online in 1–2 days.
-- H1: HEADSHOT PHOTOGRAPHER FOR ALL OF ROCKLAND COUNTY
-- Text: I photograph headshots across Rockland County: in my studio in Spring Valley, or at your office in Clarkstown, Ramapo, Orangetown, Haverstraw or Stony Point. Same price everywhere in the county, no travel fee, proofs online within one or two business days.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
-- Term: From
-- Text: $295
-- Term: Proofs
-- Text: 1–2 business days
-- Term: Travel fee
-- Text: None in Rockland
-- H2: Book in Rockland County
-- Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: WHERE?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -258,49 +208,99 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: STUDIO OR YOUR OFFICE
+
+
+## Landing page: Rockland County  (`/headshots/rockland-county`)
+
+- Browser tab title: Headshot Photographer in Rockland County, NY
+- Search result description: Headshots for business, LinkedIn, teams and actors anywhere in Rockland County, NY. Studio in Spring Valley, on-site sessions in all five towns, no travel fee. Proofs online in 1–2 days.
+- H1: Headshot photographer for all of Rockland County
+- Text: I photograph headshots across Rockland County: in my studio in Spring Valley, or at your office in Clarkstown, Ramapo, Orangetown, Haverstraw or Stony Point. Same price everywhere in the county, no travel fee, proofs online within one or two business days.
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
+- Term: From
+- Text: $295
+- Term: Proofs
+- Text: 1–2 business days
+- Term: Travel fee
+- Text: None in Rockland
+- H2: Book in Rockland County
+- Text: I reply within one business day with dates and a price.
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
+- Option: Choose one
+- Option: Headshot for myself (business / LinkedIn)
+- Option: Headshots for a team or office
+- Option: Real estate / sales photos
+- Option: Medical or professional practice
+- Option: Actor headshots
+- Option: Something else
+- Field label: Where?
+- Option: Not sure yet
+- Option: Your studio in Spring Valley
+- Option: At my office or location
+- Option: Either / not sure
+- Field label: Your town (optional)
+- Placeholder: Monsey, Nanuet, New City…
+- Field label: Package (optional)
+- Option: Not sure yet
+- Option: Essential
+- Option: Professional
+- Option: Executive
+- Option: Team & Office
+- Field label: When? (optional)
+- Placeholder: Next two weeks, weekday mornings…
+- Field label: Anything else? (optional)
+- Placeholder: What the photos are for, a deadline, a photo you want to match…
+- Field label: How did you hear about me? (optional)
+- Placeholder: Google, a friend, Instagram…
+- Button: Send
+- Text: No account needed. I reply by email within one business day.
+- H2: Studio or your office
 - Text: For one person, the studio in Spring Valley is the simplest option. It is a few minutes off Route 59 and Route 45, with parking. A session takes 30 to 90 minutes depending on the package.
 - Text: For two or more people, I bring the studio to you. The kit is a background, two lights and a laptop, and it sets up in about 20 minutes in a conference room, lobby or spare office. Each person needs 10 to 15 minutes, so a team of twelve is done in a morning.
-- H2: WHO I PHOTOGRAPH IN THE COUNTY
+- H2: Who I photograph in the county
 - Text: Attorneys and accountants near the county courthouse in New City. Medical and dental practices along Route 59 from Suffern through Nanuet, and staff at Good Samaritan Hospital in Suffern and Montefiore Nyack. Real estate agents who need a photo for listings and signs. Companies in the office parks in Pearl River, Nanuet and West Nyack. School and organization staff who need matching photos for a website or journal.
 - Text: I also photograph actors, students applying to programs, and anyone who needs a current photo for LinkedIn or a company bio.
-- H2: HOW DELIVERY WORKS
+- H2: How delivery works
 - Text: Proofs are posted to a private online gallery protected by a code. You mark the frames you want and leave a note on any of them. Retouched files are delivered to the same gallery within two to three business days, sized for the web and for print. Team galleries are shared with one link so an office manager can collect everyone's picks.
-- H2: HOURS
+- H2: Hours
 - Text: Sessions run Sunday through Thursday, plus Friday mornings. Evenings are available on request. The studio is closed Friday afternoon and Saturday.
-- H2: PRICING IN ROCKLAND COUNTY
+- H2: Pricing in Rockland County
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM ROCKLAND COUNTY
+- Link: Book Team & Office
+- H2: Questions from Rockland County
 - Term: Do you charge for travel within Rockland County?
 - Text: No. On-site sessions anywhere in Rockland County are the same price as the studio. Bergen County, NJ and Westchester are quoted separately.
 - Term: How much space does an on-site session need?
@@ -309,10 +309,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Yes. That is the reason to do it on-site in one session: same light, same background, same distance, so the staff page looks uniform even when people join later and I match the setup.
 - Term: How soon can you come out?
 - Text: Usually within one to two weeks. Send the form with a few dates that work and I confirm within one business day.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN ROCKLAND COUNTY
+- Link: Book a session in Rockland County
 - Text: Also serving: Spring Valley, Monsey, Nanuet, New City, Suffern.
 - Link: Headshots in Spring Valley
 - Link: Headshots in Monsey
@@ -325,10 +325,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in Spring Valley, NY | Studio Sessions
 - Search result description: Headshot studio in Spring Valley, NY 10977. Business, LinkedIn and professional headshots from $295, retouching included. Walk-in distance from Main Street and Route 59; on-site sessions for offices, clinics and schools.
-- H1: HEADSHOTS IN SPRING VALLEY, NY
+- H1: Headshots in Spring Valley, NY
 - Text: The studio is in Spring Valley, so this is the easiest place to get a headshot in Rockland County. Sessions take 30 to 90 minutes and proofs are online within one or two business days. For offices, clinics and schools in the village I also come to you.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -337,10 +337,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in Spring Valley
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -348,12 +348,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -363,49 +363,49 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: GETTING TO THE STUDIO
+- H2: Getting to the studio
 - Text: The studio is in Spring Valley, minutes from Main Street, Route 45 and Route 59, and about five minutes from the Spring Valley bus and train terminal. There is parking. The exact address is in your booking confirmation.
 - Text: If you come from work, allow 45 minutes door to door for the Essential package and about an hour and a half for the Professional package. You can change in the studio; bring your outfits on hangers.
-- H2: WHO GETS HEADSHOTS IN SPRING VALLEY
+- H2: Who gets headshots in Spring Valley
 - Text: Spring Valley is the busiest business district in Ramapo. I photograph owners and staff of stores and offices along Main Street and Route 59, insurance and tax offices, real estate agents, and home-based businesses that need one good photo for a website, a flyer or a WhatsApp business profile.
 - Text: Medical and dental practices in the village, including the practices around Refuah Health Center on North Main Street, book on-site sessions so providers can be photographed between patients in matching light. Schools and nonprofits in the village book staff sessions in a morning.
-- H2: LANGUAGES AND COMFORT
+- H2: Languages and comfort
 - Text: Directions during the session are simple and I show you the frames on the back of the camera as we go, so you see what is working. Sessions are unhurried; there is no one waiting behind you.
-- H2: HOURS
+- H2: Hours
 - Text: Sunday through Thursday, plus Friday mornings. Evening sessions are available Sunday through Thursday on request. Closed Friday afternoon and Saturday.
-- H2: PRICING IN SPRING VALLEY
+- H2: Pricing in Spring Valley
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM SPRING VALLEY
+- Link: Book Team & Office
+- H2: Questions from Spring Valley
 - Term: Can I come in the same week?
 - Text: Often yes. Individual sessions are usually available within a few days. Send the form with two or three times that work.
 - Term: Is there parking at the studio?
@@ -414,10 +414,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Yes. A plain-background compliance photo can be added to any session; tell me the country and document when you book so I use the right size.
 - Term: Do you photograph men and women in separate sessions?
 - Text: Every session is private: one person or one group at a time, with the door closed. If you prefer a specific arrangement, say so when booking and I will accommodate it.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN SPRING VALLEY
+- Link: Book a session in Spring Valley
 - Text: Serving Spring Valley, NY (10977) and nearby: Monsey, Airmont, Nanuet, Ramapo, Rockland County.
 - Link: Headshots in Monsey
 - Link: Headshots in Airmont
@@ -430,10 +430,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in Monsey, NY | Business & LinkedIn Photos
 - Search result description: Headshot photographer serving Monsey, NY 10952. Business, LinkedIn and professional headshots five minutes away in the Spring Valley studio, or on-site at your Monsey office, school or practice.
-- H1: HEADSHOTS IN MONSEY, NY
+- H1: Headshots in Monsey, NY
 - Text: Monsey is a five-minute drive from my studio in Spring Valley, so most people from Monsey come in for a 30 to 90 minute session. Offices, schools and practices along Route 59 and Route 306 book on-site sessions where I set up in a spare room and photograph the whole staff in a morning.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -442,10 +442,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in Monsey
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -453,12 +453,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -468,49 +468,49 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: FROM MONSEY TO THE STUDIO
+- H2: From Monsey to the studio
 - Text: From Route 59 in Monsey it is about five minutes east to the studio; from Route 306 and Wesley Hills about ten. Sessions are available Sunday through Thursday and Friday morning, with evenings on request, so you can come after work or after seder without missing a day.
 - Text: Bring two or three outfits. Solid colors in dark or medium tones photograph best; a jacket and a plain shirt or blouse cover most uses. I will tell you what to wear in the confirmation email.
-- H2: WHO BOOKS FROM MONSEY
+- H2: Who books from Monsey
 - Text: Real estate agents and mortgage brokers who need a photo for listings, signs and business cards. Owners of the many small and home-based businesses in Monsey who need a current photo for a website, an ad or a WhatsApp business profile. Accountants, insurance agents and attorneys with offices on Route 59. Therapists, tutors and coaches who need a warm, approachable photo for their profile.
 - Text: Yeshivas, schools and organizations in Monsey book staff photo days: I set up in an office or classroom and photograph staff one at a time so the website, journal or directory has matching photos. Photos for a dinner journal or an ad can be delivered the same week if you tell me the deadline.
-- H2: PRIVACY
+- H2: Privacy
 - Text: Every session is private. Nothing is posted anywhere unless you ask me to. If you prefer a same-gender photographer setup or a chaperone present, say so when booking and it is arranged.
-- H2: DELIVERY
+- H2: Delivery
 - Text: Proofs go to a private online gallery, usually the next business day. You pick, and retouched files follow within two to three business days. Files are sized for LinkedIn, websites and print. If you need a specific crop for a listing service or a journal, tell me and I will include it.
-- H2: PRICING IN MONSEY
+- H2: Pricing in Monsey
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM MONSEY
+- Link: Book Team & Office
+- H2: Questions from Monsey
 - Term: Do you come to Monsey for one person?
 - Text: The studio is five minutes away, so for one person the studio is quicker and the light is better controlled. For three or more people I come to you at no extra charge.
 - Term: Can I get the photo the same day?
@@ -519,10 +519,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Individual sessions start at $295 with two retouched photos. Staff sessions are $150 per person with a five-person minimum. Full details are on the pricing page.
 - Term: Do you photograph children or families?
 - Text: I focus on headshots for adults and staff. For a school that needs student photos, ask and I will tell you whether it fits.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN MONSEY
+- Link: Book a session in Monsey
 - Text: Serving Monsey, NY (10952) and nearby: Spring Valley, Airmont, Ramapo, Suffern, Rockland County.
 - Link: Headshots in Spring Valley
 - Link: Headshots in Airmont
@@ -535,10 +535,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in Nanuet, NY | Office & LinkedIn Photos
 - Search result description: Headshot photographer for Nanuet, NY 10954. On-site team and office headshots along Route 59 and Route 304, or individual sessions 15 minutes away in Spring Valley. Retouching and online delivery included.
-- H1: HEADSHOTS IN NANUET, NY
+- H1: Headshots in Nanuet, NY
 - Text: Nanuet has more offices than any other hamlet in Clarkstown, and most of my Nanuet work is on-site: I set up in a conference room and photograph the staff of a company, a medical practice or a bank branch in a morning. For one person, the studio in Spring Valley is about 15 minutes west on Route 59.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -547,10 +547,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in Nanuet
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -558,12 +558,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -573,48 +573,48 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: ON-SITE IN NANUET OFFICES
+- H2: On-site in Nanuet offices
 - Text: The offices along Route 59 and Route 304, the medical and dental practices near The Shops at Nanuet, and the businesses around the Nanuet train station on Prospect Street are all a short drive from the studio, so I can be set up by 8:30 for a session before the workday starts. The setup needs a room about 8 by 10 feet and an outlet.
 - Text: Each person takes 10 to 15 minutes. Everyone is photographed with the same background and light so the staff page or directory matches. New hires later are photographed in the studio against the same setup and slotted in.
-- H2: WHO BOOKS FROM NANUET
+- H2: Who books from Nanuet
 - Text: Companies with offices on Route 59 and Route 304 that need a consistent team page. Medical, dental and physical therapy practices that want matching provider photos for their website and insurance directories. Bank branch and financial-advisor teams. Retail managers at The Shops at Nanuet and nearby plazas who need a corporate photo. Commuters on the Pascack Valley Line who work in Manhattan or Hoboken and need a LinkedIn photo but do not want to book a Manhattan studio.
-- H2: INDIVIDUAL SESSIONS
+- H2: Individual sessions
 - Text: For one person, come to the studio in Spring Valley: Route 59 west, about 15 minutes from Nanuet, with parking. Sessions run Sunday through Thursday, Friday mornings, and evenings on request, so you can come after the train.
-- H2: DELIVERY
+- H2: Delivery
 - Text: Proofs are posted to a private gallery within one or two business days. For teams, one shared link goes to the office manager and each person can mark their own pick. Retouched files follow within two to three business days.
-- H2: PRICING IN NANUET
+- H2: Pricing in Nanuet
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM NANUET
+- Link: Book Team & Office
+- H2: Questions from Nanuet
 - Term: How long does a team session at our Nanuet office take?
 - Text: About 20 minutes to set up, then 10 to 15 minutes per person. A team of ten is finished in about two and a half hours.
 - Term: We are near the Palisades Center in West Nyack. Is that still no travel fee?
@@ -623,10 +623,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Usually. Send me one of the existing photos before the session and I will match the background tone and crop as closely as the setup allows.
 - Term: Do you offer a group photo of the team as well?
 - Text: Yes. A group photo can be added to any on-site session; allow an extra 15 minutes and a space with a clean wall or an outdoor spot.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN NANUET
+- Link: Book a session in Nanuet
 - Text: Serving Nanuet, NY (10954) and nearby: New City, Spring Valley, Rockland County, Monsey, Airmont.
 - Link: Headshots in New City
 - Link: Headshots in Spring Valley
@@ -639,10 +639,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in New City, NY | Attorneys, Offices & Teams
 - Search result description: Headshot photographer for New City, NY 10956. Professional photos for attorneys and offices near the Rockland County courthouse, team sessions at your New City office, or studio sessions in Spring Valley.
-- H1: HEADSHOTS IN NEW CITY, NY
+- H1: Headshots in New City, NY
 - Text: New City is the county seat, and much of my work there is for law firms, accountants and county-related offices near the courthouse on South Main Street. I come to your office for teams, or you come to the studio in Spring Valley, about 15 minutes away.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -651,10 +651,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in New City
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -662,12 +662,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -677,48 +677,48 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: ATTORNEYS AND PROFESSIONAL OFFICES
+- H2: Attorneys and professional offices
 - Text: Firms on Main Street, New Hempstead Road and Route 304 near the Rockland County Courthouse book on-site sessions so partners and associates are photographed on the same day against the same background. Photos are delivered in the crops attorney directories and the firm website need.
 - Text: For a solo practitioner, a studio session is the better use of time: 30 to 60 minutes, two or three looks, and a photo that works for the bar directory, LinkedIn and the website.
-- H2: OTHER NEW CITY CLIENTS
+- H2: Other New City clients
 - Text: Real estate agents working the New City, Congers and Bardonia markets. Financial advisors and insurance agents. Medical and dental practices on Route 304. Clarkstown school and town staff who need a photo for a directory. Parents of students who need a photo for college or program applications.
-- H2: GETTING TO THE STUDIO FROM NEW CITY
+- H2: Getting to the studio from New City
 - Text: Route 304 south to Route 59 west, or New Hempstead Road west to Route 45, about 15 minutes either way. Parking at the building. Sessions Sunday through Thursday, Friday mornings, evenings on request.
-- H2: DELIVERY
+- H2: Delivery
 - Text: Proofs online within one or two business days, retouched files within two to three business days after you pick. Firms get one shared gallery so an administrator can collect picks and download everything at once.
-- H2: PRICING IN NEW CITY
+- H2: Pricing in New City
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM NEW CITY
+- Link: Book Team & Office
+- H2: Questions from New City
 - Term: Can you photograph our whole firm in one visit?
 - Text: Yes. Set aside a conference room for a morning; each person takes 10 to 15 minutes and can go straight back to work.
 - Term: We need photos for a court directory with specific dimensions.
@@ -727,10 +727,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Yes, on every package. It is kept natural: skin, stray hairs, glare on glasses. Faces are not reshaped.
 - Term: How far ahead should we book?
 - Text: One to two weeks is typical for a team session. Individuals can usually be seen within a few days.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN NEW CITY
+- Link: Book a session in New City
 - Text: Serving New City, NY (10956) and nearby: Nanuet, Spring Valley, Rockland County, Monsey, Suffern.
 - Link: Headshots in Nanuet
 - Link: Headshots in Spring Valley
@@ -743,10 +743,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in Airmont, NY | Studio 10 Minutes Away
 - Search result description: Headshot photographer for Airmont, NY (10901 and 10952). Business and LinkedIn headshots ten minutes away in Spring Valley, or on-site for offices along Route 59 and Airmont Road. Retouching included.
-- H1: HEADSHOTS IN AIRMONT, NY
+- H1: Headshots in Airmont, NY
 - Text: Airmont is a small village between Monsey and Suffern, and my studio in Spring Valley is about ten minutes up Route 59. Most Airmont clients come in for an individual session; offices along Route 59 and Airmont Road book on-site sessions for their staff.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -755,10 +755,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in Airmont
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -766,12 +766,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -781,48 +781,48 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: FROM AIRMONT TO THE STUDIO
+- H2: From Airmont to the studio
 - Text: Route 59 east about ten minutes, or Route 306 to Route 45. Parking at the building. Sessions Sunday through Thursday, Friday mornings, evenings on request.
-- H2: WHO BOOKS FROM AIRMONT
+- H2: Who books from Airmont
 - Text: Professionals who commute to Bergen County or Manhattan and need a LinkedIn photo without going into the city. Real estate and insurance agents working the Airmont, Tallman and Suffern area. Owners and staff of the businesses along Route 59 near the Ramapo Town Hall. Home-based consultants and therapists who need one good photo for their website.
 - Text: Offices and practices in Airmont with five or more people book an on-site session so the team page matches.
-- H2: WHAT TO EXPECT
+- H2: What to expect
 - Text: Sessions are calm and directed. You do not need experience in front of a camera; I tell you where to look and when the expression is right, and I show you frames as we go. Bring two or three outfits in solid colors.
-- H2: DELIVERY
+- H2: Delivery
 - Text: Proofs online within one or two business days. Pick your favorites in the gallery and retouched files follow within two to three business days, sized for web and print.
-- H2: PRICING IN AIRMONT
+- H2: Pricing in Airmont
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM AIRMONT
+- Link: Book Team & Office
+- H2: Questions from Airmont
 - Term: Which is faster for one person, studio or on-site?
 - Text: The studio. Ten minutes away, everything is set up, and the light is fully controlled. On-site makes sense for three or more people.
 - Term: Can I book an evening?
@@ -831,10 +831,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Yes, with a travel fee quoted in advance. Everything in Rockland County has no travel fee.
 - Term: How many photos do I get?
 - Text: It depends on the package: two, five or ten retouched photos. You see every usable frame in the proof gallery and pick the ones you want retouched.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN AIRMONT
+- Link: Book a session in Airmont
 - Text: Serving Airmont, NY (10901, 10952) and nearby: Suffern, Monsey, Spring Valley, Ramapo, Rockland County.
 - Link: Headshots in Suffern
 - Link: Headshots in Monsey
@@ -847,10 +847,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in Suffern, NY | Medical, Business & Teams
 - Search result description: Headshot photographer for Suffern, NY 10901. On-site headshots for practices near Good Samaritan Hospital, offices on Lafayette Avenue and Route 59, staff at Rockland Community College; studio sessions in Spring Valley.
-- H1: HEADSHOTS IN SUFFERN, NY
+- H1: Headshots in Suffern, NY
 - Text: Suffern sits at the western edge of Rockland, by the New Jersey line. Much of my Suffern work is medical: providers and staff at practices around Good Samaritan Hospital who need matching photos for the practice website and insurance directories. Offices on Lafayette Avenue and Route 59 book team sessions, and individuals drive 15 minutes east to the studio in Spring Valley.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -859,10 +859,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in Suffern
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -870,12 +870,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -885,47 +885,47 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: MEDICAL AND DENTAL PRACTICES
+- H2: Medical and dental practices
 - Text: Practices near Good Samaritan Hospital and along Route 59 book on-site sessions so every provider is photographed in the same light in a white coat, scrubs or business dress. I set up in an exam room or office and each provider takes about ten minutes between patients. Files are delivered in the sizes hospital directories and insurance networks ask for.
-- H2: OFFICES, THE COLLEGE AND DOWNTOWN
+- H2: Offices, the college and downtown
 - Text: Businesses on Lafayette Avenue and in the plazas along Route 59 book staff sessions. Faculty and staff at Rockland Community College on College Road need photos for department pages and conference bios. Commuters from the Suffern train station on the Port Jervis Line need a LinkedIn photo without a trip into Manhattan.
-- H2: INDIVIDUAL SESSIONS IN THE STUDIO
+- H2: Individual sessions in the studio
 - Text: Route 59 east about 15 minutes to Spring Valley. Parking at the building. Sessions Sunday through Thursday, Friday mornings, evenings on request.
-- H2: DELIVERY
+- H2: Delivery
 - Text: Proofs are online within one or two business days. For a practice, one shared gallery goes to the office manager. Retouched files follow within two to three business days.
-- H2: PRICING IN SUFFERN
+- H2: Pricing in Suffern
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM SUFFERN
+- Link: Book Team & Office
+- H2: Questions from Suffern
 - Term: Can you photograph providers between patients?
 - Text: Yes. That is how most practice sessions run: I set up once, and each provider steps in for about ten minutes when they have a gap.
 - Term: White coat or business dress?
@@ -934,10 +934,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Yes, with a small travel fee quoted in advance. Suffern, Hillburn, Montebello and Sloatsburg are in the county and have no fee.
 - Term: How do we get the files to our website vendor?
 - Text: Download them from the gallery, or send me the vendor's email and I share the gallery link with them directly.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN SUFFERN
+- Link: Book a session in Suffern
 - Text: Serving Suffern, NY (10901) and nearby: Airmont, Monsey, Spring Valley, Ramapo, Rockland County.
 - Link: Headshots in Airmont
 - Link: Headshots in Monsey
@@ -950,10 +950,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Headshots in the Town of Ramapo, NY | All Villages
 - Search result description: Headshot photographer based in the Town of Ramapo, NY. Studio in Spring Valley; on-site sessions in Monsey, Airmont, Suffern, Wesley Hills, New Hempstead, Montebello, Pomona, Chestnut Ridge, Kaser, New Square, Hillburn and Sloatsburg.
-- H1: HEADSHOTS IN THE TOWN OF RAMAPO
+- H1: Headshots in the Town of Ramapo
 - Text: My studio is in Spring Valley, inside the Town of Ramapo, so every village and hamlet in the town is a short drive: Monsey, Airmont, Suffern, Wesley Hills, New Hempstead, Montebello, Pomona, Chestnut Ridge, Kaser, New Square, Hillburn, Sloatsburg, Tallman, Viola and Hillcrest. Come to the studio for an individual session, or I come to your office, school or practice.
-- Link: BOOK A SESSION
-- Link: EMAIL HELLO@MEILECHBILLER.COM
+- Link: Book a session
+- Link: Email hello@meilechbiller.com
 - Term: From
 - Text: $295
 - Term: Proofs
@@ -962,10 +962,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: None in Rockland
 - H2: Book in Ramapo
 - Text: I reply within one business day with dates and a price.
-- Field label: NAME
-- Field label: EMAIL
-- Field label: PHONE (OPTIONAL)
-- Field label: WHAT DO YOU NEED?
+- Field label: Name
+- Field label: Email
+- Field label: Phone (optional)
+- Field label: What do you need?
 - Option: Choose one
 - Option: Headshot for myself (business / LinkedIn)
 - Option: Headshots for a team or office
@@ -973,12 +973,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Medical or professional practice
 - Option: Actor headshots
 - Option: Something else
-- Field label: WHERE?
+- Field label: Where?
 - Option: Not sure yet
 - Option: Your studio in Spring Valley
 - Option: At my office or location
 - Option: Either / not sure
-- Field label: YOUR TOWN (OPTIONAL)
+- Field label: Your town (optional)
 - Placeholder: Monsey, Nanuet, New City…
 - Field label: Package (optional)
 - Option: Not sure yet
@@ -988,47 +988,47 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Option: Team & Office
 - Field label: When? (optional)
 - Placeholder: Next two weeks, weekday mornings…
-- Field label: ANYTHING ELSE? (OPTIONAL)
+- Field label: Anything else? (optional)
 - Placeholder: What the photos are for, a deadline, a photo you want to match…
 - Field label: How did you hear about me? (optional)
 - Placeholder: Google, a friend, Instagram…
-- Button: SEND
+- Button: Send
 - Text: No account needed. I reply by email within one business day.
-- H2: ONE STUDIO, EVERY VILLAGE
+- H2: One studio, every village
 - Text: From most of Ramapo the studio is 5 to 15 minutes away. Sessions are 30 to 90 minutes, Sunday through Thursday, Friday mornings, and evenings on request. The studio is closed Friday afternoon and Saturday.
-- H2: ON-SITE ACROSS THE TOWN
+- H2: On-site across the town
 - Text: Offices along Route 59 from Suffern through Airmont, Monsey and Spring Valley. Schools and organizations in Monsey, New Square, Kaser and Wesley Hills that need matching staff photos for a website, directory or journal. Practices and businesses in Pomona and Chestnut Ridge. Town and village staff. Setup takes about 20 minutes and each person 10 to 15 minutes.
-- H2: WHAT IS INCLUDED
+- H2: What is included
 - Text: Every package includes direction during the session, natural retouching, a private online proof gallery where you mark your picks, and full-resolution files sized for web and print. Prices are the same in the studio and on-site anywhere in the town.
-- H2: PRIVACY AND SCHEDULING
+- H2: Privacy and scheduling
 - Text: Sessions are private, one person or one group at a time. Nothing is published without permission. If you have a deadline, such as a dinner journal or a listing going live, tell me when you book and I schedule the delivery around it.
-- H2: PRICING IN RAMAPO
+- H2: Pricing in Ramapo
 - Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
 - Text: Essential
 - Text: $295
 - List item: 30-minute session
 - List item: 1 look, 1 background
 - List item: 2 retouched images
-- Link: BOOK ESSENTIAL
+- Link: Book Essential
 - Text: Professional
 - Text: $495
 - List item: 60-minute session
 - List item: 2 looks, 2 backgrounds
 - List item: 5 retouched images
-- Link: BOOK PROFESSIONAL
+- Link: Book Professional
 - Text: Executive
 - Text: $895
 - List item: 90-minute session
 - List item: Unlimited looks
 - List item: 10 retouched images
-- Link: BOOK EXECUTIVE
+- Link: Book Executive
 - Text: Team & Office
-- Text: $150/ PERSON
+- Text: $150/ person
 - List item: Per person, 5-person minimum
 - List item: On-site at your office
 - List item: 1 retouched image per person
-- Link: BOOK TEAM & OFFICE
-- H2: QUESTIONS FROM RAMAPO
+- Link: Book Team & Office
+- H2: Questions from Ramapo
 - Term: Which villages do you cover without a travel fee?
 - Text: All of them. Every village and hamlet in the Town of Ramapo, and the rest of Rockland County, is included.
 - Term: Can a school get all its staff photographed in one day?
@@ -1037,10 +1037,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Send the form on this page with a few dates. I confirm within one business day, and a payment link holds the date.
 - Term: Do you keep the photos?
 - Text: Retouched files stay in your gallery for at least a year so you can re-download them. I keep the originals archived in case you need another frame retouched later.
-- H2: READY TO BOOK?
+- H2: Ready to book?
 - Text: Send the form above with a few dates that work, or email . I reply within one business day.
 - Link: hello@meilechbiller.com
-- Link: BOOK A SESSION IN RAMAPO
+- Link: Book a session in Ramapo
 - Text: Serving Town of Ramapo, NY (10977, 10952, 10901, 10970, 10982) and nearby: Spring Valley, Monsey, Airmont, Suffern, Rockland County.
 - Link: Headshots in Spring Valley
 - Link: Headshots in Monsey
@@ -1053,37 +1053,37 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Client gallery | Meilech Biller
 - Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
-- H1: OPEN YOUR GALLERY
+- H1: Open your gallery
 - Text: Paste the gallery link from your email, or type the gallery name that appears after /g/.
-- Field label: GALLERY LINK OR NAME
+- Field label: Gallery link or name
 - Placeholder: https://meilechbiller.com/g/jane-doe-proofs
-- Button: CONTINUE
+- Button: Continue
 
 
 ## Studio login  (`/login`)
 
 - Browser tab title: Studio login | Meilech Biller
 - Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
-- Link: MEILECH BILLER
-- H1: STUDIO LOGIN
+- Link: Meilech Biller
+- H1: Studio login
 - Text: For the photographer. Clients open galleries from the link in their email.
-- Field label: EMAIL
-- Field label: PASSWORD
-- Button: SIGN IN
+- Field label: Email
+- Field label: Password
+- Button: Sign in
 
 
 ## Not found (404)  (`/this-page-does-not-exist`)
 
 - Browser tab title: Meilech Biller | Headshot Photographer in Rockland County, NY
 - Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
-- H1: THAT PAGE ISN’T HERE.
+- H1: That page isn’t here.
 - Text: If you followed a gallery link, check the spelling or ask for a new one.
-- Link: BACK TO THE SITE
+- Link: Back to the site
 
 
 ## Contact: after sending the form  (`/contact (success state)`)
 
-- H1: BOOK A SESSION
+- H1: Book a session
 - Text: Fill out the form or email me. I reply within one business day with dates and a price. There is no obligation.
 - Term: Email
 - Link: hello@meilechbiller.com
@@ -1094,7 +1094,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Offices anywhere in Rockland County, no travel fee
 - Term: Hours
 - Text: Sunday to Thursday, plus Friday mornings. Evenings by arrangement.
-- H2: MESSAGE RECEIVED
+- H2: Message received
 - Text: Thanks. Your message is in. I reply within one business day.
 - List item: 1. I email you available dates and confirm the package.
 - List item: 2. You pick a date and pay online to hold it.
