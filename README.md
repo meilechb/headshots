@@ -2,110 +2,109 @@
 
 Portfolio site plus a small studio back office: client proofing galleries with
 access codes and per-photo notes, final delivery with downloads, order tracking,
-and Stripe payments.
+and Stripe payments. Runs entirely on free tiers.
 
 ## Stack
 
-- **Next.js 16** (App Router, TypeScript, Tailwind CSS v4) on **Vercel**
-- **Supabase** — Postgres, Auth (admin login), Storage (portfolio + galleries)
+- **Next.js 16** (App Router, TypeScript, Tailwind CSS v4) hosted on **Vercel**
+- **Neon** — serverless Postgres (free plan, no card)
+- **Vercel Blob** — photo storage: a private store for client galleries, a public store for the portfolio
 - **Stripe Checkout** — hosted payment page + webhook fulfillment
+- Admin login is a single email + password (hashed with scrypt) and a signed session cookie,
+  following the Next.js authentication guide. No third-party auth service.
 
 ## What’s in the box
 
 | Area | Route | Notes |
 | --- | --- | --- |
 | Public site | `/`, `/portfolio`, `/pricing`, `/about`, `/contact` | Portfolio grid with lightbox and category filter, packages from the database, contact form → inquiries |
-| Client gallery | `/g/[slug]` | Access-code gate (30-day signed cookie). Proof galleries: favorites + notes per photo. Final galleries: per-photo and zip-all downloads via short-lived signed URLs |
+| Client gallery | `/g/[slug]` | Access-code gate (30-day signed cookie). Proof galleries: favorites + notes per photo. Final galleries: per-photo and zip-all downloads. Photos stream through `/api/photo/[id]` after an access check |
 | Payments | `/pay/[orderId]` → Stripe → `/pay/success` | Amounts always come from the order row; webhook at `/api/stripe/webhook` marks the order paid (idempotent) |
 | Studio (admin) | `/admin` | Dashboard, inquiries → clients, orders with payment links, galleries (upload, reorder, codes, publish, reply to notes), portfolio manager, packages |
-| Auth | `/login`, `/auth/signout`, `/auth/confirm` | Supabase Auth. The **first user to sign up becomes admin** (trigger in the migration) |
+| Auth | `/login`, `/auth/signout` | Single admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD_HASH` |
 
-Database schema and RLS policies: `supabase/migrations/0001_init.sql`.
-Starter packages: `supabase/seed.sql`.
+Schema: `db/schema.sql`. Starter packages: `db/seed.sql`.
 
-## Local setup
+## Setup (about 20 minutes)
 
 ```bash
 npm install
-cp .env.example .env.local   # fill in the values below
-npm run dev                  # http://localhost:3000
+cp .env.example .env.local
 ```
 
-### 1. Supabase
+### 1. Neon (database)
 
-1. Create a project at <https://supabase.com/dashboard> (region close to you).
-2. **SQL Editor** → paste and run `supabase/migrations/0001_init.sql`, then `supabase/seed.sql`.
-   With the CLI instead: `supabase link --project-ref <ref> && supabase db push`.
-3. **Project Settings → API**: copy the project URL and the **publishable** key into
-   `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and the
-   **secret** key into `SUPABASE_SECRET_KEY` (server only).
-4. **Authentication → Users → Add user**: create your own login with email + password
-   (Auto Confirm on). Because it is the first user, the trigger makes it `admin`.
-   Later sign-ups are plain `client` profiles with no admin access.
-5. Optional: **Authentication → URL Configuration** — set Site URL to
-   `https://meilechbiller.com` and add `https://meilechbiller.com/auth/confirm` to
-   redirect URLs if you use email links.
-
-Storage buckets `portfolio` (public) and `galleries` (private) are created by the
-migration together with their policies.
-
-### 2. Stripe
-
-1. **Developers → API keys**: `STRIPE_SECRET_KEY` (use test keys until launch).
-2. **Developers → Webhooks → Add endpoint**: `https://meilechbiller.com/api/stripe/webhook`
-   with events `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
-   `checkout.session.async_payment_failed`. Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
-3. Local testing:
+1. Create a free account at <https://neon.com> and a project (any region near you).
+2. Click **Connect**, copy the connection string into `DATABASE_URL` in `.env.local`.
+3. Create the tables and starter packages:
    ```bash
-   stripe listen --forward-to localhost:3000/api/stripe/webhook
+   npm run db:seed        # runs db/schema.sql then db/seed.sql
    ```
-   and put the printed `whsec_…` in `.env.local`. Test card `4242 4242 4242 4242`.
+   (Or paste both files into Neon’s **SQL Editor**.)
 
-### 3. Gallery cookie secret
+### 2. Vercel (hosting + photo storage)
+
+1. Import the GitHub repo at <https://vercel.com/new> and deploy once (it works with no env vars; the public pages just show placeholders).
+2. In the project, open **Storage → Create Database → Blob** twice:
+   - name `galleries`, access **Private** → it adds `BLOB_READ_WRITE_TOKEN` to the project
+   - name `portfolio`, access **Public** → in *Advanced Options* set the env var prefix to `PORTFOLIO` so it adds `PORTFOLIO_BLOB_READ_WRITE_TOKEN`
+3. **Settings → Environment Variables**: add `DATABASE_URL`, `NEXT_PUBLIC_SITE_URL`, the admin and session values from step 3, and the Stripe keys from step 4.
+4. **Settings → Domains**: add `meilechbiller.com` and `www.meilechbiller.com` and create the DNS records Vercel shows you.
+5. Redeploy.
+
+To run locally with the same stores: `vercel env pull` writes the tokens into `.env.local`.
+
+### 3. Admin login
 
 ```bash
-openssl rand -base64 32   # → GALLERY_COOKIE_SECRET
+npm run hash-password -- "a long strong password"   # prints ADMIN_PASSWORD_HASH=...
+openssl rand -base64 32                             # SESSION_SECRET
 ```
+Set `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` and `SESSION_SECRET` locally and in Vercel. Sign in at `/login`.
 
-## Deploy to Vercel
+### 4. Stripe
 
-1. Import the GitHub repo in Vercel (framework preset: Next.js, no build changes needed).
-2. Add every variable from `.env.example` under **Settings → Environment Variables**
-   (set `NEXT_PUBLIC_SITE_URL=https://meilechbiller.com`).
-3. **Settings → Domains** → add `meilechbiller.com` and `www.meilechbiller.com`, then
-   create the DNS records Vercel shows you at your registrar. Vercel issues TLS
-   automatically. Docs: <https://vercel.com/docs/domains/working-with-domains/add-a-domain>
-4. Update the Stripe webhook URL and Supabase Site URL to the production domain.
+1. **Developers → API keys**: `STRIPE_SECRET_KEY` (test keys until launch).
+2. **Developers → Webhooks → Add endpoint**: `https://meilechbiller.com/api/stripe/webhook` with events
+   `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`.
+   Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
+3. Local testing: `stripe listen --forward-to localhost:3000/api/stripe/webhook`, test card `4242 4242 4242 4242`.
 
 ## Day-to-day workflow
 
 1. **Inquiry** arrives from the contact form → `/admin/inquiries` → *Make client*.
-2. **Order** → `/admin/orders/new` (client, package, amount, date). Copy the payment
-   link from the order page and email it. Stripe → webhook → order shows **Paid**.
-3. After the shoot: **New gallery** (type *Proofs*) → drag in the first edits → **Publish**
-   → *Email link + code*. The client marks favorites and leaves notes per photo; both
-   appear on the gallery page and the dashboard. Reply inline and mark notes resolved.
+2. **Order** → `/admin/orders/new` (client, package, amount, date). Copy the payment link from the order page and email it. Stripe → webhook → order shows **Paid**.
+3. After the shoot: **New gallery** (type *Proofs*) → drag in the first edits → **Publish** → *Email link + code*. Clients mark favorites and leave notes per photo; you reply inline and resolve them.
 4. Retouch the picks → **New gallery** (type *Final*, downloads on) → upload → publish → send.
 5. Move the order to **Final delivered** / **Completed**.
 
-Portfolio images for the public site are managed at `/admin/portfolio`
-(featured images feed the home page hero and “Recent sessions”).
+Portfolio images for the public site are managed at `/admin/portfolio` (featured images feed the home page hero and “Recent sessions”).
+
+## How photos are stored
+
+- Gallery uploads go from the browser straight to the private Blob store as two files: the original (for downloads) and a 1600px preview (for browsing). Nothing large passes through the server.
+- Gallery photos are served by `/api/photo/[id]`, which checks the gallery cookie (or the admin session) right before streaming the blob, and lets the browser cache with `ETag` revalidation.
+- Portfolio uploads are resized to 2400px and stored in the public store; `next/image` handles thumbnails.
+
+## Free-tier limits to know
+
+- Vercel Hobby: roughly 5 GB of Blob storage and 100 GB/month transfer; Vercel emails you as you approach them and pauses Blob (not the site) if exceeded until the month rolls over.
+- Neon Free: 0.5 GB per project, far more than this app’s metadata needs.
+- Stripe: no monthly fee; per-transaction pricing only.
 
 ## Notes and follow-ups
 
-- No transactional email provider is wired in; sharing uses prefilled `mailto:` links.
-  Adding Resend/Postmark for automatic “your proofs are ready” emails is the natural next step.
-- “Download all” zips files in the browser from signed URLs. If the browser blocks the
-  cross-origin fetch, clients still have per-photo download buttons.
-- Row types in `src/lib/types.ts` are hand-written; once a project is linked you can
-  generate them with `supabase gen types typescript --linked > src/lib/database.types.ts`.
-- Image transforms (thumbnails) are done by `next/image`, so no Supabase Pro plan is required.
+- No transactional email provider is wired in; sharing uses prefilled `mailto:` links. Resend or Postmark would automate “your proofs are ready” emails.
+- Row types in `src/lib/types.ts` are hand-written to match `db/schema.sql`.
 
 ## Scripts
 
 ```bash
-npm run dev     # start locally
-npm run lint    # eslint
-npx tsc --noEmit
-npm run build   # production build (also type-checks)
+npm run dev            # start locally
+npm run lint           # eslint
+npm run typecheck      # tsc --noEmit
+npm run build          # production build
+npm run db:migrate     # apply db/schema.sql to DATABASE_URL
+npm run db:seed        # schema + starter packages
+npm run hash-password -- "password"
 ```

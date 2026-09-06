@@ -43,7 +43,7 @@ export default async function GalleriesPage() {
                   </td>
                   <td className="px-4 py-3">{g.client?.name}</td>
                   <td className="px-4 py-3 capitalize text-muted">{g.kind}</td>
-                  <td className="px-4 py-3 text-muted">{g.photo_count?.[0]?.count ?? 0}</td>
+                  <td className="px-4 py-3 text-muted">{g.photo_count}</td>
                   <td className="px-4 py-3">
                     <span className={`badge ${g.status === "published" ? "border-green-300 text-green-700" : "border-line text-muted"}`}>
                       {g.status}

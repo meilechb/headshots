@@ -1,6 +1,6 @@
 "use server";
 
-import { createAdminClient } from "@/lib/supabase/admin";
+import { db } from "@/lib/db";
 
 export type InquiryState = { ok?: boolean; error?: string };
 
@@ -25,15 +25,9 @@ export async function submitInquiry(
   if (!EMAIL_RE.test(email)) return { error: "Please enter a valid email." };
 
   try {
-    const supabase = createAdminClient();
-    const { error } = await supabase.from("inquiries").insert({
-      name,
-      email,
-      phone: phone || null,
-      package_slug: packageSlug || null,
-      message: message || null,
-    });
-    if (error) throw error;
+    await db()`
+      insert into inquiries (name, email, phone, package_slug, message)
+      values (${name}, ${email}, ${phone || null}, ${packageSlug || null}, ${message || null})`;
   } catch {
     return {
       error:

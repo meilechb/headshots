@@ -1,6 +1,7 @@
 import "server-only";
 
-import { createClient } from "@/lib/supabase/server";
+import { db, one, rows } from "@/lib/db";
+import { photoWebUrl } from "@/lib/data/galleries";
 import type {
   Client,
   Gallery,
@@ -14,114 +15,111 @@ import type {
   PortfolioImage,
 } from "@/lib/types";
 
-/**
- * Admin reads. These use the signed-in admin's own session, so Row Level
- * Security (profiles.role = 'admin') is enforced by Postgres.
- */
+/** Admin reads. Callers are already behind requireAdminPage() in the admin layout. */
 
 export async function getDashboard() {
-  const supabase = await createClient();
-  const [inquiries, pendingOrders, activeGalleries, recentComments, recentOrders] =
-    await Promise.all([
-      supabase.from("inquiries").select("id", { count: "exact", head: true }).eq("status", "new"),
-      supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending_payment"),
-      supabase.from("galleries").select("id", { count: "exact", head: true }).eq("status", "published"),
-      supabase
-        .from("photo_comments")
-        .select("*, photo:photos(filename, gallery:galleries(id, title, slug))")
-        .eq("author_role", "client")
-        .order("created_at", { ascending: false })
-        .limit(8),
-      supabase
-        .from("orders")
-        .select("*, client:clients(name)")
-        .order("created_at", { ascending: false })
-        .limit(6),
-    ]);
+  const [inq, pend, live, comments, orders] = await Promise.all([
+    db()`select count(*)::int as n from inquiries where status = 'new'`,
+    db()`select count(*)::int as n from orders where status = 'pending_payment'`,
+    db()`select count(*)::int as n from galleries where status = 'published'`,
+    db()`
+      select c.*,
+        json_build_object(
+          'filename', p.filename,
+          'gallery', json_build_object('id', g.id, 'title', g.title, 'slug', g.slug)
+        ) as photo
+      from photo_comments c
+      join photos p on p.id = c.photo_id
+      join galleries g on g.id = c.gallery_id
+      where c.author_role = 'client'
+      order by c.created_at desc
+      limit 8`,
+    db()`
+      select o.*, json_build_object('name', cl.name) as client
+      from orders o join clients cl on cl.id = o.client_id
+      order by o.created_at desc
+      limit 6`,
+  ]);
 
   return {
-    newInquiries: inquiries.count ?? 0,
-    pendingOrders: pendingOrders.count ?? 0,
-    activeGalleries: activeGalleries.count ?? 0,
-    recentComments: (recentComments.data ?? []) as unknown as (PhotoComment & {
-      photo: { filename: string; gallery: { id: string; title: string; slug: string } | null } | null;
-    })[],
-    recentOrders: (recentOrders.data ?? []) as unknown as (Order & { client: { name: string } })[],
+    newInquiries: (inq[0]?.n as number) ?? 0,
+    pendingOrders: (pend[0]?.n as number) ?? 0,
+    activeGalleries: (live[0]?.n as number) ?? 0,
+    recentComments: rows<
+      PhotoComment & {
+        photo: { filename: string; gallery: { id: string; title: string; slug: string } } | null;
+      }
+    >(comments),
+    recentOrders: rows<Order & { client: { name: string } }>(orders),
   };
 }
 
 export async function listInquiries(): Promise<Inquiry[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("inquiries")
-    .select("*")
-    .order("created_at", { ascending: false });
-  return (data as Inquiry[] | null) ?? [];
+  return rows<Inquiry>(await db()`select * from inquiries order by created_at desc`);
 }
 
 export async function listClients(): Promise<Client[]> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("clients").select("*").order("name");
-  return (data as Client[] | null) ?? [];
+  return rows<Client>(await db()`select * from clients order by name asc`);
 }
 
 export async function getClient(id: string) {
-  const supabase = await createClient();
-  const [{ data: client }, { data: orders }, { data: galleries }] = await Promise.all([
-    supabase.from("clients").select("*").eq("id", id).maybeSingle(),
-    supabase.from("orders").select("*").eq("client_id", id).order("created_at", { ascending: false }),
-    supabase.from("galleries").select("*").eq("client_id", id).order("created_at", { ascending: false }),
+  const [client, orders, galleries] = await Promise.all([
+    db()`select * from clients where id = ${id} limit 1`,
+    db()`select * from orders where client_id = ${id} order by created_at desc`,
+    db()`select * from galleries where client_id = ${id} order by created_at desc`,
   ]);
-  if (!client) return null;
-  return {
-    client: client as Client,
-    orders: (orders as Order[] | null) ?? [],
-    galleries: (galleries as Gallery[] | null) ?? [],
-  };
+  const c = one<Client>(client);
+  if (!c) return null;
+  return { client: c, orders: rows<Order>(orders), galleries: rows<Gallery>(galleries) };
 }
 
 export type OrderRow = Order & { client: Pick<Client, "id" | "name" | "email"> };
 
 export async function listOrders(status?: OrderStatus): Promise<OrderRow[]> {
-  const supabase = await createClient();
-  let q = supabase
-    .from("orders")
-    .select("*, client:clients(id, name, email)")
-    .order("created_at", { ascending: false });
-  if (status) q = q.eq("status", status);
-  const { data } = await q;
-  return ((data ?? []) as unknown as OrderRow[]);
+  const result = status
+    ? await db()`
+        select o.*, json_build_object('id', c.id, 'name', c.name, 'email', c.email) as client
+        from orders o join clients c on c.id = o.client_id
+        where o.status = ${status}
+        order by o.created_at desc`
+    : await db()`
+        select o.*, json_build_object('id', c.id, 'name', c.name, 'email', c.email) as client
+        from orders o join clients c on c.id = o.client_id
+        order by o.created_at desc`;
+  return rows<OrderRow>(result);
 }
 
 export async function getOrder(id: string) {
-  const supabase = await createClient();
-  const [{ data: order }, { data: galleries }] = await Promise.all([
-    supabase
-      .from("orders")
-      .select("*, client:clients(id, name, email), package:packages(name)")
-      .eq("id", id)
-      .maybeSingle(),
-    supabase.from("galleries").select("*").eq("order_id", id).order("created_at"),
+  const [order, galleries] = await Promise.all([
+    db()`
+      select o.*,
+        json_build_object('id', c.id, 'name', c.name, 'email', c.email) as client,
+        case when p.id is null then null else json_build_object('name', p.name) end as package
+      from orders o
+      join clients c on c.id = o.client_id
+      left join packages p on p.id = o.package_id
+      where o.id = ${id}
+      limit 1`,
+    db()`select * from galleries where order_id = ${id} order by created_at asc`,
   ]);
-  if (!order) return null;
-  return {
-    order: order as unknown as OrderRow & { package: { name: string } | null },
-    galleries: (galleries as Gallery[] | null) ?? [],
-  };
+  const o = one<OrderRow & { package: { name: string } | null }>(order);
+  if (!o) return null;
+  return { order: o, galleries: rows<Gallery>(galleries) };
 }
 
 export type GalleryRow = Gallery & {
   client: Pick<Client, "id" | "name" | "email">;
-  photo_count: { count: number }[];
+  photo_count: number;
 };
 
 export async function listGalleries(): Promise<GalleryRow[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("galleries")
-    .select("*, client:clients(id, name, email), photo_count:photos(count)")
-    .order("created_at", { ascending: false });
-  return ((data ?? []) as unknown as GalleryRow[]);
+  const result = await db()`
+    select g.*,
+      json_build_object('id', c.id, 'name', c.name, 'email', c.email) as client,
+      (select count(*)::int from photos p where p.gallery_id = g.id) as photo_count
+    from galleries g join clients c on c.id = g.client_id
+    order by g.created_at desc`;
+  return rows<GalleryRow>(result);
 }
 
 export type AdminPhoto = Photo & {
@@ -131,51 +129,41 @@ export type AdminPhoto = Photo & {
 };
 
 export async function getGalleryDetail(id: string) {
-  const supabase = await createClient();
-  const [{ data: gallery }, { data: photos }, { data: comments }, { data: selections }] =
-    await Promise.all([
-      supabase
-        .from("galleries")
-        .select("*, client:clients(id, name, email), order:orders(id, order_number, title)")
-        .eq("id", id)
-        .maybeSingle(),
-      supabase
-        .from("photos")
-        .select("*")
-        .eq("gallery_id", id)
-        .order("sort_order")
-        .order("created_at"),
-      supabase.from("photo_comments").select("*").eq("gallery_id", id).order("created_at"),
-      supabase.from("photo_selections").select("*").eq("gallery_id", id),
-    ]);
-  if (!gallery) return null;
+  const [gallery, photos, comments, selections] = await Promise.all([
+    db()`
+      select g.*,
+        json_build_object('id', c.id, 'name', c.name, 'email', c.email) as client,
+        case when o.id is null then null
+             else json_build_object('id', o.id, 'order_number', o.order_number, 'title', o.title) end as "order"
+      from galleries g
+      join clients c on c.id = g.client_id
+      left join orders o on o.id = g.order_id
+      where g.id = ${id}
+      limit 1`,
+    db()`select * from photos where gallery_id = ${id} order by sort_order asc, created_at asc`,
+    db()`select * from photo_comments where gallery_id = ${id} order by created_at asc`,
+    db()`select * from photo_selections where gallery_id = ${id} and selected`,
+  ]);
 
-  const list = (photos as Photo[] | null) ?? [];
-  const urls = new Map<string, string>();
-  if (list.length) {
-    const { data: signed } = await supabase.storage
-      .from("galleries")
-      .createSignedUrls(list.map((p) => p.storage_path), 60 * 60);
-    for (const s of signed ?? []) {
-      if (s.path && s.signedUrl) urls.set(s.path, s.signedUrl);
+  const g = one<
+    Gallery & {
+      client: Pick<Client, "id" | "name" | "email">;
+      order: { id: string; order_number: number; title: string } | null;
     }
-  }
-  const selected = new Set(
-    ((selections as PhotoSelection[] | null) ?? []).filter((s) => s.selected).map((s) => s.photo_id)
-  );
+  >(gallery);
+  if (!g) return null;
+
+  const selected = new Set(rows<PhotoSelection>(selections).map((s) => s.photo_id));
   const byPhoto = new Map<string, PhotoComment[]>();
-  for (const c of (comments as PhotoComment[] | null) ?? []) {
+  for (const c of rows<PhotoComment>(comments)) {
     byPhoto.set(c.photo_id, [...(byPhoto.get(c.photo_id) ?? []), c]);
   }
 
   return {
-    gallery: gallery as unknown as Gallery & {
-      client: Pick<Client, "id" | "name" | "email">;
-      order: { id: string; order_number: number; title: string } | null;
-    },
-    photos: list.map<AdminPhoto>((p) => ({
+    gallery: g,
+    photos: rows<Photo>(photos).map<AdminPhoto>((p) => ({
       ...p,
-      url: urls.get(p.storage_path) ?? "",
+      url: photoWebUrl(p.id),
       selected: selected.has(p.id),
       comments: byPhoto.get(p.id) ?? [],
     })),
@@ -183,20 +171,11 @@ export async function getGalleryDetail(id: string) {
 }
 
 export async function listPackages(): Promise<Package[]> {
-  const supabase = await createClient();
-  const { data } = await supabase.from("packages").select("*").order("sort_order");
-  return (data as Package[] | null) ?? [];
+  return rows<Package>(await db()`select * from packages order by sort_order asc`);
 }
 
-export async function listPortfolioAdmin(): Promise<(PortfolioImage & { url: string })[]> {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("portfolio_images")
-    .select("*")
-    .order("sort_order")
-    .order("created_at", { ascending: false });
-  return ((data as PortfolioImage[] | null) ?? []).map((img) => ({
-    ...img,
-    url: supabase.storage.from("portfolio").getPublicUrl(img.storage_path).data.publicUrl,
-  }));
+export async function listPortfolioAdmin(): Promise<PortfolioImage[]> {
+  return rows<PortfolioImage>(
+    await db()`select * from portfolio_images order by sort_order asc, created_at desc`
+  );
 }

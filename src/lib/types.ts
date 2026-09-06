@@ -1,15 +1,6 @@
-// Hand-written row types mirroring supabase/migrations/0001_init.sql.
-// Regenerate with `supabase gen types typescript` once a project is linked.
+// Row types mirroring db/schema.sql (Neon Postgres).
 
 export type Role = "admin" | "client";
-
-export type Profile = {
-  id: string;
-  email: string | null;
-  full_name: string | null;
-  role: Role;
-  created_at: string;
-};
 
 export type Client = {
   id: string;
@@ -112,7 +103,8 @@ export type Gallery = {
 export type Photo = {
   id: string;
   gallery_id: string;
-  storage_path: string;
+  original_url: string;
+  preview_url: string;
   filename: string;
   width: number | null;
   height: number | null;
@@ -141,7 +133,7 @@ export type PhotoSelection = {
 
 export type PortfolioImage = {
   id: string;
-  storage_path: string;
+  url: string;
   alt: string;
   category: string;
   width: number | null;

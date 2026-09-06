@@ -6,13 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:migrate": "node scripts/db-migrate.mjs",
+    "db:seed": "node scripts/db-migrate.mjs --seed",
+    "hash-password": "node scripts/hash-password.mjs",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@stripe/stripe-js": "^9.15.0",
-    "@supabase/ssr": "^0.12.6",
-    "@supabase/supabase-js": "^2.115.0",
+    "@vercel/blob": "^2.8.0",
     "fflate": "^0.8.3",
+    "jose": "^6.2.12",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",

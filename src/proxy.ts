@@ -1,20 +1,40 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/proxy";
+import { NextResponse, type NextRequest } from "next/server";
+import { jwtVerify } from "jose";
 
+const SESSION_COOKIE = "mb_session";
+
+/**
+ * Optimistic auth check for the admin area (Next.js authentication guide).
+ * It only reads the signed session cookie; every page and server action
+ * re-verifies through lib/auth.ts.
+ */
 export async function proxy(request: NextRequest) {
-  // update user's auth session
-  return await updateSession(request);
+  const { pathname } = request.nextUrl;
+  if (!pathname.startsWith("/admin")) return NextResponse.next();
+
+  const token = request.cookies.get(SESSION_COOKIE)?.value;
+  const secret = process.env.SESSION_SECRET;
+  let ok = false;
+  if (token && secret) {
+    try {
+      const { payload } = await jwtVerify(token, new TextEncoder().encode(secret), {
+        algorithms: ["HS256"],
+      });
+      ok = payload.role === "admin";
+    } catch {
+      ok = false;
+    }
+  }
+
+  if (!ok) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("next", pathname);
+    return NextResponse.redirect(url);
+  }
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - api/stripe (webhook; Stripe has no session and needs the raw body)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|api/stripe|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
-  ],
+  matcher: ["/admin/:path*"],
 };

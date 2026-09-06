@@ -35,11 +35,11 @@ export function verifyAccessCode(code: string, stored: string | null) {
 }
 
 function secret() {
-  const s = process.env.GALLERY_COOKIE_SECRET;
+  const s = process.env.GALLERY_COOKIE_SECRET ?? process.env.SESSION_SECRET;
   if (!s || s.length < 16) {
-    throw new Error("GALLERY_COOKIE_SECRET must be set (16+ characters).");
+    throw new Error("SESSION_SECRET must be set (32+ characters).");
   }
-  return s;
+  return `gallery:${s}`;
 }
 
 function cookieName(galleryId: string) {

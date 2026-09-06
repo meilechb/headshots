@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
 import { markOrderPaid } from "@/lib/data/orders";
+import { db } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 /**
  * Stripe webhook. Register https://<domain>/api/stripe/webhook in the Stripe
@@ -34,15 +34,17 @@ export async function POST(request: Request) {
 
   // Stripe may deliver the same event more than once; the primary key on
   // stripe_events.id makes processing idempotent.
-  const supabase = createAdminClient();
-  const { error: insertError } = await supabase
-    .from("stripe_events")
-    .insert({ id: event.id, type: event.type });
-  if (insertError) {
-    if (insertError.code === "23505") {
-      return Response.json({ received: true, duplicate: true });
-    }
+  let inserted: Record<string, unknown>[];
+  try {
+    inserted = await db()`
+      insert into stripe_events (id, type) values (${event.id}, ${event.type})
+      on conflict (id) do nothing
+      returning id`;
+  } catch {
     return new Response("Could not record event", { status: 500 });
+  }
+  if (inserted.length === 0) {
+    return Response.json({ received: true, duplicate: true });
   }
 
   switch (event.type) {

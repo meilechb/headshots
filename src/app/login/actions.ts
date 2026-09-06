@@ -1,9 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { supabaseConfigured } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { authConfigured, verifyAdminCredentials } from "@/lib/auth";
+import { createSession } from "@/lib/session";
 
 export type LoginState = { error?: string };
 
@@ -18,20 +17,16 @@ export async function login(
   if (!email || !password) {
     return { error: "Enter your email and password." };
   }
-  if (!supabaseConfigured()) {
+  if (!authConfigured()) {
     return {
       error:
-        "Supabase is not configured on this deployment yet. Add the NEXT_PUBLIC_SUPABASE_* environment variables.",
+        "Admin login is not configured on this deployment. Set ADMIN_EMAIL, ADMIN_PASSWORD_HASH and SESSION_SECRET.",
     };
   }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-  if (error) {
+  if (!verifyAdminCredentials(email, password)) {
     return { error: "Incorrect email or password." };
   }
 
-  revalidatePath("/", "layout");
+  await createSession(email.trim().toLowerCase());
   redirect(next.startsWith("/") ? next : "/admin");
 }

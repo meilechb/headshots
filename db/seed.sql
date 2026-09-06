@@ -1,5 +1,5 @@
 -- Starter packages. Edit prices/copy in /admin/packages after deploy.
-insert into public.packages (slug, name, description, price_cents, includes, turnaround, is_featured, sort_order)
+insert into packages (slug, name, description, price_cents, includes, turnaround, is_featured, sort_order)
 values
   (
     'essential',

@@ -1,39 +1,28 @@
 import "server-only";
 
 import { cache } from "react";
-import { createClient } from "@/lib/supabase/server";
+import { db, dbConfigured, rows } from "@/lib/db";
 import type { Package, PortfolioImage } from "@/lib/types";
 
-export type PublicPortfolioImage = PortfolioImage & { url: string };
-
-function configured() {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
-  );
-}
-
-/** Published portfolio images with public URLs. Empty when Supabase is not configured yet. */
+/** Published portfolio images. Empty until the database is connected. */
 export const getPortfolio = cache(
-  async (category?: string): Promise<PublicPortfolioImage[]> => {
-    if (!configured()) return [];
-    const supabase = await createClient();
-    let query = supabase
-      .from("portfolio_images")
-      .select("*")
-      .eq("is_published", true)
-      .order("sort_order", { ascending: true })
-      .order("created_at", { ascending: false });
-    if (category) query = query.eq("category", category);
-
-    const { data, error } = await query;
-    if (error || !data) return [];
-
-    return (data as PortfolioImage[]).map((img) => ({
-      ...img,
-      url: supabase.storage.from("portfolio").getPublicUrl(img.storage_path)
-        .data.publicUrl,
-    }));
+  async (category?: string): Promise<PortfolioImage[]> => {
+    if (!dbConfigured()) return [];
+    try {
+      const result = category
+        ? await db()`
+            select * from portfolio_images
+            where is_published and category = ${category}
+            order by sort_order asc, created_at desc`
+        : await db()`
+            select * from portfolio_images
+            where is_published
+            order by sort_order asc, created_at desc`;
+      return rows<PortfolioImage>(result);
+    } catch (error) {
+      console.error("getPortfolio failed", error);
+      return [];
+    }
   }
 );
 
@@ -44,12 +33,13 @@ export const getFeaturedPortfolio = cache(async (limit = 6) => {
 });
 
 export const getActivePackages = cache(async (): Promise<Package[]> => {
-  if (!configured()) return [];
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from("packages")
-    .select("*")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true });
-  return (data as Package[] | null) ?? [];
+  if (!dbConfigured()) return [];
+  try {
+    const result = await db()`
+      select * from packages where is_active order by sort_order asc`;
+    return rows<Package>(result);
+  } catch (error) {
+    console.error("getActivePackages failed", error);
+    return [];
+  }
 });

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { db, one, rows } from "@/lib/db";
 import type {
   Client,
   Gallery,
@@ -11,23 +11,19 @@ import type {
 } from "@/lib/types";
 
 /**
- * Client-facing gallery reads. These use the secret key because clients have
- * no Supabase account; callers MUST first verify access with
- * hasGalleryAccess() from lib/gallery-access.ts.
+ * Client-facing gallery reads. Callers MUST first verify access with
+ * hasGalleryAccess() from lib/gallery-access.ts before rendering photos.
  */
-
-export const SIGNED_URL_TTL = 60 * 60; // 1 hour
 
 export const getGalleryBySlug = cache(
   async (slug: string): Promise<(Gallery & { client: Client }) | null> => {
-    const supabase = createAdminClient();
-    const { data } = await supabase
-      .from("galleries")
-      .select("*, client:clients(*)")
-      .eq("slug", slug)
-      .maybeSingle();
-    if (!data) return null;
-    return data as unknown as Gallery & { client: Client };
+    const result = await db()`
+      select g.*, row_to_json(c) as client
+      from galleries g
+      join clients c on c.id = g.client_id
+      where g.slug = ${slug}
+      limit 1`;
+    return one<Gallery & { client: Client }>(result);
   }
 );
 
@@ -38,74 +34,54 @@ export type GalleryPhoto = Photo & {
   selected: boolean;
 };
 
-export async function getGalleryPhotos(
-  gallery: Gallery
-): Promise<GalleryPhoto[]> {
-  const supabase = createAdminClient();
-
-  const [{ data: photos }, { data: comments }, { data: selections }] =
-    await Promise.all([
-      supabase
-        .from("photos")
-        .select("*")
-        .eq("gallery_id", gallery.id)
-        .order("sort_order", { ascending: true })
-        .order("created_at", { ascending: true }),
-      supabase
-        .from("photo_comments")
-        .select("*")
-        .eq("gallery_id", gallery.id)
-        .order("created_at", { ascending: true }),
-      supabase
-        .from("photo_selections")
-        .select("*")
-        .eq("gallery_id", gallery.id),
-    ]);
-
-  const list = (photos as Photo[] | null) ?? [];
-  if (list.length === 0) return [];
-
-  const paths = list.map((p) => p.storage_path);
-  const [viewRes, downloadRes] = await Promise.all([
-    supabase.storage.from("galleries").createSignedUrls(paths, SIGNED_URL_TTL),
-    gallery.allow_downloads
-      ? supabase.storage
-          .from("galleries")
-          .createSignedUrls(paths, SIGNED_URL_TTL, { download: true })
-      : Promise.resolve({ data: null }),
-  ]);
-
-  const viewByPath = new Map(
-    (viewRes.data ?? []).map((r) => [r.path, r.signedUrl] as const)
-  );
-  const dlByPath = new Map(
-    (downloadRes.data ?? []).map((r) => [r.path, r.signedUrl] as const)
-  );
-  const commentsByPhoto = new Map<string, PhotoComment[]>();
-  for (const c of (comments as PhotoComment[] | null) ?? []) {
-    const arr = commentsByPhoto.get(c.photo_id) ?? [];
-    arr.push(c);
-    commentsByPhoto.set(c.photo_id, arr);
-  }
-  const selectedSet = new Set(
-    ((selections as PhotoSelection[] | null) ?? [])
-      .filter((s) => s.selected)
-      .map((s) => s.photo_id)
-  );
-
-  return list
-    .map((p) => ({
-      ...p,
-      url: viewByPath.get(p.storage_path) ?? "",
-      downloadUrl: gallery.allow_downloads
-        ? (dlByPath.get(p.storage_path) ?? null)
-        : null,
-      comments: commentsByPhoto.get(p.id) ?? [],
-      selected: selectedSet.has(p.id),
-    }))
-    .filter((p) => p.url);
+export function photoWebUrl(id: string) {
+  return `/api/photo/${id}?v=web`;
+}
+export function photoDownloadUrl(id: string) {
+  return `/api/photo/${id}?v=full&download=1`;
 }
 
-export function isGalleryExpired(gallery: Gallery) {
+export async function getGalleryPhotos(gallery: Gallery): Promise<GalleryPhoto[]> {
+  const [photos, comments, selections] = await Promise.all([
+    db()`select * from photos where gallery_id = ${gallery.id} order by sort_order asc, created_at asc`,
+    db()`select * from photo_comments where gallery_id = ${gallery.id} order by created_at asc`,
+    db()`select * from photo_selections where gallery_id = ${gallery.id} and selected`,
+  ]);
+
+  const commentsByPhoto = new Map<string, PhotoComment[]>();
+  for (const c of rows<PhotoComment>(comments)) {
+    commentsByPhoto.set(c.photo_id, [...(commentsByPhoto.get(c.photo_id) ?? []), c]);
+  }
+  const selected = new Set(rows<PhotoSelection>(selections).map((s) => s.photo_id));
+
+  return rows<Photo>(photos).map((p) => ({
+    ...p,
+    url: photoWebUrl(p.id),
+    downloadUrl: gallery.allow_downloads ? photoDownloadUrl(p.id) : null,
+    comments: commentsByPhoto.get(p.id) ?? [],
+    selected: selected.has(p.id),
+  }));
+}
+
+export type DeliverablePhoto = Photo & {
+  gallery: Pick<Gallery, "id" | "status" | "allow_downloads" | "expires_at">;
+};
+
+/** Used by /api/photo/[id] to decide whether a request may see a file. */
+export async function getPhotoForDelivery(id: string): Promise<DeliverablePhoto | null> {
+  const result = await db()`
+    select p.*,
+      json_build_object(
+        'id', g.id, 'status', g.status,
+        'allow_downloads', g.allow_downloads, 'expires_at', g.expires_at
+      ) as gallery
+    from photos p
+    join galleries g on g.id = p.gallery_id
+    where p.id = ${id}
+    limit 1`;
+  return one<DeliverablePhoto>(result);
+}
+
+export function isGalleryExpired(gallery: Pick<Gallery, "expires_at">) {
   return Boolean(gallery.expires_at && new Date(gallery.expires_at) < new Date());
 }

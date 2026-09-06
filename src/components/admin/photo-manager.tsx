@@ -39,6 +39,7 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                     src={p.url}
                     alt={p.filename}
                     fill
+                    unoptimized
                     sizes={expanded ? "320px" : "(max-width: 640px) 50vw, 25vw"}
                     className="object-cover"
                   />

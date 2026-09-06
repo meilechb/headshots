@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { db, one } from "@/lib/db";
 import {
   grantGalleryAccess,
   hasGalleryAccess,
@@ -8,7 +9,6 @@ import {
   verifyAccessCode,
 } from "@/lib/gallery-access";
 import { getGalleryBySlug, isGalleryExpired } from "@/lib/data/galleries";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 export type UnlockState = { error?: string };
 
@@ -50,6 +50,12 @@ async function authorize(slug: string) {
   return gallery;
 }
 
+async function photoInGallery(photoId: string, galleryId: string) {
+  return one<{ id: string }>(
+    await db()`select id from photos where id = ${photoId} and gallery_id = ${galleryId} limit 1`
+  );
+}
+
 export async function addClientComment(
   slug: string,
   photoId: string,
@@ -59,25 +65,15 @@ export async function addClientComment(
   if (!text) return { error: "Write a note first." };
 
   const gallery = await authorize(slug);
-  const supabase = createAdminClient();
+  if (!(await photoInGallery(photoId, gallery.id))) return { error: "Photo not found." };
 
-  // Photo must belong to this gallery (prevents cross-gallery writes).
-  const { data: photo } = await supabase
-    .from("photos")
-    .select("id")
-    .eq("id", photoId)
-    .eq("gallery_id", gallery.id)
-    .maybeSingle();
-  if (!photo) return { error: "Photo not found." };
-
-  const { error } = await supabase.from("photo_comments").insert({
-    photo_id: photoId,
-    gallery_id: gallery.id,
-    author_name: gallery.client.name,
-    author_role: "client",
-    body: text,
-  });
-  if (error) return { error: "Could not save your note. Try again." };
+  try {
+    await db()`
+      insert into photo_comments (photo_id, gallery_id, author_name, author_role, body)
+      values (${photoId}, ${gallery.id}, ${gallery.client.name}, 'client', ${text})`;
+  } catch {
+    return { error: "Could not save your note. Try again." };
+  }
 
   revalidatePath(`/g/${slug}`);
   return {};
@@ -89,26 +85,16 @@ export async function toggleSelection(
   selected: boolean
 ): Promise<{ error?: string }> {
   const gallery = await authorize(slug);
-  const supabase = createAdminClient();
+  if (!(await photoInGallery(photoId, gallery.id))) return { error: "Photo not found." };
 
-  const { data: photo } = await supabase
-    .from("photos")
-    .select("id")
-    .eq("id", photoId)
-    .eq("gallery_id", gallery.id)
-    .maybeSingle();
-  if (!photo) return { error: "Photo not found." };
-
-  const { error } = await supabase.from("photo_selections").upsert(
-    {
-      photo_id: photoId,
-      gallery_id: gallery.id,
-      selected,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "photo_id" }
-  );
-  if (error) return { error: "Could not save your pick. Try again." };
+  try {
+    await db()`
+      insert into photo_selections (photo_id, gallery_id, selected, updated_at)
+      values (${photoId}, ${gallery.id}, ${selected}, now())
+      on conflict (photo_id) do update set selected = excluded.selected, updated_at = now()`;
+  } catch {
+    return { error: "Could not save your pick. Try again." };
+  }
 
   revalidatePath(`/g/${slug}`);
   return {};
