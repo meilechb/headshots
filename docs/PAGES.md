@@ -27,17 +27,16 @@ Content:
 - Buttons: “Book a session” (→ Contact), “View portfolio” (→ Portfolio).
 - Three facts: Turnaround (2–3 days), Sessions (Studio or on-site), Delivery (Private gallery).
 - One main photo (the first photo marked “featured” in the portfolio; blank placeholder until photos exist).
-- “Recent sessions”: up to 6 featured portfolio photos. Clicking one opens the photo viewer (see Portfolio). Link “Full portfolio”.
+- “Recent sessions”: up to 6 featured portfolio photos, no filters. Clicking one opens the photo viewer (see Portfolio). Link “Full portfolio”.
 - “How it works”: three steps, each with a title and one sentence (Book / Shoot / Choose & receive).
 - Packages: the first three active packages, each with name, description, price, first four inclusions, button “Book {name}” (→ Contact with that package preselected). The package marked featured also shows the label “Most popular”.
 - Closing call to action: headline, button “Get in touch” (→ Contact), the studio email address.
 
 ### Portfolio — `/portfolio`
 Content:
-- Label, headline, one paragraph.
-- Category filter with options: All, Corporate, Personal Brand, Actors, Teams, Creative. One category active at a time.
-- All published portfolio photos. Each photo has alt text and a category.
-- Photo viewer: opens when a photo is clicked. Shows one photo at a time. Controls: previous, next, close. Keyboard: left/right arrows move, Escape closes.
+- Heading “Portfolio”.
+- All published portfolio photos in one gallery.
+- Photo viewer: opens when a photo is clicked. Shows one photo at a time with a position counter (“3 / 24”). Controls: previous, next, close. Keyboard: left/right arrows move, Escape closes. Swiping works on touch screens.
 - When no photos have been uploaded yet: sample placeholders and a one-sentence note.
 
 ### Pricing — `/pricing`
@@ -58,7 +57,7 @@ Content:
 - Contact facts: Email, Studio location, On-location note.
 - Inquiry form fields: Name (required), Email (required), Phone (optional), “Interested in” dropdown (Not sure yet, plus every active package; preselected when the URL names a package), “What are the photos for?” (long text). Button “Send inquiry”.
 - Behavior: while sending, the button is disabled. If something is wrong, an error message appears and the typed values stay in the fields. On success the form is replaced by a confirmation: “Thanks — I’ll be in touch.” plus one sentence about response time.
-- Submitting creates an inquiry in the studio’s Inquiries list.
+- Submitting files the message under a client in the studio’s Clients list. A new sender becomes a new client; a known email address is matched to the existing client.
 
 ### Pay — `/pay/[orderId]`
 Reached only through a link the studio sends. Content:
@@ -115,79 +114,65 @@ Photo viewer (opens when a photo is clicked):
 
 ## 3. Studio pages (Meilech, login required) — `/admin/...`
 
+The studio is organised around **clients**. Everything about one person (their messages, their session and payment, their galleries) is on that person’s page. There are no separate inquiry or order screens.
+
 ### Appears on every studio page
 - Site name, the word “Studio”, link “View site”.
-- Navigation: Dashboard, Inquiries, Clients, Orders, Galleries, Portfolio, Packages, Lightroom.
+- Navigation: Clients, Galleries, Portfolio, Packages, Lightroom.
 - Signed-in email address, “Sign out”.
+- Every form shows “Saving…” while it works, “Saved” when it succeeds, and the reason in place when it fails.
 
 ### Login — `/login`
 - Site name, “Studio login”, one sentence.
 - Fields: Email, Password. Button “Sign in”.
 - Error message on a wrong password (email stays filled in). After signing in, opens the page that was requested.
 
-### Dashboard — `/admin`
-- Buttons: “New order”, “New gallery”.
-- Three counts, each a link: New inquiries, Awaiting payment, Live galleries.
-- “Recent client notes”: the last 8 notes left by clients. Each shows who wrote it, which gallery and photo (link to the gallery), the text, and a “Resolve” / “Reopen” button.
-- “Recent orders”: the last 6 orders, each with number, client, title, status, amount; each links to the order.
-
-### Inquiries — `/admin/inquiries`
-- One entry per inquiry from the contact form: name, status (new / contacted / booked / closed), email (opens mail), phone, the package they chose, date received, their message.
-- Per inquiry: status dropdown + “Save”; “Make client” (creates a client from the inquiry, or links to the existing client with that email, marks the inquiry contacted, and opens the client); “Delete” (asks for confirmation).
-- Empty state text when there are none.
-
-### Clients — `/admin/clients`
-- List of all clients: Name (link to the client), Email, Company, date added.
-- “Add a client” form: Name (required), Email (required), Phone, Company, Notes. Button “Add client” (opens the new client).
+### Clients — `/admin/clients` (also where `/admin` opens)
+- Heading, one sentence, count of new messages.
+- Button “Add client” reveals a form: Name (required), Email (required), Phone, Company. Button “Add client” (opens the new client).
+- Stage tabs with counts: All, New lead, Awaiting payment, Booked, Proofs out, Delivered, Archived (Archived only appears when there is one). The stage is worked out automatically:
+  - **New lead**: wrote in or was added, no session yet.
+  - **Awaiting payment**: has a session that is not paid.
+  - **Booked**: session paid.
+  - **Proofs out**: a proofs gallery is live.
+  - **Delivered**: a final gallery is live.
+  - **Archived**: set by hand with the Archive button; hidden from the other tabs.
+- Search box: filters by name, email or company.
+- One row per client: name (a dot marks an unread message), company and email, stage, next step (for example “Reply and set up a session”, “Waiting for payment”, “Shoot Oct 3”, “2 notes to answer”), last activity date. Clicking the name opens the client.
 
 ### Client — `/admin/clients/[id]`
-- Back link to Clients. Client name, email, phone, company.
-- Buttons: “New order”, “New gallery” (both pre-select this client).
-- Orders belonging to this client: number, title, status, amount (links).
-- Galleries belonging to this client: title, type, status (links).
-- Edit form: Name, Email, Phone, Company, Notes; “Save”; “Delete” (confirmation; only works when the client has no orders or galleries).
-
-### Orders — `/admin/orders`
-- Button “New order”.
-- Filter by status: All, Draft, Awaiting payment, Paid, Session scheduled, Editing, Proofs sent, Final delivered, Completed, Cancelled.
-- List: order number, client, title (link), session date, status, amount.
-
-### New order — `/admin/orders/new`
-- Fields: Client (required, dropdown of all clients), Package (optional, shows price), Title (required), Amount in USD (required), Session date, Status (Draft / Awaiting payment / Paid / Session scheduled), Description (the client sees this on the pay page), Internal notes. Button “Create order” (opens the order).
-
-### Order — `/admin/orders/[id]`
-- Back link. “#{number} · {title}”, client name (link), client email, package name.
-- Current status, and one button that moves it to the next status (Draft → Awaiting payment → Paid → Session scheduled → Editing → Proofs sent → Final delivered → Completed).
-- Payment section: the amount. If unpaid: the payment link, “Copy” button, “Email payment link” (opens a pre-written email), and a note if the order is not currently awaiting payment. If paid: paid date/time and the Stripe payment id.
-- Galleries linked to this order (links) and button “New gallery” (pre-selects this client and order).
-- Edit form: Title, Amount, Session date, Status (all statuses), Description, Internal notes; “Save”; “Delete” (confirmation; linked galleries are kept).
+- Back link. Name, stage, email (opens mail), phone (opens dialer), company.
+- Buttons: “Archive” / “Unarchive”; “Delete” (only shown when the client has no sessions or galleries; asks for confirmation).
+- Opening the page marks the client’s messages as read.
+- **Messages**: every contact-form message from this person, newest first, with date, the package they were interested in and a “New” marker. “Reply by email” opens a pre-written email. Each message can be deleted.
+- **Sessions & payment**: one session is one shoot with one price. Each session shows title, package, shoot date, order number, price, and “Paid {date}” or “Awaiting payment”. While unpaid: the payment link with “Copy link”, “Email payment link” (opens a pre-written email), and “Mark paid (cash / Zelle)”. A manual payment can be undone with “Undo mark paid”; Stripe payments cannot. “Edit session” expands a form: Title, Price, Shoot date, Note to client (shown on the pay page), Private notes; “Save”; “Delete session” (confirmation; galleries stay).
+  - “Set up a session” / “Add another session”: Package (choosing one fills in the title, price and note), Title, Price, Shoot date, Note to client. Button “Add session”. New sessions start as “Awaiting payment”.
+- **Galleries**: list of this client’s galleries with type, photo count, favorites, open notes and status (link to the gallery). Buttons “New proofs gallery” and “New final gallery” create the gallery immediately (titled “{Name} — Proofs” or “{Name} — Final photos”, linked to the latest session) and open it.
+- **Details** form: Name, Email, Phone, Company, Private notes; “Save”.
 
 ### Galleries — `/admin/galleries`
-- Button “New gallery”.
-- List: title (link) with the gallery’s web address, client, type (proof / final), number of photos, status (draft / published / archived), date created.
-
-### New gallery — `/admin/galleries/new`
-- Fields: Client (required), Order (optional), Title (required), Type (Proofs: clients mark favorites and leave notes / Final: downloads enabled). Button “Create gallery”.
-- Creating a gallery generates its web address and a 6-character access code automatically.
+- Heading, one sentence.
+- Button “New gallery” reveals a form: Client (dropdown), Type (Proofs / Final photos), Title (optional). Button “Create gallery” (opens the gallery).
+- List: title (link) with the gallery’s web address, client (link), type, number of photos, what came back from the client (favorites, open notes), status (Draft / Live / Closed), date created.
 
 ### Gallery — `/admin/galleries/[id]`
-- Back link. Title, client (link), type, linked order (link), number of photos, number of favorites, number of unresolved client notes.
-- Status. Button “Publish” (disabled until at least one photo exists) or “Archive”. Link “Preview” (opens the client view).
-- Share section: the gallery link with “Copy”; the access code with “Copy”; “Email link + code” (opens a pre-written email to the client); “New code” (generates a new random code); a field to type a custom code with “Set”. A note when the gallery is still a draft.
-- Settings form: Title, Type, Status (Draft / Published / Archived), Welcome message, “Allow downloads” checkbox, Expiry date; “Save settings”; “Delete gallery” (confirmation; deletes the photo files too).
-- Upload area: drop or choose several image files at once. Each file shows its progress (queued / uploading / done / error).
+- Back link. Title, status, client (link), type, number of photos, favorites, open notes.
+- Button “Make live” (disabled until at least one photo exists; “Reopen” on a closed gallery) or “Close gallery”. Link “Preview” (opens the client view).
+- **Send to client**: the gallery link with “Copy”; the access code with “Copy”; “Email link + code” (opens a pre-written email); “New code” (generates a new random code). A note explains what the client sees while the gallery is a draft or closed.
+- **Settings** form: Title, Type, Welcome message, “Client can download the files” checkbox, “Closes automatically on” date; “Save settings”; “Delete gallery” (confirmation; deletes the photo files too).
+- Upload area: drop or choose several image files at once. Each file shows its progress (queued / uploading / processing / done / error).
 - “Client favorites (N)”: expandable list of the filenames the client favorited.
 - Photos, in delivery order. Each shows: position number, filename, whether it is a favorite, how many unresolved notes it has, buttons to move it up or down, “Notes”. “Notes” expands the photo to show every note (author, date, text), a “Resolve” / “Reopen” button per client note, a reply field with “Send”, and “Delete photo” (confirmation).
 
 ### Portfolio — `/admin/portfolio`
-- “Upload into {category}” dropdown (Corporate, Personal Brand, Actors, Teams, Creative) and an upload area for several files at once.
-- Every uploaded portfolio photo with: the image, labels “Hidden” (not published) and “Featured” when applicable, and a form: Alt text, Category, Sort order, Featured checkbox, Published checkbox, “Save”, “Delete” (confirmation).
+- Upload area for several files at once (no categories).
+- Every uploaded portfolio photo with: the image, labels “Hidden” (not published) and “Featured” when applicable, and a form: Description (alt text), Order, Featured checkbox, Published checkbox, “Save”, “Delete” (confirmation).
 - Featured photos are the ones used on the home page and About page.
 
 ### Packages — `/admin/packages`
-- One form per existing package: Name, Slug (web name), Price in USD, Description, Includes (one line per item), Turnaround, Order (sort position), Featured checkbox, “Shown on site” checkbox, “Save”, “Delete” (confirmation).
+- One form per existing package: Name, Web name, Price, Description, Includes (one line per item), Turnaround, Order, “Most popular” checkbox, “Shown on site” checkbox, “Save”, “Delete” (confirmation).
 - One empty “New package” form with the same fields and button “Add package”.
-- Packages appear on the Home and Pricing pages.
+- Packages appear on the Home and Pricing pages and in the “Set up a session” form.
 
 ### Lightroom — `/admin/integrations`
 - Explanation of the Lightroom connection.
@@ -208,7 +193,7 @@ Photo viewer (opens when a photo is clicked):
 ## 5. Emails the site prepares
 
 Each opens pre-written in the studio’s own email app (nothing is sent automatically yet):
-- Payment link email: subject “Payment for your headshot session — Order #{number}”; body with amount and link.
+- Payment link email: subject “Payment for your headshot session — Meilech Biller”; body with amount and link.
 - Proofs ready email: link, access code, what to do (mark favorites, leave notes).
 - Finals ready email: link, access code.
 - Stripe sends its own payment receipt.

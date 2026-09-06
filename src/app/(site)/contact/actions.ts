@@ -1,12 +1,17 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+import { db, one } from "@/lib/db";
 
 export type InquiryValues = { name: string; email: string; phone: string; package: string; message: string };
 export type InquiryState = { ok?: boolean; error?: string; values?: InquiryValues };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * Contact form → CRM. The sender becomes a client (or is matched to an
+ * existing one by email) and the message is stored on that client.
+ */
 export async function submitInquiry(
   _prev: InquiryState,
   formData: FormData
@@ -27,9 +32,28 @@ export async function submitInquiry(
   if (!EMAIL_RE.test(email)) return { error: "Please enter a valid email.", values };
 
   try {
+    const existing = one<{ id: string }>(
+      await db()`select id from clients where lower(email) = lower(${email}) limit 1`
+    );
+    let clientId = existing?.id;
+    if (clientId) {
+      // A returning client: keep a phone number we didn't have and bring them back from the archive.
+      await db()`
+        update clients
+        set phone = coalesce(phone, ${phone || null}), archived = false
+        where id = ${clientId}`;
+    } else {
+      const created = one<{ id: string }>(
+        await db()`
+          insert into clients (name, email, phone)
+          values (${name}, ${email}, ${phone || null})
+          returning id`
+      );
+      clientId = created!.id;
+    }
     await db()`
-      insert into inquiries (name, email, phone, package_slug, message)
-      values (${name}, ${email}, ${phone || null}, ${packageSlug || null}, ${message || null})`;
+      insert into inquiries (client_id, name, email, phone, package_slug, message)
+      values (${clientId}, ${name}, ${email}, ${phone || null}, ${packageSlug || null}, ${message || null})`;
   } catch {
     return {
       error:
@@ -38,5 +62,6 @@ export async function submitInquiry(
     };
   }
 
+  revalidatePath("/admin/clients");
   return { ok: true };
 }

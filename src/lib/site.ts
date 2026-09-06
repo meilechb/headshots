@@ -24,13 +24,3 @@ export const site = {
   instagram: "https://instagram.com/",
   linkedin: "https://linkedin.com/",
 } as const;
-
-export const portfolioCategories = [
-  { slug: "corporate", label: "Corporate" },
-  { slug: "personal-brand", label: "Personal Brand" },
-  { slug: "actors", label: "Actors" },
-  { slug: "teams", label: "Teams" },
-  { slug: "creative", label: "Creative" },
-] as const;
-
-export type PortfolioCategory = (typeof portfolioCategories)[number]["slug"];
