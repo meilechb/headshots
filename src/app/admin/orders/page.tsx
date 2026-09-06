@@ -24,7 +24,7 @@ export default async function OrdersPage({
       <div className="mt-6 flex flex-wrap gap-2">
         <Link
           href="/admin/orders"
-          className={`rounded-full border px-3 py-1 text-xs ${!filter ? "border-ink bg-ink text-paper" : "border-line text-ink-2"}`}
+          className={`border px-3 py-1.5 text-xs uppercase tracking-[0.06em] ${!filter ? "border-ink bg-ink text-paper" : "border-line text-ink-2"}`}
         >
           All
         </Link>
@@ -32,7 +32,7 @@ export default async function OrdersPage({
           <Link
             key={s}
             href={`/admin/orders?status=${s}`}
-            className={`rounded-full border px-3 py-1 text-xs ${filter === s ? "border-ink bg-ink text-paper" : "border-line text-ink-2"}`}
+            className={`border px-3 py-1.5 text-xs uppercase tracking-[0.06em] ${filter === s ? "border-ink bg-ink text-paper" : "border-line text-ink-2"}`}
           >
             {orderStatusLabels[s]}
           </Link>

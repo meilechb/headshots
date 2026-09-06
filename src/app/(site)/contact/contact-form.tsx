@@ -91,7 +91,7 @@ export function ContactForm({
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
       {state.error ? (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-sm text-red-400">
           {state.error}
         </p>
       ) : null}

@@ -36,7 +36,7 @@ export default async function GalleryLanding({
           placeholder="https://meilechbiller.com/g/jane-doe-proofs"
         />
         {error ? (
-          <p role="alert" className="mt-3 text-sm text-red-700">
+          <p role="alert" className="mt-3 text-sm text-red-400">
             That doesn’t look like a gallery link.
           </p>
         ) : null}

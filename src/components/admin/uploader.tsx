@@ -120,7 +120,7 @@ export function Uploader({ target }: { target: Target }) {
     <div className="card p-5">
       <label
         htmlFor={`uploader-${target.kind}`}
-        className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-line px-6 py-10 text-center transition hover:border-ink/40 hover:bg-paper-2/40"
+        className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-line bg-paper-3/40 px-6 py-10 text-center transition hover:border-ink/40 hover:bg-paper-2/40"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();
@@ -155,9 +155,9 @@ export function Uploader({ target }: { target: Target }) {
               <span
                 className={
                   it.status === "done"
-                    ? "text-green-700"
+                    ? "text-success"
                     : it.status === "error"
-                      ? "text-red-700"
+                      ? "text-danger"
                       : "text-muted"
                 }
               >

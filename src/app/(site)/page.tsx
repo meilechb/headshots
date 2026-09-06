@@ -65,7 +65,7 @@ export default async function HomePage() {
           </dl>
         </div>
 
-        <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-paper-2 shadow-soft">
+        <div className="relative aspect-[4/5] overflow-hidden bg-paper-3">
           {hero ? (
             <Image
               src={hero.url}
@@ -77,8 +77,8 @@ export default async function HomePage() {
               className="object-cover"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-[#e2d6c3] via-[#c9b899] to-[#8c6f47]">
-              <div className="absolute inset-x-0 bottom-0 p-6 text-xs uppercase tracking-[0.18em] text-white/80">
+            <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,#1c1c1e,#1c1c1e_14px,#161618_14px,#161618_28px)]">
+              <div className="absolute inset-x-0 bottom-0 p-6 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
                 Your hero image goes here
               </div>
             </div>
@@ -155,18 +155,16 @@ export default async function HomePage() {
             {packages.slice(0, 3).map((p) => (
               <div
                 key={p.id}
-                className={`card flex flex-col p-6 ${
-                  p.is_featured ? "ring-2 ring-brass" : ""
+                className={`card relative flex flex-col p-6 ${
+                  p.is_featured ? "border-ink" : ""
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-medium">{p.name}</h3>
-                  {p.is_featured ? (
-                    <span className="badge border-brass/40 text-brass-2">
-                      Most popular
-                    </span>
-                  ) : null}
-                </div>
+                {p.is_featured ? (
+                  <span className="absolute right-3.5 top-3.5 bg-ink px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.1em] text-paper">
+                    Most popular
+                  </span>
+                ) : null}
+                <h3 className="text-lg font-medium">{p.name}</h3>
                 <p className="mt-2 text-sm text-muted">{p.description}</p>
                 <p className="mt-6 font-display text-4xl">
                   {formatMoney(p.price_cents)}
@@ -196,24 +194,17 @@ export default async function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="container-x pb-8">
-        <div className="rounded-3xl bg-ink px-8 py-14 text-paper md:px-14">
-          <p className="eyebrow">Ready when you are</p>
-          <h2 className="mt-4 max-w-2xl font-display text-3xl tracking-tight sm:text-4xl">
-            Most sessions book within a week. Tell me what the photos are for
-            and I’ll suggest the right package.
+      <section className="border-t border-line bg-[repeating-linear-gradient(135deg,#161618,#161618_16px,#121214_16px,#121214_32px)] py-20 text-center md:py-28">
+        <div className="container-x">
+          <h2 className="mx-auto max-w-[20ch] font-display text-4xl tracking-tight sm:text-5xl">
+            Ready when you are.
           </h2>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/contact"
-              className="btn-primary bg-paper text-ink hover:bg-paper-2"
-            >
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link href="/contact" className="btn-primary">
               Get in touch
             </Link>
-            <a href={`mailto:${site.email}`} className="btn-secondary border-paper/30 text-paper hover:border-paper hover:bg-paper/10">
-              {site.email}
-            </a>
           </div>
+          <p className="mt-4 text-sm text-ink-2">{site.email}</p>
         </div>
       </section>
     </>

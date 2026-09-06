@@ -27,10 +27,9 @@ const placeholders: GridImage[] = [
 ];
 
 const tones = [
-  "from-[#d9cfbf] to-[#b9ab94]",
-  "from-[#cfc7bb] to-[#8f877b]",
-  "from-[#e2d6c3] to-[#a8875a]",
-  "from-[#c9c2b8] to-[#6e675e]",
+  "repeating-linear-gradient(135deg,#1c1c1e,#1c1c1e 12px,#161618 12px,#161618 24px)",
+  "repeating-linear-gradient(135deg,#202022,#202022 12px,#18181a 12px,#18181a 24px)",
+  "repeating-linear-gradient(135deg,#1a1a1c,#1a1a1c 12px,#141416 12px,#141416 24px)",
 ];
 
 export function PortfolioGrid({
@@ -86,7 +85,7 @@ export function PortfolioGrid({
               key={c.slug}
               type="button"
               onClick={() => setCategory(c.slug)}
-              className={`rounded-full border px-4 py-1.5 text-sm transition ${
+              className={`border px-4 py-2 text-xs uppercase tracking-[0.08em] transition ${
                 category === c.slug
                   ? "border-ink bg-ink text-paper"
                   : "border-line text-ink-2 hover:border-ink"
@@ -114,7 +113,7 @@ export function PortfolioGrid({
               key={img.id}
               type="button"
               onClick={() => setActive(i)}
-              className="group relative block w-full overflow-hidden rounded-xl bg-paper-2 text-left"
+              className="group relative block w-full overflow-hidden bg-paper-2 text-left"
               style={{ aspectRatio: `${w} / ${h}` }}
               aria-label={`Open ${img.alt || "photo"}`}
             >
@@ -124,13 +123,14 @@ export function PortfolioGrid({
                   alt={img.alt}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition duration-500 group-hover:scale-[1.02]"
+                  className="object-cover transition duration-500 group-hover:opacity-90"
                 />
               ) : (
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${tones[i % tones.length]}`}
+                  className="absolute inset-0"
+                  style={{ background: tones[i % tones.length] }}
                 >
-                  <div className="absolute inset-x-0 bottom-0 p-4 text-xs uppercase tracking-[0.18em] text-white/80">
+                  <div className="absolute inset-x-0 bottom-0 p-4 font-mono text-[10px] uppercase tracking-[0.14em] text-[#cfcfcf]">
                     {img.category.replace("-", " ")}
                   </div>
                 </div>
@@ -145,7 +145,7 @@ export function PortfolioGrid({
           role="dialog"
           aria-modal="true"
           aria-label="Photo viewer"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/95 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505]/95 p-4"
           onClick={close}
         >
           <button
@@ -188,7 +188,10 @@ export function PortfolioGrid({
                 className="object-contain"
               />
             ) : (
-              <div className={`h-full w-full rounded-xl bg-gradient-to-br ${tones[active % tones.length]}`} />
+              <div
+                className="h-full w-full"
+                style={{ background: tones[active % tones.length] }}
+              />
             )}
           </div>
         </div>

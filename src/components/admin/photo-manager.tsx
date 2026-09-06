@@ -33,7 +33,7 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
             className={`card overflow-hidden ${expanded ? "col-span-2 sm:col-span-3 lg:col-span-4" : ""}`}
           >
             <div className={expanded ? "grid gap-4 p-4 md:grid-cols-[320px_1fr]" : ""}>
-              <div className={`relative bg-paper-2 ${expanded ? "aspect-[4/5] rounded-lg overflow-hidden" : "aspect-[4/5]"}`}>
+              <div className={`relative bg-paper-2 ${expanded ? "aspect-[4/5] overflow-hidden" : "aspect-[4/5]"}`}>
                 {p.url ? (
                   <Image
                     src={p.url}
@@ -45,9 +45,11 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                   />
                 ) : null}
                 <div className="absolute left-2 top-2 flex gap-1 text-[11px]">
-                  {p.selected ? <span className="rounded bg-brass px-1.5 py-0.5 text-ink">♥ Favorite</span> : null}
+                  {p.selected ? (
+                    <span className="bg-[oklch(0.65_0.16_20)] px-1.5 py-0.5 text-white">♥ Favorite</span>
+                  ) : null}
                   {openComments ? (
-                    <span className="rounded bg-ink px-1.5 py-0.5 text-paper">💬 {openComments}</span>
+                    <span className="bg-black/60 px-1.5 py-0.5 text-white">💬 {openComments}</span>
                   ) : null}
                 </div>
               </div>
@@ -83,7 +85,7 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                       ) : (
                         <ul className="mt-2 space-y-2">
                           {p.comments.map((c) => (
-                            <li key={c.id} className={`rounded-lg p-3 text-sm ${c.author_role === "admin" ? "bg-ink/5" : "bg-brass/10"}`}>
+                            <li key={c.id} className={`border border-line p-3 text-sm ${c.author_role === "admin" ? "bg-ink/5" : "bg-ink/[0.03]"}`}>
                               <div className="flex items-center justify-between text-xs text-muted">
                                 <span>
                                   {c.author_role === "admin" ? "You" : c.author_name} ·{" "}

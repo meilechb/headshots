@@ -15,7 +15,7 @@ export function TokenForm() {
           Copy this now. It is shown once and stored only as a hash.
         </p>
         <div className="flex items-center gap-2">
-          <code className="flex-1 break-all rounded-lg bg-paper-2 px-3 py-2 text-xs">{state.token}</code>
+          <code className="flex-1 break-all border border-line bg-paper-2 px-3 py-2 text-xs">{state.token}</code>
           <CopyButton value={state.token} />
         </div>
         <p className="text-xs text-muted">

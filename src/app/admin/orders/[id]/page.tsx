@@ -62,7 +62,7 @@ export default async function OrderDetailPage({
             <h2 className="font-medium">Payment</h2>
             <p className="mt-1 font-display text-3xl">{formatMoney(order.amount_cents, order.currency)}</p>
             {order.paid_at ? (
-              <p className="mt-2 text-sm text-green-700">
+              <p className="mt-2 text-sm text-success">
                 Paid {new Date(order.paid_at).toLocaleString("en-US")}
                 {order.stripe_payment_intent_id ? (
                   <span className="text-muted"> · {order.stripe_payment_intent_id}</span>
@@ -74,7 +74,7 @@ export default async function OrderDetailPage({
                   Send this link. The client pays by card through Stripe and the order updates automatically.
                 </p>
                 <div className="mt-3 flex items-center gap-2">
-                  <code className="flex-1 truncate rounded-lg bg-paper-2 px-3 py-2 text-xs">{payUrl}</code>
+                  <code className="flex-1 truncate border border-line bg-paper-2 px-3 py-2 text-xs">{payUrl}</code>
                   <CopyButton value={payUrl} />
                 </div>
                 <a

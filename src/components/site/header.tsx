@@ -11,14 +11,13 @@ export const navItems = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-paper/85 backdrop-blur">
-      <div className="container-x flex h-16 items-center justify-between">
-        <Link
-          href="/"
-          className="font-display text-xl tracking-tight text-ink sm:text-2xl"
-        >
-          {site.name}
-          <span className="ml-2 hidden text-xs font-sans uppercase tracking-[0.18em] text-muted sm:inline">
+    <header className="sticky top-0 z-40 border-b border-line/60 bg-paper/70 backdrop-blur-lg">
+      <div className="container-x flex h-[76px] items-center justify-between">
+        <Link href="/" className="flex flex-col leading-none text-ink">
+          <span className="font-display text-sm tracking-[0.24em]">
+            {site.name}
+          </span>
+          <span className="mt-[3px] text-[9px] font-normal normal-case tracking-[0.3em] uppercase text-muted">
             Headshots
           </span>
         </Link>
@@ -28,12 +27,12 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-ink-2 transition hover:text-ink"
+              className="text-xs uppercase tracking-[0.12em] text-ink-2 transition hover:text-brass-2"
             >
               {item.label}
             </Link>
           ))}
-          <Link href="/contact" className="btn-primary px-4 py-2">
+          <Link href="/contact" className="btn-secondary px-[18px] py-[9px]">
             Book a session
           </Link>
         </nav>

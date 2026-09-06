@@ -18,7 +18,7 @@ export const adminNav = [
 export function AdminNav() {
   const pathname = usePathname();
   return (
-    <nav className="flex flex-wrap gap-1 md:flex-col" aria-label="Admin">
+    <nav className="flex flex-wrap gap-0.5 md:flex-col" aria-label="Admin">
       {adminNav.map((item) => {
         const active =
           item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
@@ -26,7 +26,7 @@ export function AdminNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`rounded-lg px-3 py-2 text-sm transition ${
+            className={`px-3 py-2 text-xs uppercase tracking-[0.06em] transition ${
               active ? "bg-ink text-paper" : "text-ink-2 hover:bg-ink/5 hover:text-ink"
             }`}
           >

@@ -16,9 +16,9 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "#f6f3ee",
-          color: "#17140f",
-          fontFamily: "Georgia, serif",
+          background: "#0d0d0e",
+          color: "#fafafa",
+          fontFamily: "sans-serif",
         }}
       >
         <div
@@ -26,28 +26,28 @@ export default async function Image() {
             fontSize: 22,
             letterSpacing: 6,
             textTransform: "uppercase",
-            color: "#a8875a",
-            fontFamily: "sans-serif",
+            color: "#9a9a9a",
           }}
         >
           {`Headshot Photography · ${site.location}`}
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 96, lineHeight: 1, letterSpacing: -2 }}>
-            {`${site.name}`}
-          </div>
           <div
             style={{
-              marginTop: 28,
-              fontSize: 34,
-              color: "#3a352d",
-              fontFamily: "sans-serif",
+              fontSize: 96,
+              lineHeight: 1,
+              letterSpacing: -2,
+              fontWeight: 700,
+              textTransform: "uppercase",
             }}
           >
+            {`${site.name}`}
+          </div>
+          <div style={{ marginTop: 28, fontSize: 34, color: "#b0b0b0" }}>
             {site.tagline}
           </div>
         </div>
-        <div style={{ fontSize: 24, color: "#7a736a", fontFamily: "sans-serif" }}>
+        <div style={{ fontSize: 24, color: "#6a6a6a" }}>
           {site.url.replace(/^https?:\/\//, "")}
         </div>
       </div>

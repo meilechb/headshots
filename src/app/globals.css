@@ -1,20 +1,44 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f6f3ee;
-  --color-paper-2: #ece7df;
-  --color-paper-3: #e1dacd;
-  --color-ink: #17140f;
-  --color-ink-2: #3a352d;
-  --color-muted: #7a736a;
-  --color-line: #d9d1c4;
-  --color-brass: #a8875a;
-  --color-brass-2: #8c6f47;
+  --color-paper: #0d0d0e;
+  --color-paper-2: #141416;
+  --color-paper-3: #1c1c1e;
+  --color-paper-4: #000000;
+  --color-ink: #fafafa;
+  --color-ink-2: #9a9a9a;
+  --color-muted: #6a6a6a;
+  --color-line: rgba(255, 255, 255, 0.14);
+  --color-brass: #6a6a6a;
+  --color-brass-2: #b9b9b9;
+  --color-success: #4ade80;
+  --color-danger: #f87171;
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 
-  --shadow-soft: 0 1px 2px rgb(23 20 15 / 0.06), 0 12px 32px -12px rgb(23 20 15 / 0.18);
+  --shadow-soft: none;
+}
+
+/*
+ * Light mode is opt-in and scoped to the Studio admin only (toggled via
+ * ThemeToggle, which sets data-theme on the admin layout's root element).
+ * The public site and client galleries always render the dark tokens above.
+ */
+[data-theme="light"] {
+  --color-paper: #f5f5f4;
+  --color-paper-2: #ffffff;
+  --color-paper-3: #ececea;
+  --color-paper-4: #eaeaea;
+  --color-ink: #0d0d0e;
+  --color-ink-2: #55555a;
+  --color-muted: #86868b;
+  --color-line: rgba(0, 0, 0, 0.12);
+  --color-brass: #86868b;
+  --color-brass-2: #2a2a2d;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
 }
 
 html {
@@ -29,37 +53,48 @@ body {
 }
 
 ::selection {
-  background: var(--color-brass);
-  color: white;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-muted);
 }
 
 @layer components {
   .container-x {
     @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
   }
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
   .eyebrow {
-    @apply text-xs font-medium uppercase tracking-[0.18em] text-brass;
+    @apply text-xs font-medium uppercase tracking-[0.28em] text-muted;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-sm font-medium text-paper transition hover:bg-ink-2 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none bg-ink px-5 py-3 text-xs font-medium tracking-[0.12em] uppercase text-paper transition hover:bg-ink-2 hover:text-paper disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/20 bg-transparent px-5 py-3 text-sm font-medium text-ink transition hover:border-ink hover:bg-ink/5 disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none border border-ink/30 bg-transparent px-5 py-3 text-xs font-medium tracking-[0.12em] uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-ink-2 transition hover:bg-ink/5 hover:text-ink disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none px-4 py-2 text-xs font-medium tracking-[0.1em] uppercase text-ink-2 transition hover:bg-ink/5 hover:text-ink disabled:opacity-60;
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none border border-danger/40 bg-transparent px-4 py-2 text-xs font-medium tracking-[0.1em] uppercase text-danger transition hover:bg-danger/10 disabled:opacity-60;
   }
   .label {
-    @apply mb-1.5 block text-sm font-medium text-ink-2;
+    @apply mb-1.5 block text-xs font-medium uppercase tracking-[0.1em] text-ink-2/80;
   }
   .input {
-    @apply block w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 focus:border-ink focus:outline-none focus:ring-2 focus:ring-ink/10;
+    @apply block w-full rounded-none border border-line bg-paper px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-ink focus:outline-none;
   }
   .card {
-    @apply rounded-2xl border border-line bg-white shadow-soft;
+    @apply rounded-none border border-line bg-paper-2 shadow-soft;
   }
   .badge {
     @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium;

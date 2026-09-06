@@ -49,18 +49,16 @@ export default async function PricingPage() {
             {packages.map((p) => (
               <div
                 key={p.id}
-                className={`card flex flex-col p-6 ${
-                  p.is_featured ? "ring-2 ring-brass" : ""
+                className={`card relative flex flex-col p-6 ${
+                  p.is_featured ? "border-ink" : ""
                 }`}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <h2 className="text-lg font-medium">{p.name}</h2>
-                  {p.is_featured ? (
-                    <span className="badge border-brass/40 text-brass-2">
-                      Most popular
-                    </span>
-                  ) : null}
-                </div>
+                {p.is_featured ? (
+                  <span className="absolute right-3.5 top-3.5 bg-ink px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.1em] text-paper">
+                    Most popular
+                  </span>
+                ) : null}
+                <h2 className="text-lg font-medium">{p.name}</h2>
                 <p className="mt-2 text-sm text-muted">{p.description}</p>
                 <p className="mt-6 font-display text-4xl">
                   {formatMoney(p.price_cents)}

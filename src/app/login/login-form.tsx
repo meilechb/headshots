@@ -40,7 +40,7 @@ export function LoginForm({ next }: { next: string }) {
         />
       </div>
       {state.error ? (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="text-sm text-red-400">
           {state.error}
         </p>
       ) : null}

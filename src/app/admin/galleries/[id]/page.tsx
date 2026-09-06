@@ -56,7 +56,7 @@ export default async function GalleryDetailPage({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`badge ${gallery.status === "published" ? "border-green-300 text-green-700" : "border-line text-muted"}`}>
+          <span className={`badge ${gallery.status === "published" ? "border-success/40 text-success" : "border-line text-muted"}`}>
             {gallery.status}
           </span>
           {gallery.status !== "published" ? (
@@ -81,11 +81,11 @@ export default async function GalleryDetailPage({
           <h2 className="font-medium">Share with client</h2>
           <p className="mt-1 text-xs text-muted">The client needs both the link and the code.</p>
           <div className="mt-3 flex items-center gap-2">
-            <code className="flex-1 truncate rounded-lg bg-paper-2 px-3 py-2 text-xs">{link}</code>
+            <code className="flex-1 truncate border border-line bg-paper-2 px-3 py-2 text-xs">{link}</code>
             <CopyButton value={link} />
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <code className="flex-1 rounded-lg bg-paper-2 px-3 py-2 font-mono text-base tracking-[0.3em]">
+            <code className="flex-1 border border-line bg-paper-2 px-3 py-2 font-mono text-base tracking-[0.3em]">
               {gallery.access_code ?? "—"}
             </code>
             <CopyButton value={gallery.access_code ?? ""} />

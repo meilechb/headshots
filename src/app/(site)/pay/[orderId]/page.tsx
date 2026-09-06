@@ -70,7 +70,7 @@ export default async function PayPage({
             </p>
           </form>
         ) : (
-          <div className="mt-6 rounded-lg bg-paper-2 p-4 text-sm">
+          <div className="mt-6 border border-line bg-paper-2 p-4 text-sm">
             {order.paid_at ? (
               <>
                 Paid on{" "}

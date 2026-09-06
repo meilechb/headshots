@@ -14,7 +14,7 @@ export default async function AboutPage() {
 
   return (
     <section className="container-x grid gap-12 py-14 md:grid-cols-[0.9fr_1.1fr] md:py-20">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-paper-2 shadow-soft">
+      <div className="relative aspect-[4/5] overflow-hidden bg-paper-3">
         {portrait ? (
           <Image
             src={portrait.url}
@@ -24,7 +24,11 @@ export default async function AboutPage() {
             className="object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#cfc7bb] to-[#8f877b]" />
+          <div className="absolute inset-0 flex items-end bg-[repeating-linear-gradient(135deg,#1c1c1e,#1c1c1e_12px,#161618_12px,#161618_24px)] p-3.5">
+            <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-muted">
+              portrait
+            </span>
+          </div>
         )}
       </div>
       <div>

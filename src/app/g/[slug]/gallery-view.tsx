@@ -163,7 +163,7 @@ export function GalleryView({
         </div>
       </div>
       {zipError ? (
-        <p role="alert" className="mt-4 text-sm text-red-700">
+        <p role="alert" className="mt-4 text-sm text-red-400">
           {zipError}
         </p>
       ) : null}
@@ -179,7 +179,7 @@ export function GalleryView({
               key={p.id}
               type="button"
               onClick={() => setActive(i)}
-              className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-paper-2 text-left"
+              className="group relative aspect-[4/5] overflow-hidden bg-paper-2 text-left"
               aria-label={`Open ${p.filename}`}
             >
               <Image
@@ -188,9 +188,9 @@ export function GalleryView({
                 fill
                 unoptimized
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                className="object-cover transition duration-300 group-hover:opacity-90"
               />
-              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-ink/60 to-transparent p-2 text-[11px] text-white">
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-2 text-[11px] text-white">
                 <span className="truncate">{p.filename}</span>
                 <span className="flex items-center gap-1.5">
                   {p.comments.length ? <span title="Notes">💬 {p.comments.length}</span> : null}
@@ -260,7 +260,7 @@ function Lightbox({
       role="dialog"
       aria-modal="true"
       aria-label={photo.filename}
-      className="fixed inset-0 z-50 flex flex-col bg-ink/95 text-paper md:flex-row"
+      className="fixed inset-0 z-50 flex flex-col bg-[#050505]/95 text-ink md:flex-row"
     >
       <div className="relative flex-1" onClick={onClose}>
         <div
@@ -297,7 +297,7 @@ function Lightbox({
         </span>
       </div>
 
-      <aside className="flex max-h-[45vh] w-full flex-col border-t border-white/10 bg-ink md:max-h-none md:w-[360px] md:border-l md:border-t-0">
+      <aside className="flex max-h-[45vh] w-full flex-col border-t border-white/10 bg-paper-2 md:max-h-none md:w-[360px] md:border-l md:border-t-0">
         <div className="flex items-center justify-between gap-3 border-b border-white/10 p-4">
           <p className="truncate text-sm font-medium">{photo.filename}</p>
           <button
@@ -317,10 +317,10 @@ function Lightbox({
             type="button"
             onClick={toggleFavorite}
             disabled={pending}
-            className={`flex-1 rounded-full px-4 py-2 text-sm font-medium transition ${
+            className={`flex-1 border px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] transition ${
               photo.selected
-                ? "bg-brass text-ink hover:bg-brass-2"
-                : "bg-white/10 hover:bg-white/20"
+                ? "border-[oklch(0.65_0.16_20)] bg-[oklch(0.65_0.16_20)] text-white"
+                : "border-white/30 bg-transparent hover:bg-white/10"
             }`}
           >
             {photo.selected ? "♥ Favorite" : "♡ Mark favorite"}
@@ -329,7 +329,7 @@ function Lightbox({
             <a
               href={photo.downloadUrl}
               download={photo.filename}
-              className="rounded-full bg-white px-4 py-2 text-sm font-medium text-ink hover:bg-paper-2"
+              className="border border-white/30 bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] text-paper hover:opacity-85"
             >
               Download
             </a>
@@ -349,7 +349,7 @@ function Lightbox({
           ) : (
             <ul className="mt-2 space-y-3">
               {photo.comments.map((c) => (
-                <li key={c.id} className="rounded-lg bg-white/5 p-3 text-sm">
+                <li key={c.id} className="border border-white/10 bg-white/5 p-3 text-sm">
                   <p className="flex items-center justify-between text-xs text-white/50">
                     <span>
                       {c.author_role === "admin" ? "Photographer" : c.author_name}
@@ -374,7 +374,7 @@ function Lightbox({
             onChange={(e) => setNote(e.target.value)}
             rows={3}
             placeholder="Leave a note on this photo…"
-            className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder:text-white/40 focus:border-white/40 focus:outline-none"
+            className="w-full border border-white/15 bg-white/5 px-3 py-2 text-sm placeholder:text-white/40 focus:border-white/40 focus:outline-none"
           />
           {error ? (
             <p role="alert" className="mt-2 text-xs text-red-300">
@@ -385,7 +385,7 @@ function Lightbox({
             type="button"
             onClick={submitNote}
             disabled={pending || !note.trim()}
-            className="mt-2 w-full rounded-full bg-white px-4 py-2 text-sm font-medium text-ink hover:bg-paper-2 disabled:opacity-50"
+            className="mt-2 w-full bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.08em] text-paper hover:opacity-85 disabled:opacity-50"
           >
             {pending ? "Saving…" : "Send note"}
           </button>

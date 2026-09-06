@@ -49,10 +49,10 @@ export default async function PortfolioAdminPage({
               <div className="relative aspect-[4/5] bg-paper-2">
                 <Image src={img.url} alt={img.alt} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
                 {!img.is_published ? (
-                  <span className="absolute left-2 top-2 rounded bg-ink px-1.5 py-0.5 text-[11px] text-paper">Hidden</span>
+                  <span className="absolute left-2 top-2 bg-black/60 px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-white">Hidden</span>
                 ) : null}
                 {img.is_featured ? (
-                  <span className="absolute right-2 top-2 rounded bg-brass px-1.5 py-0.5 text-[11px] text-ink">Featured</span>
+                  <span className="absolute right-2 top-2 bg-ink px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-paper">Featured</span>
                 ) : null}
               </div>
               <form key={`${img.category}-${img.is_featured}-${img.is_published}-${img.sort_order}-${img.alt}`} action={updatePortfolioImage.bind(null, img.id)} className="space-y-3 p-4 text-sm">

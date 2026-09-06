@@ -40,7 +40,7 @@ export function AccessForm({
           placeholder="ABC123"
         />
         {state.error ? (
-          <p role="alert" className="mt-3 text-sm text-red-700">
+          <p role="alert" className="mt-3 text-sm text-red-400">
             {state.error}
           </p>
         ) : null}
