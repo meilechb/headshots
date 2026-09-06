@@ -19,7 +19,7 @@ export default async function PortfolioPage() {
       </h1>
       <p className="mt-4 max-w-xl text-ink-2">
         Every session is lit and directed for the person in front of the
-        camera. Browse by the kind of headshot you need.
+        camera. A selection of recent work.
       </p>
       <div className="mt-10">
         <PortfolioGrid
@@ -27,7 +27,6 @@ export default async function PortfolioPage() {
             id: f.id,
             url: f.url,
             alt: f.alt,
-            category: f.category,
             width: f.width,
             height: f.height,
           }))}
