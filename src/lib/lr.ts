@@ -1,11 +1,11 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import sharp from "sharp";
-import { get, head, put } from "@vercel/blob";
+import { head } from "@vercel/blob";
 import { ApiAuthError, requireApiToken } from "@/lib/api-auth";
 import { db, one, rows, UUID_RE } from "@/lib/db";
 import { blobToken, deleteBlobs } from "@/lib/storage";
+import { downloadBlob, makeWebVersion, putJpeg } from "@/lib/images";
 import { site } from "@/lib/site";
 import type { Client, Gallery, Photo } from "@/lib/types";
 
@@ -96,35 +96,10 @@ export function safeSegment(s: string, max = 80) {
 
 /** Downloads the uploaded original, makes a web-size JPEG preview, stores it. */
 export async function makePreview(originalUrl: string, galleryId: string, base: string) {
-  const token = blobToken("galleries");
-  const result = await get(originalUrl, { access: "private", token, useCache: false });
-  if (!result || result.statusCode !== 200) throw new ApiError("Uploaded file not found", 404);
-  const buffer = Buffer.from(await new Response(result.stream).arrayBuffer());
-
-  const image = sharp(buffer).rotate();
-  const meta = await image.metadata();
-  const preview = await image
-    .resize({ width: PREVIEW_MAX_EDGE, height: PREVIEW_MAX_EDGE, fit: "inside", withoutEnlargement: true })
-    .jpeg({ quality: 86, mozjpeg: true })
-    .toBuffer();
-
-  const blob = await put(`galleries/${galleryId}/lr/${base}-web.jpg`, preview, {
-    access: "private",
-    token,
-    contentType: "image/jpeg",
-    addRandomSuffix: false,
-    allowOverwrite: true,
-    cacheControlMaxAge: 60 * 60 * 24 * 365,
-  });
-
-  // .rotate() applies EXIF orientation, so report oriented dimensions.
-  const swap = (meta.orientation ?? 1) >= 5;
-  return {
-    previewUrl: blob.url,
-    width: swap ? (meta.height ?? null) : (meta.width ?? null),
-    height: swap ? (meta.width ?? null) : (meta.height ?? null),
-    size: buffer.byteLength,
-  };
+  const original = await downloadBlob(originalUrl, "galleries");
+  const web = await makeWebVersion(original, PREVIEW_MAX_EDGE);
+  const blob = await putJpeg("galleries", `galleries/${galleryId}/lr/${base}-web.jpg`, web.buffer);
+  return { previewUrl: blob.url, width: web.width, height: web.height, size: original.byteLength };
 }
 
 /** Confirms a blob exists at pathname and returns its URL and size. */

@@ -27,7 +27,11 @@ export async function unlockGallery(
     return { error: "That code didn’t match. Check your email and try again." };
   }
 
-  await grantGalleryAccess(gallery.id);
+  try {
+    await grantGalleryAccess(gallery.id);
+  } catch (error) {
+    return { error: `Could not unlock the gallery: ${error instanceof Error ? error.message : String(error)}` };
+  }
   revalidatePath(`/g/${slug}`);
   return {};
 }

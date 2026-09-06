@@ -3,43 +3,28 @@
 import { upload } from "@vercel/blob/client";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { registerGalleryPhoto, registerPortfolioImage } from "@/app/admin/actions";
+import { finalizeGalleryPhoto, finalizePortfolioImage } from "@/app/admin/actions";
 
 type Target =
   | { kind: "gallery"; galleryId: string }
   | { kind: "portfolio"; category: string };
 
-type Item = { name: string; status: "queued" | "uploading" | "done" | "error"; message?: string };
-
-const GALLERY_PREVIEW_MAX = 1600; // px, longest edge, for browsing proofs
-const PORTFOLIO_MAX = 2400; // px, what the public site actually needs
-
-/** Decodes an image and, if larger than maxEdge, returns a resized JPEG. */
-async function resize(file: File, maxEdge: number, quality = 0.86) {
-  const bitmap = await createImageBitmap(file);
-  const { width, height } = bitmap;
-  const scale = Math.min(1, maxEdge / Math.max(width, height));
-  const w = Math.round(width * scale);
-  const h = Math.round(height * scale);
-  const canvas = document.createElement("canvas");
-  canvas.width = w;
-  canvas.height = h;
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
-  bitmap.close();
-  const blob = await new Promise<Blob>((resolve, reject) =>
-    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("Could not encode image"))), "image/jpeg", quality)
-  );
-  return { blob, width, height };
-}
+type Item = { name: string; status: "queued" | "uploading" | "processing" | "done" | "error"; message?: string };
 
 function baseName(name: string) {
-  return name.replace(/\.[a-z0-9]+$/i, "").replace(/[^\w.\-]+/g, "_").slice(0, 80);
+  return name.replace(/\.[a-z0-9]+$/i, "").replace(/[^\w.\-]+/g, "_").slice(0, 80) || "photo";
+}
+
+function extOf(file: File) {
+  if (file.type === "image/png") return "png";
+  if (file.type === "image/webp") return "webp";
+  return "jpg";
 }
 
 /**
- * Browser → Vercel Blob uploads (token exchange at /api/upload/[store]),
- * then a server action records the file. Galleries get the original plus a
- * web-size preview; the portfolio gets one web-size public image.
+ * Browser → Vercel Blob upload of the original file (token exchange at
+ * /api/upload/[store]), then the server makes the web-size version and
+ * records it. No image decoding happens in the browser, so any size works.
  */
 export function Uploader({ target }: { target: Target }) {
   const router = useRouter();
@@ -49,7 +34,7 @@ export function Uploader({ target }: { target: Target }) {
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
-    const list = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    const list = Array.from(files);
     setItems(list.map((f) => ({ name: f.name, status: "queued" })));
     setBusy(true);
 
@@ -57,53 +42,35 @@ export function Uploader({ target }: { target: Target }) {
       const file = list[i];
       const update = (patch: Partial<Item>) =>
         setItems((prev) => prev.map((it, idx) => (idx === i ? { ...it, ...patch } : it)));
+
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+        update({ status: "error", message: "Only JPEG, PNG or WebP files can be uploaded." });
+        continue;
+      }
+
       update({ status: "uploading" });
       try {
+        const stamp = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
         if (target.kind === "gallery") {
-          const prefix = `galleries/${target.galleryId}`;
-          const preview = await resize(file, GALLERY_PREVIEW_MAX);
-          const [original, web] = await Promise.all([
-            upload(`${prefix}/${baseName(file.name)}.${(file.name.split(".").pop() || "jpg").toLowerCase()}`, file, {
-              access: "private",
-              handleUploadUrl: "/api/upload/galleries",
-              contentType: file.type,
-            }),
-            upload(`${prefix}/${baseName(file.name)}-web.jpg`, preview.blob, {
-              access: "private",
-              handleUploadUrl: "/api/upload/galleries",
-              contentType: "image/jpeg",
-            }),
-          ]);
-          await registerGalleryPhoto(target.galleryId, {
-            originalUrl: original.url,
-            previewUrl: web.url,
-            filename: file.name,
-            width: preview.width,
-            height: preview.height,
-            size: file.size,
-          });
+          const blob = await upload(
+            `galleries/${target.galleryId}/${baseName(file.name)}-${stamp}.${extOf(file)}`,
+            file,
+            { access: "private", handleUploadUrl: "/api/upload/galleries", contentType: file.type }
+          );
+          update({ status: "processing" });
+          await finalizeGalleryPhoto(target.galleryId, { url: blob.url, filename: file.name, size: file.size });
         } else {
-          const web = await resize(file, PORTFOLIO_MAX, 0.88);
-          const result = await upload(`portfolio/${baseName(file.name)}.jpg`, web.blob, {
-            access: "public",
-            handleUploadUrl: "/api/upload/portfolio",
-            contentType: "image/jpeg",
-          });
-          const scale = Math.min(1, PORTFOLIO_MAX / Math.max(web.width, web.height));
-          await registerPortfolioImage({
-            url: result.url,
-            filename: file.name,
-            width: Math.round(web.width * scale),
-            height: Math.round(web.height * scale),
-            category: target.category,
-          });
+          const blob = await upload(
+            `portfolio/incoming/${baseName(file.name)}-${stamp}.${extOf(file)}`,
+            file,
+            { access: "public", handleUploadUrl: "/api/upload/portfolio", contentType: file.type }
+          );
+          update({ status: "processing" });
+          await finalizePortfolioImage({ url: blob.url, filename: file.name, size: file.size, category: target.category });
         }
         update({ status: "done" });
       } catch (err) {
-        update({
-          status: "error",
-          message: err instanceof Error ? err.message : "Upload failed",
-        });
+        update({ status: "error", message: err instanceof Error ? err.message : "Upload failed" });
       }
     }
 

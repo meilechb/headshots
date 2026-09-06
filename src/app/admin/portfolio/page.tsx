@@ -5,6 +5,9 @@ import { ConfirmSubmit } from "@/components/admin/ui";
 import { Uploader } from "@/components/admin/uploader";
 import { deletePortfolioImage, updatePortfolioImage } from "../actions";
 
+// Image processing in server actions can exceed the default function timeout.
+export const maxDuration = 60;
+
 export default async function PortfolioAdminPage({
   searchParams,
 }: {

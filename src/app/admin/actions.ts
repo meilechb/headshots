@@ -6,6 +6,7 @@ import { requireAdmin } from "@/lib/auth";
 import { db, one, rows } from "@/lib/db";
 import { generateAccessCode, normalizeCode } from "@/lib/gallery-access";
 import { deleteBlobs } from "@/lib/storage";
+import { describeImageError, downloadBlob, makeWebVersion, putJpeg } from "@/lib/images";
 import { generateApiToken, hashApiToken } from "@/lib/api-auth";
 import { orderStatuses, type OrderStatus } from "@/lib/types";
 
@@ -280,6 +281,71 @@ export async function registerGalleryPhoto(galleryId: string, meta: UploadedPhot
       (select coalesce(max(sort_order), -1) + 1 from photos where gallery_id = ${galleryId})
     )`;
   revalidatePath(`/admin/galleries/${galleryId}`);
+}
+
+export type BrowserUploadMeta = { url: string; filename: string; size: number };
+
+function assertBlobUrl(url: string, store: "galleries" | "portfolio", prefix: string) {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    fail("Bad upload URL");
+  }
+  const hostOk = parsed.hostname.endsWith(".blob.vercel-storage.com") &&
+    parsed.hostname.includes(store === "galleries" ? ".private." : ".public.");
+  if (!hostOk || !parsed.pathname.startsWith(`/${prefix}`)) fail("Upload URL does not belong to this store");
+}
+
+/**
+ * Browser uploaded the original straight to the private store; the server
+ * now makes the web-size preview (any size/format sharp can read) and records
+ * the photo. Replaces the old browser-side canvas resizing, which failed on
+ * large files in some browsers.
+ */
+export async function finalizeGalleryPhoto(galleryId: string, meta: BrowserUploadMeta) {
+  await requireAdmin();
+  assertBlobUrl(meta.url, "galleries", `galleries/${galleryId}/`);
+  let web;
+  try {
+    web = await makeWebVersion(await downloadBlob(meta.url, "galleries"), 1600);
+  } catch (error) {
+    await deleteBlobs("galleries", [meta.url]);
+    fail(describeImageError(error));
+  }
+  const base = `${crypto.randomUUID()}`;
+  const preview = await putJpeg("galleries", `galleries/${galleryId}/${base}-web.jpg`, web.buffer);
+  await db()`
+    insert into photos (gallery_id, original_url, preview_url, filename, width, height, size_bytes, sort_order)
+    values (
+      ${galleryId}, ${meta.url}, ${preview.url}, ${meta.filename.slice(0, 200)},
+      ${web.width}, ${web.height}, ${meta.size},
+      (select coalesce(max(sort_order), -1) + 1 from photos where gallery_id = ${galleryId})
+    )`;
+  revalidatePath(`/admin/galleries/${galleryId}`);
+}
+
+export async function finalizePortfolioImage(meta: BrowserUploadMeta & { category: string }) {
+  await requireAdmin();
+  assertBlobUrl(meta.url, "portfolio", "portfolio/incoming/");
+  let web;
+  try {
+    web = await makeWebVersion(await downloadBlob(meta.url, "portfolio"), 2400, 0.88 * 100);
+  } catch (error) {
+    await deleteBlobs("portfolio", [meta.url]);
+    fail(describeImageError(error));
+  }
+  const stored = await putJpeg("portfolio", `portfolio/${crypto.randomUUID()}.jpg`, web.buffer);
+  await deleteBlobs("portfolio", [meta.url]);
+  const scale = Math.min(1, 2400 / Math.max(web.width ?? 2400, web.height ?? 2400));
+  const alt = meta.filename.replace(/\.[a-z0-9]+$/i, "").replace(/[-_]+/g, " ").slice(0, 200);
+  await db()`
+    insert into portfolio_images (url, alt, category, width, height, is_published)
+    values (${stored.url}, ${alt}, ${meta.category.slice(0, 40)},
+            ${web.width ? Math.round(web.width * scale) : null}, ${web.height ? Math.round(web.height * scale) : null}, true)`;
+  revalidatePath("/admin/portfolio");
+  revalidatePath("/");
+  revalidatePath("/portfolio");
 }
 
 export async function deletePhoto(photoId: string) {

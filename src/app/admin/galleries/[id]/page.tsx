@@ -13,6 +13,9 @@ import {
   updateGallery,
 } from "../../actions";
 
+// Image processing in server actions can exceed the default function timeout.
+export const maxDuration = 60;
+
 export default async function GalleryDetailPage({
   params,
 }: {
