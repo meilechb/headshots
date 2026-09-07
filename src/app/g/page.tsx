@@ -20,10 +20,6 @@ export default async function GalleryLanding({
     <section className="container-x grid min-h-[60vh] place-items-center py-16">
       <form action={openGallery} className="card w-full max-w-md p-8">
         <h1 className="font-display text-3xl">Open your gallery</h1>
-        <p className="mt-2 text-sm text-muted">
-          Paste the gallery link from your email, or type the gallery name that
-          appears after <span className="font-mono">/g/</span>.
-        </p>
         <label htmlFor="gallery" className="label mt-6">
           Gallery link or name
         </label>

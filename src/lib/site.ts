@@ -17,7 +17,7 @@ export const site = {
   founder: "Meilech Biller",
   tagline: "Professional headshots in Rockland County, NY.",
   description:
-    "Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.",
+    "Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.",
   url: resolveSiteUrl(),
   email: "hello@meilechbiller.com",
   // Leave phone empty to hide it everywhere. Format: +1 845 555 0100

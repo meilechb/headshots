@@ -14,68 +14,16 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Home  (`/`)
 
 - Browser tab title: Meilech Biller | Headshot Photographer in Rockland County, NY
-- Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
+- Search result description: Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
 - H1: Stand out from the crowd
-- Text: I photograph headshots for business, LinkedIn, teams and actors. Sessions are in my studio in Spring Valley or at your office anywhere in Rockland County. Photos are delivered online within a few days.
-- Link: Book a session
-- Link: See photos
-- Term: Turnaround
-- Text: 2–3 business days
-- Term: Where
-- Text: Studio or your office
-- Term: Delivery
-- Text: Online gallery
-- Text: Your photo goes here  (placeholder, disappears once real photos are uploaded)
+- Text: Professional headshots in Rockland County, NY.
+- Link: Get in touch
+- Link: Portfolio
+- Text: Header image: set one in Admin → Portfolio
 - H2: Recent work
-- Link: All photos →
+- Link: See more →
 - Text: Sample layout. Upload your work in the studio dashboard to replace these tiles.  (placeholder, disappears once real photos are uploaded)
-- Link: All photos
-- H2: How it works
-- H3: Book
-- Text: Send the form or an email. I reply within one business day with dates, and you pick a package.
-- H3: Session
-- Text: 30 to 90 minutes in the studio or at your office. I direct posture and expression; you do not need experience in front of a camera.
-- H3: Pick and download
-- Text: Proofs go into a private online gallery within a day or two. Mark the ones you want, and the retouched files are ready to download a few days later.
-- H2: Pricing
-- Text: Every package includes retouching, an online proof gallery and full-resolution files. Prices are the same anywhere in Rockland County.
-- Link: All packages →
-- H3: Essential
-- Text: A focused 30-minute session for one polished, professional headshot.
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- List item: Online proof gallery
-- Link: Book Essential
-- Text: Most booked
-- H3: Professional
-- Text: The most popular choice: more time, more looks, more images to choose from.
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- List item: Online proof gallery with comments
-- Link: Book Professional
-- H3: Executive
-- Text: An unhurried session with full creative direction and a complete image library.
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- List item: On-location option
-- Link: Book Executive
-- Link: All packages
-- H2: Common questions
-- Term: Where are sessions held?
-- Text: Individual sessions are in my studio in Spring Valley, NY. Team and office sessions are on-site anywhere in Rockland County, with no travel fee.
-- Term: How long until I get the photos?
-- Text: Proofs are online within one or two business days. Retouched finals follow within two to three business days after you pick.
-- Term: What does it cost?
-- Text: Individual sessions start at $295. Team sessions are priced per person with a five-person minimum. Every package includes retouching and full-resolution files.
-- Term: What should I wear?
-- Text: Solid colors in tones you wear to work, well fitted. Bring two or three options and we choose together at the start.
-- Text: Anything else? or email .
+- Link: See more
 - Link: Send a message
 - Link: hello@meilechbiller.com
 
@@ -86,6 +34,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Search result description: Recent headshots photographed in Rockland County, NY: business and LinkedIn headshots, team photos, actor headshots and personal brand portraits.
 - H1: Portfolio
 - Text: Sample layout. Upload your work in the studio dashboard to replace these tiles.  (placeholder, disappears once real photos are uploaded)
+- Text: Want to stand out? or .
+- Link: See pricing
+- Link: get in touch
 
 
 ## Pricing  (`/pricing`)
@@ -1052,9 +1003,8 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Client gallery landing (/g)  (`/g`)
 
 - Browser tab title: Client gallery | Meilech Biller
-- Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
+- Search result description: Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
 - H1: Open your gallery
-- Text: Paste the gallery link from your email, or type the gallery name that appears after /g/.
 - Field label: Gallery link or name
 - Placeholder: https://meilechbiller.com/g/jane-doe-proofs
 - Button: Continue
@@ -1063,7 +1013,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Studio login  (`/login`)
 
 - Browser tab title: Studio login | Meilech Biller
-- Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
+- Search result description: Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
 - Link: Meilech Biller
 - H1: Studio login
 - Text: For the photographer. Clients open galleries from the link in their email.
@@ -1075,7 +1025,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Not found (404)  (`/this-page-does-not-exist`)
 
 - Browser tab title: Meilech Biller | Headshot Photographer in Rockland County, NY
-- Search result description: Headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
+- Search result description: Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
 - H1: That page isn’t here.
 - Text: If you followed a gallery link, check the spelling or ask for a new one.
 - Link: Back to the site

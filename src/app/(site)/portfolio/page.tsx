@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { getPortfolio } from "@/lib/data/public";
 
@@ -28,6 +29,11 @@ export default async function PortfolioPage() {
           }))}
         />
       </div>
+      <p className="mt-12 text-ink-2">
+        Want to stand out?{" "}
+        <Link href="/pricing" className="underline hover:text-brass-2">See pricing</Link> or{" "}
+        <Link href="/contact" className="underline hover:text-brass-2">get in touch</Link>.
+      </p>
     </section>
   );
 }
