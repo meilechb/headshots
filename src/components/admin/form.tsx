@@ -126,10 +126,10 @@ export function Disclosure({
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" onClick={() => setOpen((v) => !v)} className={open ? "btn-secondary" : className}>
+      <button type="button" onClick={() => setOpen((v) => !v)} className={className}>
         {open ? openLabel : label}
       </button>
-      {open ? <div className="basis-full">{children}</div> : null}
+      {open ? <div className="order-last basis-full">{children}</div> : null}
     </>
   );
 }

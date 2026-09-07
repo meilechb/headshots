@@ -14,12 +14,7 @@ export default async function IntegrationsPage() {
   return (
     <div className="max-w-3xl space-y-8">
       <div>
-        <p className="eyebrow">Integrations</p>
-        <h1 className="mt-2 font-display text-3xl">Lightroom Classic</h1>
-        <p className="mt-2 text-sm text-muted">
-          Publish proofs and finals straight from Lightroom. Client notes and favorites flow back into
-          Lightroom’s Comments panel, and favorites are tagged with a keyword so you can filter to them.
-        </p>
+        <h1 className="font-display text-3xl">Lightroom</h1>
       </div>
 
       <section className="card p-5">

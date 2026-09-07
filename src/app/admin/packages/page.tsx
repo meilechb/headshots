@@ -68,10 +68,7 @@ export default async function PackagesPage() {
   const packages = await listPackages();
   return (
     <div className="max-w-3xl space-y-8">
-      <div>
-        <h1 className="font-display text-3xl">Packages</h1>
-        <p className="mt-2 text-sm text-muted">Shown on the home and pricing pages, and offered when you set up a session.</p>
-      </div>
+      <h1 className="font-display text-3xl">Packages</h1>
       {packages.map((p) => (
         <PackageForm key={p.id} pkg={p} />
       ))}

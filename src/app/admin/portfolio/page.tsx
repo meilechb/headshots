@@ -14,31 +14,22 @@ export default async function PortfolioAdminPage() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="font-display text-3xl">Portfolio</h1>
-        <p className="mt-2 text-sm text-muted">
-          Everything published shows on the portfolio page. Featured photos also appear on the home and about pages.
-        </p>
-      </div>
+      <h1 className="font-display text-3xl">Portfolio</h1>
 
       <section className="card p-5" aria-labelledby="hero-heading">
-        <h2 id="hero-heading" className="font-medium">Home page header image</h2>
-        <p className="mt-1 text-xs text-muted">
-          Shown full-width behind the heading on the home page. Upload a wide photo here, or press “Use as header” on any portfolio photo below.
-          {hero ? "" : " Until one is set, the first featured photo is used."}
-        </p>
+        <h2 id="hero-heading" className="font-medium">Home page image</h2>
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-[1.2fr_1fr]">
           <div className="relative aspect-[16/7] overflow-hidden bg-paper-3">
             {hero ? (
               <Image src={hero.url} alt={hero.alt || "Home page header image"} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover object-[center_30%]" />
             ) : (
-              <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.2em] text-muted">No header image set</div>
+              <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.2em] text-muted">None set</div>
             )}
           </div>
           <div className="space-y-3">
             <Uploader target={{ kind: "hero" }} />
             {hero ? (
-              <ActionForm action={clearHeroImage} submitLabel="Remove header image" pendingLabel="Removing…" successMessage="Removed" buttonClassName="btn-ghost px-3 py-1.5 text-xs" className="space-y-0">
+              <ActionForm action={clearHeroImage} submitLabel="Remove" pendingLabel="Removing…" successMessage="Removed" buttonClassName="btn-ghost px-3 py-1.5 text-xs" className="space-y-0">
                 <span className="sr-only">Remove the home page header image</span>
               </ActionForm>
             ) : null}
@@ -49,7 +40,7 @@ export default async function PortfolioAdminPage() {
       <Uploader target={{ kind: "portfolio" }} />
 
       {images.length === 0 ? (
-        <p className="text-sm text-muted">Nothing uploaded yet. Sample tiles show on the site until you do.</p>
+        <p className="text-sm text-muted">No photos yet.</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {images.map((img) => (

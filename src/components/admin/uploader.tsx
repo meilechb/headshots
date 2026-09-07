@@ -134,18 +134,7 @@ export function Uploader({ target }: { target: Target }) {
         }}
       >
         <span className="text-sm font-medium">
-          {busy
-            ? "Uploading…"
-            : target.kind === "hero"
-              ? "Drop one JPG / PNG / WebP here, or click to choose"
-              : "Drop JPG / PNG / WebP files here, or click to choose"}
-        </span>
-        <span className="mt-1 text-xs text-muted">
-          {target.kind === "gallery"
-            ? "Originals are kept for download; a web-size copy is made for browsing."
-            : target.kind === "hero"
-              ? "Use a wide photo. It is resized to 3000px and shown full-width behind the home page heading."
-              : "Images are resized to 2400px for the site."}
+          {busy ? "Uploading…" : target.kind === "hero" ? "Drop one photo here or click to choose" : "Drop photos here or click to choose"}
         </span>
         <input
           ref={inputRef}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { listClients } from "@/lib/data/admin";
 import { clientStageLabels, clientStages, type ClientStage } from "@/lib/types";
 import { StageBadge, formatDate } from "@/components/admin/badges";
-import { ActionForm, Disclosure, Field } from "@/components/admin/form";
+import { ActionForm } from "@/components/admin/form";
 import { createClient } from "../actions";
 
 export default async function ClientsPage({
@@ -16,7 +16,6 @@ export default async function ClientsPage({
 
   const counts = Object.fromEntries(clientStages.map((s) => [s, 0])) as Record<ClientStage, number>;
   for (const c of all) counts[c.stage] += 1;
-  const unreadTotal = all.reduce((n, c) => n + c.unread, 0);
 
   const clients = all.filter((c) => {
     if (activeStage ? c.stage !== activeStage : c.stage === "archived") return false;
@@ -31,35 +30,17 @@ export default async function ClientsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="font-display text-3xl">Clients</h1>
-          <p className="mt-2 text-sm text-muted">
-            Everyone who wrote in or booked. Messages from the contact form land here.
-            {unreadTotal ? ` ${unreadTotal} new.` : ""}
-          </p>
-        </div>
-        <Disclosure label="Add client">
-          <ActionForm
-            action={createClient}
-            className="card mt-4 grid grid-cols-1 gap-4 p-5 sm:grid-cols-2"
-            submitLabel="Add client"
-            pendingLabel="Adding…"
-          >
-            <Field label="Name" htmlFor="new-name">
-              <input id="new-name" name="name" required className="input" autoComplete="off" />
-            </Field>
-            <Field label="Email" htmlFor="new-email">
-              <input id="new-email" name="email" type="email" required className="input" autoComplete="off" />
-            </Field>
-            <Field label="Phone" htmlFor="new-phone" hint="optional">
-              <input id="new-phone" name="phone" type="tel" className="input" />
-            </Field>
-            <Field label="Company" htmlFor="new-company" hint="optional">
-              <input id="new-company" name="company" className="input" />
-            </Field>
-          </ActionForm>
-        </Disclosure>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="font-display text-3xl">Clients</h1>
+        <ActionForm
+          action={createClient}
+          className="flex flex-wrap items-center gap-2"
+          submitLabel="Add client"
+          pendingLabel="Adding…"
+        >
+          <input name="name" required placeholder="Name" aria-label="Name" autoComplete="off" className="input w-auto" />
+          <input name="email" type="email" required placeholder="Email" aria-label="Email" autoComplete="off" className="input w-auto" />
+        </ActionForm>
       </div>
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -71,7 +52,7 @@ export default async function ClientsPage({
               <Link
                 key={t.label}
                 href={query ? `${href}${t.key ? "&" : "?"}q=${encodeURIComponent(q ?? "")}` : href}
-                className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 border px-3 text-xs uppercase tracking-[0.06em] transition ${
+                className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 border px-3 text-xs transition ${
                   active ? "border-ink bg-ink text-paper" : "border-line text-ink-2 hover:border-ink hover:text-ink"
                 }`}
               >
@@ -87,20 +68,15 @@ export default async function ClientsPage({
             type="search"
             name="q"
             defaultValue={q ?? ""}
-            placeholder="Search name, email, company"
+            placeholder="Search"
             aria-label="Search clients"
-            className="input min-h-9 py-1.5 md:w-64"
+            className="input min-h-9 py-1.5 md:w-56"
           />
-          <button type="submit" className="btn-secondary min-h-9 px-3 py-1.5 text-xs">Search</button>
         </form>
       </div>
 
       {clients.length === 0 ? (
-        <p className="card p-6 text-sm text-muted">
-          {all.length === 0
-            ? "No clients yet. They appear here when someone uses the contact form, or add one above."
-            : "Nobody matches."}
-        </p>
+        <p className="card p-6 text-sm text-muted">{all.length === 0 ? "No clients yet." : "Nobody matches."}</p>
       ) : (
         <div className="card overflow-x-auto">
           <table className="w-full text-sm">
