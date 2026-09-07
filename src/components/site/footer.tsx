@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { linkedAreas } from "@/lib/areas";
+import { linkedAreas } from "@/lib/area-nav";
 import { site, socialLinks } from "@/lib/site";
 
 export function SiteFooter() {

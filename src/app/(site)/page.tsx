@@ -4,7 +4,7 @@ import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { getFeaturedPortfolio, getReviews } from "@/lib/data/public";
 import { ContactForm } from "./contact/contact-form";
 import { getHeroImage } from "@/lib/data/settings";
-import { linkedAreas } from "@/lib/areas";
+import { linkedAreas } from "@/lib/area-nav";
 import { site } from "@/lib/site";
 
 // Re-check the database at most every 5 minutes; admin saves also refresh these pages.
@@ -33,7 +33,6 @@ export default async function HomePage() {
         ) : (
           <div className="absolute inset-0 bg-[repeating-linear-gradient(135deg,#1c1c1e,#1c1c1e_14px,#161618_14px,#161618_28px)]" />
         )}
-        {/* Darkens the lower half so the text stays readable on any photo. */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0e] via-[#0d0d0e]/55 to-[#0d0d0e]/10" aria-hidden />
         <div className="container-x relative pb-14 pt-36 md:pb-20 md:pt-52">
           <h1 className="max-w-3xl font-display text-4xl leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
@@ -50,15 +49,9 @@ export default async function HomePage() {
               Portfolio
             </Link>
           </div>
-          {!hero ? (
-            <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-white/50">
-              Header image: set one in Admin → Portfolio
-            </p>
-          ) : null}
         </div>
       </section>
 
-      {/* Recent work */}
       <section className="container-x py-16" aria-labelledby="recent-work">
         <div className="mb-8 flex items-end justify-between gap-6">
           <h2 id="recent-work" className="font-display text-3xl tracking-tight sm:text-4xl">
@@ -77,7 +70,6 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {/* Areas we serve */}
       <section className="border-t border-line" aria-labelledby="areas-we-serve">
         <div className="container-x py-16">
           <h2 id="areas-we-serve" className="font-display text-3xl tracking-tight sm:text-4xl">
@@ -101,7 +93,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Reviews */}
       {reviews.length ? (
         <section className="border-t border-line" aria-labelledby="reviews">
           <div className="container-x py-16">
@@ -121,7 +112,6 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      {/* Contact */}
       <section className="border-t border-line" aria-labelledby="contact">
         <div className="container-x max-w-2xl py-16">
           <h2 id="contact" className="font-display text-3xl tracking-tight sm:text-4xl">
