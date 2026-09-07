@@ -1,13 +1,39 @@
 /**
- * Public address of the site. Uses NEXT_PUBLIC_SITE_URL when set, otherwise the
- * address Vercel assigns to the deployment, otherwise the real domain.
+ * Canonical public origin for metadata, sitemap, robots, and JSON-LD.
+ * Prefer NEXT_PUBLIC_SITE_URL when it is a real production-style host.
+ * Never fall back to VERCEL_URL / *.vercel.app preview hosts for public metadata.
  */
+export const PRODUCTION_SITE_URL = "https://www.meilechbiller.com";
+
+function normalizeOrigin(raw: string) {
+  const trimmed = raw.trim().replace(/\/+$/, "");
+  if (!trimmed) return null;
+  const withProto = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  try {
+    const url = new URL(withProto);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    return `${url.protocol}//${url.host}`;
+  } catch {
+    return null;
+  }
+}
+
+function isVercelPreviewHost(origin: string) {
+  try {
+    const host = new URL(origin).hostname.toLowerCase();
+    return host === "vercel.app" || host.endsWith(".vercel.app");
+  } catch {
+    return true;
+  }
+}
+
 function resolveSiteUrl() {
-  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (explicit) return explicit.replace(/\/+$/, "");
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() || process.env.VERCEL_URL?.trim();
-  if (vercel) return `https://${vercel.replace(/^https?:\/\//, "")}`;
-  return "https://meilechbiller.com";
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL
+    ? normalizeOrigin(process.env.NEXT_PUBLIC_SITE_URL)
+    : null;
+  if (explicit && !isVercelPreviewHost(explicit)) return explicit;
+  // Do not use VERCEL_PROJECT_PRODUCTION_URL or VERCEL_URL for public metadata.
+  return PRODUCTION_SITE_URL;
 }
 
 export const site = {
