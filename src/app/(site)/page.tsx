@@ -52,6 +52,47 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="border-b border-line bg-paper-2/40" aria-labelledby="services">
+        <div className="container-x py-14 md:py-16">
+          <h2 id="services" className="font-display text-3xl tracking-tight sm:text-4xl">
+            Headshots that stand out
+          </h2>
+          <p className="mt-3 max-w-2xl text-ink-2">
+            Individual studio sessions are $250 and include three final images. Not cookie-cutter —
+            built so you stand out from the crowd.
+          </p>
+          <ul className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+            <li className="card flex flex-col p-6">
+              <h3 className="text-lg font-medium">LinkedIn headshots</h3>
+              <p className="mt-2 flex-1 text-sm leading-6 text-ink-2">
+                A profile photo that looks like you — still professional, not the same face everyone else has.
+              </p>
+              <Link href="/linkedin-headshots" className="mt-5 text-sm font-medium underline hover:text-brass-2">
+                LinkedIn sessions
+              </Link>
+            </li>
+            <li className="card flex flex-col p-6">
+              <h3 className="text-lg font-medium">Team &amp; corporate</h3>
+              <p className="mt-2 flex-1 text-sm leading-6 text-ink-2">
+                Consistent sets for Rockland offices — on-site or studio, no Rockland travel fee.
+              </p>
+              <Link href="/team-headshots" className="mt-5 text-sm font-medium underline hover:text-brass-2">
+                Team headshots
+              </Link>
+            </li>
+            <li className="card flex flex-col p-6">
+              <h3 className="text-lg font-medium">Book a session</h3>
+              <p className="mt-2 flex-1 text-sm leading-6 text-ink-2">
+                Spring Valley studio or on-site across the county. Proofs in about 1–2 business days.
+              </p>
+              <Link href="/contact" className="btn-primary mt-5 self-start">
+                Get in touch
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </section>
+
       <section className="container-x py-16" aria-labelledby="recent-work">
         <div className="mb-8 flex items-end justify-between gap-6">
           <h2 id="recent-work" className="font-display text-3xl tracking-tight sm:text-4xl">
