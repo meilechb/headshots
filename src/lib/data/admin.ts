@@ -227,3 +227,17 @@ export async function getPaidThisMonth(): Promise<{ total_cents: number; count: 
     ) ?? { total_cents: 0, count: 0 }
   );
 }
+
+export type EmailLogRow = {
+  id: string;
+  kind: string | null;
+  to_address: string;
+  subject: string;
+  status: "sent" | "failed" | "skipped";
+  error: string | null;
+  created_at: string;
+};
+
+export async function listEmailLog(limit = 50): Promise<EmailLogRow[]> {
+  return rows<EmailLogRow>(await db()`select * from email_log order by created_at desc limit ${limit}`);
+}

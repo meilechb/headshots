@@ -46,7 +46,7 @@ export async function signContract(orderId: string, _prev: SignState, formData: 
     site.name,
     site.email,
   ].join("\n");
-  await sendEmail({ to: order.client.email, subject: `Your agreement: ${site.name}`, text });
+  await sendEmail({ to: order.client.email, subject: `Your agreement: ${site.name}`, text, kind: "agreement" });
 
   revalidatePath(`/pay/${orderId}`);
   return { ok: true };

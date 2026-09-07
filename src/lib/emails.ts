@@ -32,8 +32,9 @@ export function inquirySummary(q: Inquiry, packageName?: string | null) {
 
 export function inquiryNotification(q: Inquiry, packageName?: string | null) {
   return {
-    subject: `New inquiry: ${q.name} (${labelSessionType(q.session_type)})`,
-    text: `${inquirySummary(q, packageName)}\n\nOpen in the studio: ${site.url}/admin/clients${q.client_id ? `/${q.client_id}` : ""}\nReply to this email to answer ${q.name.split(" ")[0]} directly.`,
+    subject: `New inquiry: ${q.name}`,
+    text: `${inquirySummary(q, packageName)}\n\nReply to this email to answer ${q.name.split(" ")[0]} directly.`,
+    cta: { label: "Open in the studio", url: `${site.url}/admin/clients${q.client_id ? `/${q.client_id}` : ""}` },
   };
 }
 
@@ -63,11 +64,13 @@ export function galleryReadyEmail(input: {
     subject: `${what}: ${site.name}`,
     text: `Hi ${first},
 
-${what}: ${input.link}
+${what}.
 Code: ${input.code}
+${input.link}
 
 ${site.name}
 ${site.email}`,
+    cta: { label: input.kind === "proof" ? "See your proofs" : "See your photos", url: input.link },
   };
 }
 

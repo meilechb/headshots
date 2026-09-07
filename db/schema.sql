@@ -254,3 +254,20 @@ select o.id, 'full', o.amount_cents, o.currency, 'paid',
 from orders o
 where o.paid_at is not null and o.amount_cents > 0
   and not exists (select 1 from payments p where p.order_id = o.id);
+
+-- ---------------------------------------------------------------------------
+-- Email log: every send attempt, so the studio can see what went out
+-- ---------------------------------------------------------------------------
+
+create table if not exists email_log (
+  id uuid primary key default gen_random_uuid(),
+  kind text,
+  to_address text not null,
+  subject text not null,
+  status text not null check (status in ('sent', 'failed', 'skipped')),
+  error text,
+  provider_id text,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists email_log_created_idx on email_log (created_at desc);

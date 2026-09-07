@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
       { source: "/admin/orders", destination: "/admin/clients", permanent: false },
       { source: "/admin/orders/:path*", destination: "/admin/clients", permanent: false },
       { source: "/admin/galleries/new", destination: "/admin/galleries", permanent: false },
+      { source: "/admin/packages", destination: "/admin/pricing", permanent: false },
     ];
   },
 };

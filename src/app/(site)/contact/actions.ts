@@ -98,8 +98,8 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
     const notice = inquiryNotification(inquiry, packageName);
     const reply = inquiryAutoReply(inquiry);
     const [a, b] = await Promise.all([
-      sendEmail({ to: notifyAddress(), subject: notice.subject, text: notice.text, replyTo: inquiry.email }),
-      sendEmail({ to: inquiry.email, subject: reply.subject, text: reply.text }),
+      sendEmail({ to: notifyAddress(), subject: notice.subject, text: notice.text, cta: notice.cta, replyTo: inquiry.email, kind: "inquiry_notice" }),
+      sendEmail({ to: inquiry.email, subject: reply.subject, text: reply.text, kind: "inquiry_reply" }),
     ]);
     emailed = a.ok && b.ok;
   }

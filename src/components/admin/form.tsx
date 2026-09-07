@@ -40,7 +40,7 @@ export function ActionForm({
   return (
     <form key={formKey} action={formAction} className={className}>
       {children}
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="col-span-full flex flex-wrap items-center gap-3">
         <button type="submit" disabled={pending} className={buttonClassName}>
           {pending ? pendingLabel : submitLabel}
         </button>

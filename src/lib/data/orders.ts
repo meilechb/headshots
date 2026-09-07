@@ -176,5 +176,5 @@ async function sendReceipt(payment: Payment) {
     shootDate: row.shoot_date,
   });
   // Best effort; the payment is recorded regardless.
-  await sendEmail({ to: row.email, subject: mail.subject, text: mail.text });
+  await sendEmail({ to: row.email, subject: mail.subject, text: mail.text, kind: "receipt" });
 }

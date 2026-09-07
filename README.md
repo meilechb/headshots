@@ -109,7 +109,7 @@ Portfolio images for the public site are managed at `/admin/portfolio` (featured
 
 ## Notes and follow-ups
 
-- No transactional email provider is wired in; sharing uses prefilled `mailto:` links. Resend or Postmark would automate “your proofs are ready” emails.
+- Email goes through Resend (free tier: 3,000 a month, 100 a day). Without a key the site falls back to prefilled `mailto:` links. Every attempt is listed in Admin → Emails. Resend or Postmark would automate “your proofs are ready” emails.
 - Row types in `src/lib/types.ts` are hand-written to match `db/schema.sql`.
 - Next.js expands `$VAR` inside `.env*` files, so secrets containing `$` must be escaped as `\$` locally. The generated password hash uses `:` separators to avoid this.
 

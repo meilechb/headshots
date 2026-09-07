@@ -5,7 +5,7 @@ import { getHeroImage, HERO_KEY, setSetting } from "@/lib/data/settings";
 import { redirect, unstable_rethrow } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { db, one, rows } from "@/lib/db";
-import { emailConfigured, sendEmail } from "@/lib/email";
+import { emailConfigured, notifyAddress, sendEmail } from "@/lib/email";
 import { galleryReadyEmail } from "@/lib/emails";
 import { site } from "@/lib/site";
 import { generateAccessCode } from "@/lib/gallery-access";
@@ -485,7 +485,7 @@ export async function upsertPackage(_prev: ActionState, formData: FormData) {
         insert into packages (slug, name, description, price_cents, includes, turnaround, is_featured, is_active, sort_order, included_finals, extra_final_cents)
         values (${slug}, ${name}, ${description}, ${price}, ${includes}, ${turnaround}, ${featured}, ${active}, ${sort}, ${includedFinals}, ${extraFinal})`;
     }
-    revalidatePath("/admin/packages");
+    revalidatePath("/admin/pricing");
     revalidatePath("/pricing");
     revalidatePath("/");
   });
@@ -494,7 +494,7 @@ export async function upsertPackage(_prev: ActionState, formData: FormData) {
 export async function deletePackage(id: string) {
   await requireAdmin();
   await db()`delete from packages where id = ${id}`;
-  revalidatePath("/admin/packages");
+  revalidatePath("/admin/pricing");
   revalidatePath("/pricing");
 }
 
@@ -575,7 +575,7 @@ export async function emailGalleryLink(galleryId: string): Promise<GalleryEmailS
     code: g.access_code,
     expiresAt: g.expires_at,
   });
-  const result = await sendEmail({ to: g.client_email, subject: mail.subject, text: mail.text });
+  const result = await sendEmail({ to: g.client_email, subject: mail.subject, text: mail.text, cta: mail.cta, kind: "gallery_ready" });
   if (!result.ok) return { error: result.error ?? "Sending failed." };
   return { ok: true };
 }
@@ -666,4 +666,21 @@ export async function deleteReview(id: string) {
   await db()`delete from reviews where id = ${id}`;
   revalidatePath("/admin/reviews");
   revalidatePath("/");
+}
+
+// ------------------------------------------------------------------ emails
+
+export async function sendTestEmail(): Promise<ActionState> {
+  await requireAdmin();
+  const to = notifyAddress();
+  const result = await sendEmail({
+    to,
+    subject: `Test email: ${site.name}`,
+    text: `Hi,\n\nThis is a test from the studio. If you can read this, email is connected.\n\n${site.name}\n${site.email}`,
+    cta: { label: "Open the studio", url: `${site.url}/admin` },
+    kind: "test",
+  });
+  revalidatePath("/admin/emails");
+  if (!result.ok) return { error: result.error ?? "Sending failed.", at: Date.now() };
+  return { ok: true, at: Date.now() };
 }

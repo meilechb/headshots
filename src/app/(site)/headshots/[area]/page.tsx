@@ -73,7 +73,7 @@ export default async function AreaPage({ params }: Props) {
             <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6 text-sm">
               <div>
                 <dt className="text-muted">From</dt>
-                <dd className="mt-1 font-medium">{packages[0] ? formatMoney(packages[0].price_cents) : "$295"}</dd>
+                <dd className="mt-1 font-medium">{packages[0] ? formatMoney(packages[0].price_cents) : "$250"}</dd>
               </div>
               <div>
                 <dt className="text-muted">Proofs</dt>
