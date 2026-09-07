@@ -17,7 +17,7 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
   if (photos.length === 0) {
     return (
       <p className="text-sm text-muted">
-        No photos yet. Upload above; they appear here in delivery order.
+        No photos yet.
       </p>
     );
   }

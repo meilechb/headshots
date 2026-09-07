@@ -1,5 +1,6 @@
 import { listPackages } from "@/lib/data/admin";
-import { ActionForm, Field } from "@/components/admin/form";
+import { ActionForm, Disclosure, Field } from "@/components/admin/form";
+import { Icon } from "@/components/admin/icons";
 import { ConfirmSubmit } from "@/components/admin/ui";
 import { deletePackage, upsertPackage } from "../actions";
 import type { Package } from "@/lib/types";
@@ -13,6 +14,7 @@ function PackageForm({ pkg }: { pkg?: Package }) {
       className="card space-y-4 p-5"
       submitLabel={pkg ? "Save" : "Add package"}
       pendingLabel={pkg ? "Saving…" : "Adding…"}
+      buttonClassName={pkg ? "btn-secondary" : "btn-primary"}
       resetOnSuccess={!pkg}
       extra={
         pkg ? (
@@ -21,6 +23,7 @@ function PackageForm({ pkg }: { pkg?: Package }) {
             message={`Delete the ${pkg.name} package?`}
             formAction={deletePackage.bind(null, pkg.id)}
           >
+            <Icon name="trash" />
             Delete
           </ConfirmSubmit>
         ) : null
@@ -76,14 +79,17 @@ export default async function PackagesPage() {
   const packages = await listPackages();
   return (
     <div className="max-w-3xl space-y-8">
-      <h1 className="font-display text-3xl">Packages</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl">Packages</h1>
+        <Disclosure label={<><Icon name="plus" />New package</>}>
+          <div className="mt-2">
+            <PackageForm />
+          </div>
+        </Disclosure>
+      </div>
       {packages.map((p) => (
         <PackageForm key={p.id} pkg={p} />
       ))}
-      <div>
-        <h2 className="mb-3 font-medium">New package</h2>
-        <PackageForm />
-      </div>
     </div>
   );
 }

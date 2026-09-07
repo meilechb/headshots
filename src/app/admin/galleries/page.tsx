@@ -2,7 +2,8 @@ import Link from "next/link";
 import { listClientOptions, listGalleries } from "@/lib/data/admin";
 import { galleryKindLabels } from "@/lib/types";
 import { GalleryStatusBadge, formatDate } from "@/components/admin/badges";
-import { ActionForm } from "@/components/admin/form";
+import { ActionForm, Disclosure } from "@/components/admin/form";
+import { Icon } from "@/components/admin/icons";
 import { createGallery } from "../actions";
 
 export default async function GalleriesPage() {
@@ -10,26 +11,28 @@ export default async function GalleriesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-3xl">Galleries</h1>
         {clients.length ? (
-          <ActionForm
-            action={createGallery}
-            className="flex flex-wrap items-center gap-2"
-            submitLabel="New gallery"
-            pendingLabel="Creating…"
-          >
-            <select name="client_id" required defaultValue="" aria-label="Client" className="input w-auto min-w-40">
-              <option value="" disabled>Client…</option>
-              {clients.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-            <select name="kind" defaultValue="proof" aria-label="Type" className="input w-auto">
-              <option value="proof">Proofs</option>
-              <option value="final">Final photos</option>
-            </select>
-          </ActionForm>
+          <Disclosure label={<><Icon name="plus" />New gallery</>}>
+            <ActionForm
+              action={createGallery}
+              className="card mt-2 flex flex-wrap items-center gap-2 p-3"
+              submitLabel="Create"
+              pendingLabel="Creating…"
+            >
+              <select name="client_id" required defaultValue="" aria-label="Client" className="input w-auto flex-1 min-w-48">
+                <option value="" disabled>Client…</option>
+                {clients.map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </select>
+              <select name="kind" defaultValue="proof" aria-label="Type" className="input w-auto">
+                <option value="proof">Proofs</option>
+                <option value="final">Final photos</option>
+              </select>
+            </ActionForm>
+          </Disclosure>
         ) : null}
       </div>
 
@@ -49,7 +52,7 @@ export default async function GalleriesPage() {
             </thead>
             <tbody className="divide-y divide-line">
               {galleries.map((g) => (
-                <tr key={g.id} className="hover:bg-paper-2/40">
+                <tr key={g.id} className="hover:bg-paper-3/40">
                   <td className="px-4 py-3">
                     <Link href={`/admin/galleries/${g.id}`} className="font-medium hover:underline">
                       {g.title}
@@ -61,7 +64,7 @@ export default async function GalleriesPage() {
                   </td>
                   <td className="px-4 py-3 text-muted">
                     {g.photo_count}
-                    {g.favorites ? ` · ${g.favorites} ★` : ""}
+                    {g.favorites ? ` · ${g.favorites} ♥` : ""}
                     {g.open_notes ? ` · ${g.open_notes} notes` : ""}
                   </td>
                   <td className="px-4 py-3"><GalleryStatusBadge status={g.status} /></td>

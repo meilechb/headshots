@@ -6,6 +6,7 @@ import { labelLocation, labelSessionType } from "@/lib/emails";
 import { formatMoney, galleryKindLabels, type ClientStage } from "@/lib/types";
 import { GalleryStatusBadge, StageBadge, formatDate } from "@/components/admin/badges";
 import { ActionForm, Disclosure, Field, SubmitButton } from "@/components/admin/form";
+import { Icon } from "@/components/admin/icons";
 import { ConfirmSubmit, CopyButton } from "@/components/admin/ui";
 import { MarkRead } from "@/components/admin/mark-read";
 import { SessionForm } from "@/components/admin/session-form";
@@ -21,8 +22,6 @@ import {
   updateClient,
   updateSession,
 } from "../../actions";
-
-const btn = "btn-secondary";
 
 export default async function ClientPage({
   params,
@@ -52,51 +51,45 @@ export default async function ClientPage({
   const firstName = client.name.split(" ")[0];
   const canDelete = sessions.length === 0 && galleries.length === 0;
   const replyHref = `mailto:${client.email}?subject=${encodeURIComponent(`Your headshots: ${site.name}`)}&body=${encodeURIComponent(`Hi ${firstName},\n\n`)}`;
-  const empty = messages.length === 0 && sessions.length === 0 && galleries.length === 0;
 
   return (
     <div className="space-y-6">
       {unread ? <MarkRead clientId={client.id} /> : null}
 
-      <div>
-        <Link href="/admin/clients" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
-          ← Clients
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-3xl">{client.name}</h1>
-          <StageBadge stage={stage} />
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <Link href="/admin/clients" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
+            ← Clients
+          </Link>
+          <div className="mt-1 flex flex-wrap items-center gap-3">
+            <h1 className="font-display text-3xl">{client.name}</h1>
+            <StageBadge stage={stage} />
+          </div>
+          <p className="mt-1 text-sm text-muted">
+            <a href={`mailto:${client.email}`} className="underline hover:text-ink">{client.email}</a>
+            {client.phone ? (
+              <>
+                {" · "}
+                <a href={`tel:${client.phone}`} className="underline hover:text-ink">{client.phone}</a>
+              </>
+            ) : null}
+            {client.company ? ` · ${client.company}` : ""}
+          </p>
         </div>
-        <p className="mt-1 text-sm text-muted">
-          <a href={`mailto:${client.email}`} className="underline hover:text-ink">{client.email}</a>
-          {client.phone ? (
-            <>
-              {" · "}
-              <a href={`tel:${client.phone}`} className="underline hover:text-ink">{client.phone}</a>
-            </>
-          ) : null}
-          {client.company ? ` · ${client.company}` : ""}
-        </p>
+        <a href={replyHref} className="btn-primary"><Icon name="mail" />Email</a>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <a href={replyHref} className={btn}>Email</a>
-        <Disclosure label="Add session" openLabel="Close" className={btn}>
-          <div className="card mt-2 p-4">
-            <SessionForm action={createSession.bind(null, client.id)} packages={packages} />
-          </div>
-        </Disclosure>
-        <form action={createGalleryForClient.bind(null, client.id, "proof")}>
-          <SubmitButton className={btn} pendingLabel="…">New proofs gallery</SubmitButton>
-        </form>
-        <form action={createGalleryForClient.bind(null, client.id, "final")}>
-          <SubmitButton className={btn} pendingLabel="…">New final gallery</SubmitButton>
-        </form>
-        <Disclosure label="Edit" openLabel="Close" className={btn}>
+        <Disclosure
+          label={<><Icon name="pencil" />Edit details</>}
+          openLabel={<><Icon name="pencil" />Edit details</>}
+          className="btn-ghost"
+          openClassName="btn-secondary"
+        >
           <ActionForm
             key={`${client.name}-${client.email}-${client.phone}-${client.company}-${client.notes}`}
             action={updateClient.bind(null, client.id)}
             className="card mt-2 grid grid-cols-1 gap-4 p-4 sm:grid-cols-2"
-            buttonClassName="btn-primary"
           >
             <Field label="Name" htmlFor="name">
               <input id="name" name="name" defaultValue={client.name} required className="input" />
@@ -118,20 +111,20 @@ export default async function ClientPage({
           </ActionForm>
         </Disclosure>
         <form action={setClientArchived.bind(null, client.id, !client.archived)}>
-          <SubmitButton className={btn} pendingLabel="…">
+          <SubmitButton className="btn-ghost" pendingLabel="…">
+            <Icon name="archive" />
             {client.archived ? "Unarchive" : "Archive"}
           </SubmitButton>
         </form>
         {canDelete ? (
-          <form action={deleteClient.bind(null, client.id)}>
+          <form action={deleteClient.bind(null, client.id)} className="ml-auto">
             <ConfirmSubmit className="btn-danger" message={`Delete ${client.name}?`}>
+              <Icon name="trash" />
               Delete
             </ConfirmSubmit>
           </form>
         ) : null}
       </div>
-
-      {empty ? <p className="text-sm text-muted">Nothing yet.</p> : null}
 
       {messages.length ? (
         <section className="card p-4">
@@ -149,14 +142,15 @@ export default async function ClientPage({
               ].filter(Boolean);
               return (
                 <li key={m.id} className="py-3 first:pt-0 last:pb-0">
-                  <div className="flex items-start justify-between gap-3 text-xs text-muted">
+                  <div className="flex items-center justify-between gap-3 text-xs text-muted">
                     <span>
                       {formatDate(m.created_at, true)}
                       {m.status === "new" ? <span className="ml-2 text-brass-2">New</span> : null}
                       {facts.length ? ` · ${facts.join(" · ")}` : ""}
                     </span>
                     <form action={deleteMessage.bind(null, m.id)}>
-                      <ConfirmSubmit className="text-muted hover:text-danger" message="Delete this message?">
+                      <ConfirmSubmit className="btn-danger h-8 px-3 text-xs" message="Delete this message?">
+                        <Icon name="trash" />
                         Delete
                       </ConfirmSubmit>
                     </form>
@@ -169,9 +163,18 @@ export default async function ClientPage({
         </section>
       ) : null}
 
-      {sessions.length ? (
-        <section className="card p-4">
+      <section className="card p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-medium">Sessions</h2>
+          <Disclosure label={<><Icon name="plus" />Add session</>}>
+            <div className="mt-3 border border-line p-3">
+              <SessionForm action={createSession.bind(null, client.id)} packages={packages} />
+            </div>
+          </Disclosure>
+        </div>
+        {sessions.length === 0 ? (
+          <p className="mt-3 text-sm text-muted">No sessions yet.</p>
+        ) : (
           <ul className="mt-3 divide-y divide-line">
             {sessions.map((s) => {
               const m = s.money;
@@ -184,50 +187,53 @@ export default async function ClientPage({
                   ? `Deposit paid · ${formatMoney(m.due_cents, s.currency)} due`
                   : `Not paid · deposit ${formatMoney(m.deposit_due_cents, s.currency)}`;
               return (
-                <li key={s.id} className="py-3 first:pt-0 last:pb-0">
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <li key={s.id} className="py-4 first:pt-3 last:pb-0">
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                     <span className="font-medium">{s.title}</span>
                     <span className="font-display text-lg">{formatMoney(m.total_cents, s.currency)}</span>
                     <span className={`text-xs ${m.fully_paid ? "text-success" : "text-brass-2"}`}>{status}</span>
-                    <span className="text-xs text-muted">
-                      {s.shoot_date ? formatDate(s.shoot_date, true) : "No date"} · #{s.order_number}
-                      {m.extra_picks ? ` · ${m.extra_picks} extra photo${m.extra_picks === 1 ? "" : "s"}` : ""}
-                      {" · "}
-                      {s.contract_signed_at
-                        ? `Signed ${formatDate(s.contract_signed_at, true)}`
-                        : "Agreement not signed"}
-                    </span>
                   </div>
+                  <p className="mt-0.5 text-xs text-muted">
+                    {s.shoot_date ? formatDate(s.shoot_date, true) : "No date"} · #{s.order_number}
+                    {m.extra_picks ? ` · ${m.extra_picks} extra photo${m.extra_picks === 1 ? "" : "s"}` : ""}
+                    {" · "}
+                    {s.contract_signed_at ? `Agreement signed ${formatDate(s.contract_signed_at, true)}` : "Agreement not signed"}
+                  </p>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <CopyButton value={payUrl} label="Copy link" />
-                    <a href={payMail} className={btn}>Email link</a>
                     {!m.fully_paid && !m.deposit_paid ? (
                       <form action={markSessionPaid.bind(null, s.id, "deposit")}>
-                        <SubmitButton className={btn} pendingLabel="…">Deposit paid</SubmitButton>
+                        <SubmitButton className="btn-secondary" pendingLabel="…"><Icon name="dollar" />Deposit paid</SubmitButton>
                       </form>
                     ) : null}
                     {!m.fully_paid ? (
                       <form action={markSessionPaid.bind(null, s.id, "balance")}>
-                        <SubmitButton className={btn} pendingLabel="…">Balance paid</SubmitButton>
+                        <SubmitButton className="btn-secondary" pendingLabel="…"><Icon name="dollar" />Balance paid</SubmitButton>
                       </form>
                     ) : null}
+                    <CopyButton value={payUrl} label="Copy link" />
+                    <a href={payMail} className="btn-ghost"><Icon name="mail" />Email link</a>
                     {hasManual ? (
                       <form action={markSessionUnpaid.bind(null, s.id)}>
-                        <SubmitButton className={btn} pendingLabel="…">Undo payment</SubmitButton>
+                        <SubmitButton className="btn-ghost" pendingLabel="…"><Icon name="undo" />Undo payment</SubmitButton>
                       </form>
                     ) : null}
-                    <Disclosure label="Edit" openLabel="Close" className={btn}>
+                    <Disclosure
+                      label={<><Icon name="pencil" />Edit</>}
+                      openLabel={<><Icon name="pencil" />Edit</>}
+                      className="btn-ghost"
+                      openClassName="btn-secondary"
+                    >
                       <ActionForm
                         key={s.updated_at}
                         action={updateSession.bind(null, s.id)}
                         className="mt-2 grid grid-cols-2 gap-4 border border-line p-4 sm:grid-cols-3"
-                        buttonClassName="btn-primary"
                         extra={
                           <ConfirmSubmit
-                            className="btn-danger"
+                            className="btn-danger ml-auto"
                             message="Delete this session?"
                             formAction={deleteSession.bind(null, s.id)}
                           >
+                            <Icon name="trash" />
                             Delete
                           </ConfirmSubmit>
                         }
@@ -269,12 +275,24 @@ export default async function ClientPage({
               );
             })}
           </ul>
-        </section>
-      ) : null}
+        )}
+      </section>
 
-      {galleries.length ? (
-        <section className="card p-4">
+      <section className="card p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="font-medium">Galleries</h2>
+          <div className="flex flex-wrap gap-2">
+            <form action={createGalleryForClient.bind(null, client.id, "proof")}>
+              <SubmitButton className="btn-secondary" pendingLabel="…"><Icon name="plus" />Proofs</SubmitButton>
+            </form>
+            <form action={createGalleryForClient.bind(null, client.id, "final")}>
+              <SubmitButton className="btn-secondary" pendingLabel="…"><Icon name="plus" />Finals</SubmitButton>
+            </form>
+          </div>
+        </div>
+        {galleries.length === 0 ? (
+          <p className="mt-3 text-sm text-muted">No galleries yet.</p>
+        ) : (
           <ul className="mt-3 divide-y divide-line text-sm">
             {galleries.map((g) => (
               <li key={g.id} className="py-3 first:pt-0 last:pb-0">
@@ -292,8 +310,8 @@ export default async function ClientPage({
               </li>
             ))}
           </ul>
-        </section>
-      ) : null}
+        )}
+      </section>
     </div>
   );
 }

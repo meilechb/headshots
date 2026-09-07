@@ -2,7 +2,8 @@ import Link from "next/link";
 import { listClients } from "@/lib/data/admin";
 import { clientStageLabels, clientStages, type ClientStage } from "@/lib/types";
 import { StageBadge, formatDate } from "@/components/admin/badges";
-import { ActionForm } from "@/components/admin/form";
+import { ActionForm, Disclosure } from "@/components/admin/form";
+import { Icon } from "@/components/admin/icons";
 import { createClient } from "../actions";
 
 export default async function ClientsPage({
@@ -30,17 +31,19 @@ export default async function ClientsPage({
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-display text-3xl">Clients</h1>
-        <ActionForm
-          action={createClient}
-          className="flex flex-wrap items-center gap-2"
-          submitLabel="Add client"
-          pendingLabel="Adding…"
-        >
-          <input name="name" required placeholder="Name" aria-label="Name" autoComplete="off" className="input w-auto" />
-          <input name="email" type="email" required placeholder="Email" aria-label="Email" autoComplete="off" className="input w-auto" />
-        </ActionForm>
+        <Disclosure label={<><Icon name="plus" />Add client</>}>
+          <ActionForm
+            action={createClient}
+            className="card mt-2 flex flex-wrap items-center gap-2 p-3"
+            submitLabel="Add"
+            pendingLabel="Adding…"
+          >
+            <input name="name" required placeholder="Name" aria-label="Name" autoComplete="off" className="input w-auto flex-1 min-w-40" />
+            <input name="email" type="email" required placeholder="Email" aria-label="Email" autoComplete="off" className="input w-auto flex-1 min-w-40" />
+          </ActionForm>
+        </Disclosure>
       </div>
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -52,8 +55,8 @@ export default async function ClientsPage({
               <Link
                 key={t.label}
                 href={query ? `${href}${t.key ? "&" : "?"}q=${encodeURIComponent(q ?? "")}` : href}
-                className={`inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm transition ${
-                  active ? "border-ink bg-ink text-paper" : "border-line text-ink-2 hover:border-ink hover:text-ink"
+                className={`inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border px-3.5 text-sm transition ${
+                  active ? "border-ink bg-ink text-paper" : "border-transparent text-ink-2 hover:border-line hover:text-ink"
                 }`}
               >
                 {t.label}
@@ -90,7 +93,7 @@ export default async function ClientsPage({
             </thead>
             <tbody className="divide-y divide-line">
               {clients.map((c) => (
-                <tr key={c.id} className="hover:bg-paper-2/40">
+                <tr key={c.id} className="hover:bg-paper-3/40">
                   <td className="px-4 py-3">
                     <Link href={`/admin/clients/${c.id}`} className="group flex items-start gap-2">
                       {c.unread ? (

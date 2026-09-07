@@ -5,6 +5,7 @@ import { site } from "@/lib/site";
 import { galleryKindLabels } from "@/lib/types";
 import { GalleryStatusBadge } from "@/components/admin/badges";
 import { ActionForm, Disclosure, Field, SubmitButton } from "@/components/admin/form";
+import { Icon } from "@/components/admin/icons";
 import { ConfirmSubmit, CopyButton } from "@/components/admin/ui";
 import { Uploader } from "@/components/admin/uploader";
 import { PhotoManager } from "@/components/admin/photo-manager";
@@ -14,8 +15,6 @@ import { deleteGallery, regenerateAccessCode, setGalleryStatus, updateGallery } 
 
 // Image processing in server actions can exceed the default function timeout.
 export const maxDuration = 60;
-
-const btn = "btn-secondary";
 
 export default async function GalleryDetailPage({
   params,
@@ -42,24 +41,23 @@ export default async function GalleryDetailPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
-          ← Galleries
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-3xl">{gallery.title}</h1>
-          <GalleryStatusBadge status={gallery.status} />
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <Link href="/admin/galleries" className="inline-flex min-h-9 items-center text-xs text-muted hover:text-ink">
+            ← Galleries
+          </Link>
+          <div className="mt-1 flex flex-wrap items-center gap-3">
+            <h1 className="font-display text-3xl">{gallery.title}</h1>
+            <GalleryStatusBadge status={gallery.status} />
+          </div>
+          <p className="mt-1 text-sm text-muted">
+            <Link href={`/admin/clients/${gallery.client.id}`} className="underline hover:text-ink">{gallery.client.name}</Link>
+            {" · "}{galleryKindLabels[gallery.kind]}
+            {" · "}{photos.length} photo{photos.length === 1 ? "" : "s"}
+            {favorites ? ` · ${favorites} favorite${favorites === 1 ? "" : "s"}` : ""}
+            {openNotes ? ` · ${openNotes} note${openNotes === 1 ? "" : "s"}` : ""}
+          </p>
         </div>
-        <p className="mt-1 text-sm text-muted">
-          <Link href={`/admin/clients/${gallery.client.id}`} className="underline hover:text-ink">{gallery.client.name}</Link>
-          {" · "}{galleryKindLabels[gallery.kind]}
-          {" · "}{photos.length} photo{photos.length === 1 ? "" : "s"}
-          {favorites ? ` · ${favorites} favorite${favorites === 1 ? "" : "s"}` : ""}
-          {openNotes ? ` · ${openNotes} note${openNotes === 1 ? "" : "s"}` : ""}
-        </p>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
         {gallery.status !== "published" ? (
           <form action={setGalleryStatus.bind(null, gallery.id, "published")}>
             <SubmitButton
@@ -68,31 +66,42 @@ export default async function GalleryDetailPage({
               disabled={photos.length === 0}
               title={photos.length === 0 ? "Upload photos first" : undefined}
             >
+              <Icon name="play" />
               {gallery.status === "archived" ? "Reopen" : "Make live"}
             </SubmitButton>
           </form>
         ) : (
           <form action={setGalleryStatus.bind(null, gallery.id, "archived")}>
-            <SubmitButton className={btn} pendingLabel="…">Close</SubmitButton>
+            <SubmitButton className="btn-secondary" pendingLabel="…">
+              <Icon name="pause" />
+              Close gallery
+            </SubmitButton>
           </form>
         )}
-        <CopyButton value={link} label="Copy link" />
-        <CopyButton value={code} label={`Copy code ${code}`} />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
         {emailConfigured() ? (
           <EmailGalleryButton galleryId={gallery.id} />
         ) : (
-          <a href={mailto} className={btn}>Email client</a>
+          <a href={mailto} className="btn-secondary"><Icon name="mail" />Email client</a>
         )}
+        <CopyButton value={link} label="Copy link" />
+        <CopyButton value={code} label={`Code ${code}`} />
         <form action={regenerateAccessCode.bind(null, gallery.id)}>
-          <SubmitButton className={btn} pendingLabel="…">New code</SubmitButton>
+          <SubmitButton className="btn-ghost" pendingLabel="…"><Icon name="key" />New code</SubmitButton>
         </form>
-        <a href={link} target="_blank" rel="noreferrer" className={btn}>Preview ↗</a>
-        <Disclosure label="Settings" openLabel="Close settings" className={btn}>
+        <a href={link} target="_blank" rel="noreferrer" className="btn-ghost"><Icon name="external" />Preview</a>
+        <Disclosure
+          label={<><Icon name="settings" />Settings</>}
+          openLabel={<><Icon name="settings" />Settings</>}
+          className="btn-ghost"
+          openClassName="btn-secondary"
+        >
           <ActionForm
             key={`${gallery.kind}-${gallery.allow_downloads}-${gallery.expires_at ?? ""}-${gallery.title}-${gallery.welcome_message ?? ""}`}
             action={updateGallery.bind(null, gallery.id)}
             className="card mt-2 grid grid-cols-1 gap-4 p-4 sm:grid-cols-2"
-            buttonClassName="btn-primary"
           >
             <Field label="Title" htmlFor="title">
               <input id="title" name="title" defaultValue={gallery.title} required className="input" />
@@ -115,14 +124,15 @@ export default async function GalleryDetailPage({
                 className="input"
               />
             </Field>
-            <label className="flex min-h-11 items-center gap-2 text-sm sm:col-span-2">
+            <label className="flex min-h-10 items-center gap-2 text-sm sm:col-span-2">
               <input type="checkbox" name="allow_downloads" defaultChecked={gallery.allow_downloads} className="h-4 w-4" />
               Client can download
             </label>
           </ActionForm>
         </Disclosure>
-        <form action={deleteGallery.bind(null, gallery.id)}>
+        <form action={deleteGallery.bind(null, gallery.id)} className="ml-auto">
           <ConfirmSubmit className="btn-danger" message="Delete this gallery and all its photos?">
+            <Icon name="trash" />
             Delete
           </ConfirmSubmit>
         </form>

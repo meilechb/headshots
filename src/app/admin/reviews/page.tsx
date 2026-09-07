@@ -1,5 +1,6 @@
 import { listReviews } from "@/lib/data/admin";
-import { ActionForm, Field } from "@/components/admin/form";
+import { ActionForm, Disclosure, Field } from "@/components/admin/form";
+import { Icon } from "@/components/admin/icons";
 import { ConfirmSubmit } from "@/components/admin/ui";
 import { createReview, deleteReview, updateReview } from "../actions";
 
@@ -8,18 +9,21 @@ export default async function ReviewsPage() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <h1 className="font-display text-3xl">Reviews</h1>
-
-      <ActionForm
-        action={createReview}
-        className="card grid grid-cols-1 gap-3 p-4"
-        submitLabel="Add review"
-        pendingLabel="Adding…"
-        resetOnSuccess
-      >
-        <input name="name" required placeholder="Name" aria-label="Name" className="input" />
-        <textarea name="body" required rows={3} placeholder="Review" aria-label="Review" className="input" />
-      </ActionForm>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-3xl">Reviews</h1>
+        <Disclosure label={<><Icon name="plus" />Add review</>}>
+          <ActionForm
+            action={createReview}
+            className="card mt-2 grid grid-cols-1 gap-3 p-4"
+            submitLabel="Add"
+            pendingLabel="Adding…"
+            resetOnSuccess
+          >
+            <input name="name" required placeholder="Name" aria-label="Name" className="input" />
+            <textarea name="body" required rows={3} placeholder="Review" aria-label="Review" className="input" />
+          </ActionForm>
+        </Disclosure>
+      </div>
 
       {reviews.length === 0 ? (
         <p className="text-sm text-muted">No reviews yet.</p>
@@ -31,6 +35,7 @@ export default async function ReviewsPage() {
                 key={`${r.name}-${r.body}-${r.is_published}`}
                 action={updateReview.bind(null, r.id)}
                 className="card grid grid-cols-1 gap-3 p-4"
+                buttonClassName="btn-secondary"
                 extra={
                   <>
                     <label className="flex items-center gap-2 text-sm">
@@ -38,6 +43,7 @@ export default async function ReviewsPage() {
                       Show on site
                     </label>
                     <ConfirmSubmit className="btn-danger ml-auto" message="Delete this review?" formAction={deleteReview.bind(null, r.id)}>
+                      <Icon name="trash" />
                       Delete
                     </ConfirmSubmit>
                   </>

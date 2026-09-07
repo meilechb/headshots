@@ -111,22 +111,24 @@ export function SubmitButton({
   );
 }
 
-/** A button that reveals a panel (used for "Add client", "New gallery"). */
+/** A button that reveals a panel below the row it sits in (for "Add client", "Settings"). */
 export function Disclosure({
   label,
   openLabel = "Cancel",
   className = "btn-primary",
+  openClassName = "btn-ghost",
   children,
 }: {
-  label: string;
-  openLabel?: string;
+  label: ReactNode;
+  openLabel?: ReactNode;
   className?: string;
+  openClassName?: string;
   children: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" onClick={() => setOpen((v) => !v)} className={open ? "btn-primary" : className}>
+      <button type="button" onClick={() => setOpen((v) => !v)} className={open ? openClassName : className} aria-expanded={open}>
         {open ? openLabel : label}
       </button>
       {open ? <div className="order-last basis-full">{children}</div> : null}

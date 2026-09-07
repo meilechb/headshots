@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { Icon } from "./icons";
 
 export const adminNav = [
   { href: "/admin", label: "Dashboard" },
@@ -39,7 +40,15 @@ export function AdminNav() {
   );
 }
 
-export function CopyButton({ value, label = "Copy" }: { value: string; label?: string }) {
+export function CopyButton({
+  value,
+  label = "Copy",
+  className = "btn-ghost",
+}: {
+  value: string;
+  label?: string;
+  className?: string;
+}) {
   const [copied, setCopied] = useState(false);
   return (
     <button
@@ -53,8 +62,9 @@ export function CopyButton({ value, label = "Copy" }: { value: string; label?: s
           // Clipboard unavailable (insecure context); user can select the text.
         }
       }}
-      className="btn-secondary shrink-0"
+      className={`${className} shrink-0`}
     >
+      <Icon name={copied ? "check" : "copy"} />
       {copied ? "Copied" : label}
     </button>
   );

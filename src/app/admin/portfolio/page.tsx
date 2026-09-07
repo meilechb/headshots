@@ -2,6 +2,7 @@ import Image from "next/image";
 import { listPortfolioAdmin } from "@/lib/data/admin";
 import { ActionForm, Field } from "@/components/admin/form";
 import { ConfirmSubmit } from "@/components/admin/ui";
+import { Icon } from "@/components/admin/icons";
 import { Uploader } from "@/components/admin/uploader";
 import { getHeroImage } from "@/lib/data/settings";
 import { clearHeroImage, deletePortfolioImage, updatePortfolioImage, useAsHeroImage } from "../actions";
@@ -75,6 +76,7 @@ export default async function PortfolioAdminPage() {
                     message="Delete this image from the portfolio?"
                     formAction={deletePortfolioImage.bind(null, img.id)}
                   >
+                    <Icon name="trash" />
                     Delete
                   </ConfirmSubmit>
                 }
