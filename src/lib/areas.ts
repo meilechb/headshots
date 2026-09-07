@@ -1,1 +1,1 @@
-SEE_FILE
+LOAD_FROM_FILE:/tmp/areas-good.ts
