@@ -256,11 +256,10 @@ export async function createGallery(_prev: ActionState, formData: FormData) {
   });
 }
 
-/** From a client's page: one click, then straight to the upload screen. */
+/** From a client's page: one click; the new gallery shows up in the client's list. */
 export async function createGalleryForClient(clientId: string, kind: GalleryKind) {
   await requireAdmin();
-  const id = await insertGallery(clientId, kind);
-  redirect(`/admin/galleries/${id}`);
+  await insertGallery(clientId, kind);
 }
 
 export async function updateGallery(id: string, _prev: ActionState, formData: FormData) {
