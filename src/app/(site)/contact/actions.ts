@@ -44,9 +44,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
 
   if (!values.name) return { error: "Please enter your name.", values };
   if (!EMAIL_RE.test(values.email)) return { error: "Please enter a valid email address.", values };
-  if (!sessionTypes.some((s) => s.value === values.session_type)) {
-    return { error: "Please choose what kind of session you need.", values };
-  }
+  const sessionType = sessionTypes.some((s) => s.value === values.session_type) ? values.session_type : null;
   const people = values.people_count ? Number.parseInt(values.people_count, 10) : null;
   if (values.people_count && (!Number.isFinite(people) || people! < 1 || people! > 5000)) {
     return { error: "Please enter how many people need photos.", values };
@@ -79,7 +77,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
       await db()`
         insert into inquiries (client_id, name, email, phone, package_slug, message, session_type, people_count, location_pref, town, timing, source)
         values (${clientId}, ${values.name}, ${values.email}, ${values.phone || null}, ${values.package || null}, ${values.message || null},
-                ${values.session_type}, ${people}, ${location}, ${values.town || null}, ${values.timing || null}, ${values.source || null})
+                ${sessionType}, ${people}, ${location}, ${values.town || null}, ${values.timing || null}, ${values.source || null})
         returning *`
     );
   } catch (error) {

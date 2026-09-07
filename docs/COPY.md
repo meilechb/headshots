@@ -15,7 +15,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 - Browser tab title: Meilech Biller | Headshot Photographer in Rockland County, NY
 - Search result description: Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
-- H1: Stand out from the crowd
+- H1: Stand outfrom the crowd
 - Text: Professional headshots in Rockland County, NY.
 - Link: Get in touch
 - Link: Portfolio
@@ -120,51 +120,16 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 ## Contact / Book a session  (`/contact`)
 
-- Browser tab title: Book a Headshot Session in Rockland County, NY | Meilech Biller
-- Search result description: Book a headshot session with Meilech Biller. Studio in Spring Valley, NY, or on-site at your office anywhere in Rockland County. Reply within one business day.
-- H1: Book a session
-- Text: Fill out the form or email me. I reply within one business day with dates and a price. There is no obligation.
-- Term: Email
-- Link: hello@meilechbiller.com
-- Term: Studio
-- Text: Spring Valley, NY
-- Text: Exact directions come with your booking confirmation.
-- Term: On location
-- Text: Offices anywhere in Rockland County, no travel fee
-- Term: Hours
-- Text: Sunday to Thursday, plus Friday mornings. Evenings by arrangement.
+- Browser tab title: Contact Meilech Biller, Headshot Photographer in Rockland County, NY | Meilech Biller
+- Search result description: Contact Meilech Biller about a headshot session. Studio in Spring Valley, NY, or on-site anywhere in Rockland County. Reply within one business day.
+- H1: Contact
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
+- Text: Or email .
+- Link: hello@meilechbiller.com
 
 
 ## Landing page: Rockland County  (`/headshots/rockland-county`)
@@ -182,39 +147,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Rockland County
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: Studio or your office
 - Text: For one person, the studio in Spring Valley is the simplest option. It is a few minutes off Route 59 and Route 45, with parking. A session takes 30 to 90 minutes depending on the package.
 - Text: For two or more people, I bring the studio to you. The kit is a background, two lights and a laptop, and it sets up in about 20 minutes in a conference room, lobby or spare office. Each person needs 10 to 15 minutes, so a team of twelve is done in a morning.
@@ -287,39 +225,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Spring Valley
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: Getting to the studio
 - Text: The studio is in Spring Valley, minutes from Main Street, Route 45 and Route 59, and about five minutes from the Spring Valley bus and train terminal. There is parking. The exact address is in your booking confirmation.
 - Text: If you come from work, allow 45 minutes door to door for the Essential package and about an hour and a half for the Professional package. You can change in the studio; bring your outfits on hangers.
@@ -392,39 +303,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Monsey
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: From Monsey to the studio
 - Text: From Route 59 in Monsey it is about five minutes east to the studio; from Route 306 and Wesley Hills about ten. Sessions are available Sunday through Thursday and Friday morning, with evenings on request, so you can come after work or after seder without missing a day.
 - Text: Bring two or three outfits. Solid colors in dark or medium tones photograph best; a jacket and a plain shirt or blouse cover most uses. I will tell you what to wear in the confirmation email.
@@ -497,39 +381,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Nanuet
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: On-site in Nanuet offices
 - Text: The offices along Route 59 and Route 304, the medical and dental practices near The Shops at Nanuet, and the businesses around the Nanuet train station on Prospect Street are all a short drive from the studio, so I can be set up by 8:30 for a session before the workday starts. The setup needs a room about 8 by 10 feet and an outlet.
 - Text: Each person takes 10 to 15 minutes. Everyone is photographed with the same background and light so the staff page or directory matches. New hires later are photographed in the studio against the same setup and slotted in.
@@ -601,39 +458,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in New City
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: Attorneys and professional offices
 - Text: Firms on Main Street, New Hempstead Road and Route 304 near the Rockland County Courthouse book on-site sessions so partners and associates are photographed on the same day against the same background. Photos are delivered in the crops attorney directories and the firm website need.
 - Text: For a solo practitioner, a studio session is the better use of time: 30 to 60 minutes, two or three looks, and a photo that works for the bar directory, LinkedIn and the website.
@@ -705,39 +535,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Airmont
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: From Airmont to the studio
 - Text: Route 59 east about ten minutes, or Route 306 to Route 45. Parking at the building. Sessions Sunday through Thursday, Friday mornings, evenings on request.
 - H2: Who books from Airmont
@@ -809,39 +612,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Suffern
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: Medical and dental practices
 - Text: Practices near Good Samaritan Hospital and along Route 59 book on-site sessions so every provider is photographed in the same light in a white coat, scrubs or business dress. I set up in an exam room or office and each provider takes about ten minutes between patients. Files are delivered in the sizes hospital directories and insurance networks ask for.
 - H2: Offices, the college and downtown
@@ -912,39 +688,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Term: Travel fee
 - Text: None in Rockland
 - H2: Book in Ramapo
-- Text: I reply within one business day with dates and a price.
+- Text: I reply within one business day.
 - Field label: Name
 - Field label: Email
-- Field label: Phone (optional)
-- Field label: What do you need?
-- Option: Choose one
-- Option: Headshot for myself (business / LinkedIn)
-- Option: Headshots for a team or office
-- Option: Real estate / sales photos
-- Option: Medical or professional practice
-- Option: Actor headshots
-- Option: Something else
-- Field label: Where?
-- Option: Not sure yet
-- Option: Your studio in Spring Valley
-- Option: At my office or location
-- Option: Either / not sure
-- Field label: Your town (optional)
-- Placeholder: Monsey, Nanuet, New City…
-- Field label: Package (optional)
-- Option: Not sure yet
-- Option: Essential
-- Option: Professional
-- Option: Executive
-- Option: Team & Office
-- Field label: When? (optional)
-- Placeholder: Next two weeks, weekday mornings…
-- Field label: Anything else? (optional)
-- Placeholder: What the photos are for, a deadline, a photo you want to match…
-- Field label: How did you hear about me? (optional)
-- Placeholder: Google, a friend, Instagram…
+- Field label: Phone
+- Field label: Message
 - Button: Send
-- Text: No account needed. I reply by email within one business day.
 - H2: One studio, every village
 - Text: From most of Ramapo the studio is 5 to 15 minutes away. Sessions are 30 to 90 minutes, Sunday through Thursday, Friday mornings, and evenings on request. The studio is closed Friday afternoon and Saturday.
 - H2: On-site across the town
@@ -1033,24 +782,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 ## Contact: after sending the form  (`/contact (success state)`)
 
-- H1: Book a session
-- Text: Fill out the form or email me. I reply within one business day with dates and a price. There is no obligation.
-- Term: Email
-- Link: hello@meilechbiller.com
-- Term: Studio
-- Text: Spring Valley, NY
-- Text: Exact directions come with your booking confirmation.
-- Term: On location
-- Text: Offices anywhere in Rockland County, no travel fee
-- Term: Hours
-- Text: Sunday to Thursday, plus Friday mornings. Evenings by arrangement.
-- H2: Message received
-- Text: Thanks. Your message is in. I reply within one business day.
-- List item: 1. I email you available dates and confirm the package.
-- List item: 2. You pick a date and pay online to hold it.
-- List item: 3. You get a short note on what to wear and where to go.
-- Text: Need to add something? Email .
-- Link: hello@meilechbiller.com
+- H1: Contact
+- H2: Thanks
+- Text: I reply within one business day.
 
 
 ## Header (top of every page)

@@ -84,10 +84,9 @@ export default async function AreaPage({ params }: Props) {
           </div>
           <div className="card p-6 sm:p-8" id="book">
             <h2 className="text-lg font-medium">Book in {area.name}</h2>
-            <p className="mt-1 text-sm text-muted">I reply within one business day with dates and a price.</p>
+            <p className="mt-1 text-sm text-muted">I reply within one business day.</p>
             <div className="mt-5">
               <ContactForm
-                packages={packages.map((p) => ({ slug: p.slug, name: p.name }))}
                 email={site.email}
                 defaultTown={area.slug === "rockland-county" || area.slug === "ramapo" ? "" : area.name}
                 defaultLocation={area.defaultLocation === "either" ? "" : area.defaultLocation}
