@@ -46,7 +46,13 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - H2: Recent work
 - Link: See more →
 - Link: See more
-- Link: Send a message
+- H2: Contact
+- Field label: Name
+- Field label: Email
+- Field label: Phone
+- Field label: Message
+- Button: Send
+- Text: Or email .
 - Link: hello@meilechbiller.com
 
 
@@ -63,19 +69,15 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Pricing  (`/pricing`)
 
 - Browser tab title: Headshot Pricing, Rockland County, NY | Meilech Biller
-- Search result description: Individual headshot $250 at the studio in Spring Valley, NY. Custom packages for groups and on-site sessions anywhere in Rockland County.
+- Search result description: Individual headshot $250 at the studio in Spring Valley, NY. Custom packages on request anywhere in Rockland County.
 - H1: Pricing
 - H2: Individual headshot
 - Text: $250
-- Text: At the studio in Spring Valley.
-- List item: One person
-- List item: Retouched photos delivered online
+- Text: At the studio.
 - Link: Book
 - H2: Custom package
 - Text: Custom
-- Text: We come to you. Two or more people.
-- List item: On-site at your office
-- List item: Priced per group
+- Text: We come to you.
 - Link: Get a quote
 
 
@@ -116,7 +118,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Button: Send
 - H2: Studio or your office
 - Text: For one person, the studio in Spring Valley is the simplest option. It is a few minutes off Route 59 and Route 45, with parking. A session takes 30 to 90 minutes depending on the package.
-- Text: For two or more people, I bring the studio to you. The kit is a background, two lights and a laptop, and it sets up in about 20 minutes in a conference room, lobby or spare office. Each person needs 10 to 15 minutes, so a team of twelve is done in a morning.
+- Text: For on-site sessions, I bring the studio to you. The kit is a background, two lights and a laptop, and it sets up in about 20 minutes in a conference room, lobby or spare office. Each person needs 10 to 15 minutes, so a team of twelve is done in a morning.
 - H2: Who I photograph in the county
 - Text: Attorneys and accountants near the county courthouse in New City. Medical and dental practices along Route 59 from Suffern through Nanuet, and staff at Good Samaritan Hospital in Suffern and Montefiore Nyack. Real estate agents who need a photo for listings and signs. Companies in the office parks in Pearl River, Nanuet and West Nyack. School and organization staff who need matching photos for a website or journal.
 - Text: I also photograph actors, students applying to programs, and anyone who needs a current photo for LinkedIn or a company bio.
@@ -130,13 +132,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Rockland County
 - Term: Do you charge for travel within Rockland County?
@@ -196,13 +194,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Spring Valley
 - Term: Can I come in the same week?
@@ -262,13 +256,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Monsey
 - Term: Do you come to Monsey for one person?
@@ -327,13 +317,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Nanuet
 - Term: How long does a team session at our Nanuet office take?
@@ -392,13 +378,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from New City
 - Term: Can you photograph our whole firm in one visit?
@@ -457,13 +439,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Airmont
 - Term: Which is faster for one person, studio or on-site?
@@ -521,13 +499,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Suffern
 - Term: Can you photograph providers between patients?
@@ -585,13 +559,9 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
 - Text: Individual headshot
 - Text: $250
-- List item: One person
-- List item: Retouched photos delivered online
 - Link: Book
 - Text: Custom package
 - Text: Custom
-- List item: On-site at your office
-- List item: Priced per group
 - Link: Get a quote
 - H2: Questions from Ramapo
 - Term: Which villages do you cover without a travel fee?
