@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
+import { sanitizePortfolioAlt } from "@/lib/image-alt";
 import { db, dbConfigured, one } from "@/lib/db";
 
 /** Key/value settings edited in the studio admin. Values are JSON strings. */
@@ -36,7 +37,7 @@ export const getHeroImage = cache(async (): Promise<HeroImage | null> => {
   try {
     const parsed = JSON.parse(raw) as Partial<HeroImage>;
     if (!parsed.url) return null;
-    return { url: parsed.url, width: parsed.width ?? null, height: parsed.height ?? null, alt: parsed.alt ?? "" };
+    return { url: parsed.url, width: parsed.width ?? null, height: parsed.height ?? null, alt: sanitizePortfolioAlt(parsed.alt ?? "") };
   } catch {
     return null;
   }
