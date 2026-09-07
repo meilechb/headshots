@@ -2,6 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { db, dbConfigured, rows } from "@/lib/db";
+import { sanitizePortfolioAlt } from "@/lib/image-alt";
 import type { Package, PortfolioImage } from "@/lib/types";
 
 /** Published portfolio images. Empty until the database is connected. */
@@ -18,7 +19,10 @@ export const getPortfolio = cache(
             select * from portfolio_images
             where is_published
             order by sort_order asc, created_at desc`;
-      return rows<PortfolioImage>(result);
+      return rows<PortfolioImage>(result).map((img) => ({
+        ...img,
+        alt: sanitizePortfolioAlt(img.alt),
+      }));
     } catch (error) {
       console.error("getPortfolio failed", error);
       return [];
