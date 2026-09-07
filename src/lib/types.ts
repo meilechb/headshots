@@ -47,6 +47,10 @@ export type Package = {
   is_featured: boolean;
   is_active: boolean;
   sort_order: number;
+  /** Finals included in the price. 0 means no limit and no extra charge. */
+  included_finals: number;
+  /** Price of each pick above included_finals. */
+  extra_final_cents: number;
 };
 
 export type InquiryStatus = "new" | "contacted" | "booked" | "closed";
@@ -125,10 +129,77 @@ export type Order = {
   notes: string | null;
   stripe_checkout_session_id: string | null;
   stripe_payment_intent_id: string | null;
+  /** Set once the whole balance is paid. */
   paid_at: string | null;
+  deposit_cents: number;
+  included_finals: number;
+  extra_final_cents: number;
+  contract_version: string | null;
+  contract_signed_at: string | null;
+  contract_signed_name: string | null;
+  contract_signed_ip: string | null;
+  contract_portfolio_ok: boolean | null;
   created_at: string;
   updated_at: string;
 };
+
+export type PaymentKind = "deposit" | "balance" | "full" | "manual";
+
+export type Payment = {
+  id: string;
+  order_id: string;
+  kind: PaymentKind;
+  amount_cents: number;
+  currency: string;
+  status: "pending" | "paid";
+  method: string;
+  stripe_checkout_session_id: string | null;
+  stripe_payment_intent_id: string | null;
+  paid_at: string | null;
+  created_at: string;
+};
+
+/** Money summary for one session: what it costs, what is paid, what is left. */
+export type OrderMoney = {
+  price_cents: number;
+  picks: number;
+  extra_picks: number;
+  extras_cents: number;
+  total_cents: number;
+  paid_cents: number;
+  due_cents: number;
+  deposit_cents: number;
+  deposit_due_cents: number;
+  deposit_paid: boolean;
+  fully_paid: boolean;
+};
+
+export function orderMoney(
+  order: Pick<Order, "amount_cents" | "deposit_cents" | "included_finals" | "extra_final_cents">,
+  payments: Pick<Payment, "amount_cents" | "status">[],
+  picks: number
+): OrderMoney {
+  const extra_picks =
+    order.included_finals > 0 && order.extra_final_cents > 0 ? Math.max(0, picks - order.included_finals) : 0;
+  const extras_cents = extra_picks * order.extra_final_cents;
+  const total_cents = order.amount_cents + extras_cents;
+  const paid_cents = payments.filter((p) => p.status === "paid").reduce((n, p) => n + p.amount_cents, 0);
+  const due_cents = Math.max(0, total_cents - paid_cents);
+  const deposit_cents = Math.min(order.deposit_cents, total_cents);
+  return {
+    price_cents: order.amount_cents,
+    picks,
+    extra_picks,
+    extras_cents,
+    total_cents,
+    paid_cents,
+    due_cents,
+    deposit_cents,
+    deposit_due_cents: Math.max(0, deposit_cents - paid_cents),
+    deposit_paid: paid_cents >= deposit_cents,
+    fully_paid: due_cents === 0,
+  };
+}
 
 export type GalleryKind = "proof" | "final";
 export type GalleryStatus = "draft" | "published" | "archived";

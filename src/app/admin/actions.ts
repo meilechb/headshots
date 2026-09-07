@@ -10,6 +10,7 @@ import { galleryReadyEmail } from "@/lib/emails";
 import { site } from "@/lib/site";
 import { generateAccessCode } from "@/lib/gallery-access";
 import { deleteBlobs } from "@/lib/storage";
+import { recordManualPayment, undoLastManualPayment, getOrderMoney } from "@/lib/data/orders";
 import { describeImageError, downloadBlob, makeWebVersion, putJpeg } from "@/lib/images";
 import { generateApiToken, hashApiToken } from "@/lib/api-auth";
 import type { ActionState } from "@/lib/action-state";
@@ -147,14 +148,26 @@ export async function createSession(clientId: string, _prev: ActionState, formDa
       await db()`select id from clients where id = ${clientId} limit 1`
     );
     if (!client) fail("Client not found.");
+    const packageId = str(formData, "package_id", 40) || null;
+    const pkg = packageId
+      ? one<{ included_finals: number; extra_final_cents: number }>(
+          await db()`select included_finals, extra_final_cents from packages where id = ${packageId} limit 1`
+        )
+      : null;
+    const depositRaw = str(formData, "deposit", 20);
+    const deposit = depositRaw ? dollarsToCents(depositRaw) : Math.round(amount / 2);
     await db()`
-      insert into orders (client_id, package_id, title, description, amount_cents, status, shoot_date, notes)
+      insert into orders (client_id, package_id, title, description, amount_cents, deposit_cents,
+                          included_finals, extra_final_cents, status, shoot_date, notes)
       values (
         ${clientId},
-        ${str(formData, "package_id", 40) || null},
+        ${packageId},
         ${title},
         ${str(formData, "description") || null},
         ${amount},
+        ${Math.min(deposit, amount)},
+        ${pkg?.included_finals ?? 0},
+        ${pkg?.extra_final_cents ?? 0},
         'pending_payment',
         ${str(formData, "shoot_date", 10) || null},
         ${str(formData, "notes") || null}
@@ -174,6 +187,9 @@ export async function updateSession(id: string, _prev: ActionState, formData: Fo
           title = ${title},
           description = ${str(formData, "description") || null},
           amount_cents = ${amount},
+          deposit_cents = ${Math.min(dollarsToCents(str(formData, "deposit", 20)), amount)},
+          included_finals = ${Math.max(0, Math.floor(Number(str(formData, "included_finals", 6)) || 0))},
+          extra_final_cents = ${dollarsToCents(str(formData, "extra_final", 20))},
           shoot_date = ${str(formData, "shoot_date", 10) || null},
           notes = ${str(formData, "notes") || null},
           updated_at = now()
@@ -186,29 +202,30 @@ export async function updateSession(id: string, _prev: ActionState, formData: Fo
   });
 }
 
-/** Paid outside Stripe (cash, Zelle, invoice). */
-export async function markSessionPaid(id: string) {
+/** Paid outside Stripe (cash, Zelle, check): records what is still owed on the deposit or the balance. */
+export async function markSessionPaid(id: string, part: "deposit" | "balance") {
   await requireAdmin();
-  const row = one<{ client_id: string }>(
-    await db()`
-      update orders set status = 'paid', paid_at = coalesce(paid_at, now()), updated_at = now()
-      where id = ${id} and status in ('draft', 'pending_payment')
-      returning client_id`
+  const row = one<{ client_id: string; currency: string }>(
+    await db()`select client_id, currency from orders where id = ${id} limit 1`
   );
-  if (row) revalidateClient(row.client_id);
+  if (!row) return;
+  const money = await getOrderMoney(id);
+  if (!money) return;
+  const amount = part === "deposit" ? money.deposit_due_cents : money.due_cents;
+  await recordManualPayment(id, amount, row.currency);
+  revalidateClient(row.client_id);
   revalidatePath(`/pay/${id}`);
 }
 
-/** Undo a manual "Mark paid". Stripe payments cannot be undone here. */
+/** Undo the last manual payment. Card payments cannot be undone here. */
 export async function markSessionUnpaid(id: string) {
   await requireAdmin();
   const row = one<{ client_id: string }>(
-    await db()`
-      update orders set status = 'pending_payment', paid_at = null, updated_at = now()
-      where id = ${id} and stripe_payment_intent_id is null
-      returning client_id`
+    await db()`select client_id from orders where id = ${id} limit 1`
   );
-  if (row) revalidateClient(row.client_id);
+  if (!row) return;
+  await undoLastManualPayment(id);
+  revalidateClient(row.client_id);
   revalidatePath(`/pay/${id}`);
 }
 
@@ -453,17 +470,20 @@ export async function upsertPackage(_prev: ActionState, formData: FormData) {
     const featured = bool(formData, "is_featured");
     const active = bool(formData, "is_active");
     const sort = Number(str(formData, "sort_order", 6)) || 0;
+    const includedFinals = Math.max(0, Math.floor(Number(str(formData, "included_finals", 6)) || 0));
+    const extraFinal = dollarsToCents(str(formData, "extra_final", 20));
 
     if (id) {
       await db()`
         update packages set slug = ${slug}, name = ${name}, description = ${description},
           price_cents = ${price}, includes = ${includes}, turnaround = ${turnaround},
-          is_featured = ${featured}, is_active = ${active}, sort_order = ${sort}
+          is_featured = ${featured}, is_active = ${active}, sort_order = ${sort},
+          included_finals = ${includedFinals}, extra_final_cents = ${extraFinal}
         where id = ${id}`;
     } else {
       await db()`
-        insert into packages (slug, name, description, price_cents, includes, turnaround, is_featured, is_active, sort_order)
-        values (${slug}, ${name}, ${description}, ${price}, ${includes}, ${turnaround}, ${featured}, ${active}, ${sort})`;
+        insert into packages (slug, name, description, price_cents, includes, turnaround, is_featured, is_active, sort_order, included_finals, extra_final_cents)
+        values (${slug}, ${name}, ${description}, ${price}, ${includes}, ${turnaround}, ${featured}, ${active}, ${sort}, ${includedFinals}, ${extraFinal})`;
     }
     revalidatePath("/admin/packages");
     revalidatePath("/pricing");

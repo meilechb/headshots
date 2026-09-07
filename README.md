@@ -9,7 +9,7 @@ and Stripe payments. Runs entirely on free tiers.
 - **Next.js 16** (App Router, TypeScript, Tailwind CSS v4) hosted on **Vercel**
 - **Neon** — serverless Postgres (free plan, no card)
 - **Vercel Blob** — photo storage: a private store for client galleries, a public store for the portfolio
-- **Stripe Checkout** — hosted payment page + webhook fulfillment
+- **Stripe** — card form embedded on the site (Payment Element), webhook fulfillment, deposit and balance per session
 - Admin login is a single email + password (hashed with scrypt) and a signed session cookie,
   following the Next.js authentication guide. No third-party auth service.
 
@@ -19,7 +19,7 @@ and Stripe payments. Runs entirely on free tiers.
 | --- | --- | --- |
 | Public site | `/`, `/portfolio`, `/pricing`, `/about`, `/contact` | Portfolio grid with lightbox and category filter, packages from the database, contact form → inquiries |
 | Client gallery | `/g/[slug]` | Access-code gate (30-day signed cookie). Proof galleries: favorites + notes per photo. Final galleries: per-photo and zip-all downloads. Photos stream through `/api/photo/[id]` after an access check |
-| Payments | `/pay/[orderId]` → Stripe → `/pay/success` | Amounts always come from the order row; webhook at `/api/stripe/webhook` marks the order paid (idempotent) |
+| Payments | `/pay/[orderId]` | Client signs the agreement, pays the deposit (or in full), later the balance. Card form is embedded (Stripe Elements). Amounts always come from the database; `/api/stripe/webhook` and `/pay/success` both record payments (idempotent). Final galleries unlock downloads once the balance is paid. |
 | Studio (admin) | `/admin` | Dashboard, inquiries → clients, orders with payment links, galleries (upload, reorder, codes, publish, reply to notes), portfolio manager, packages, Lightroom tokens |
 | Lightroom API | `/api/lr/*` | Bearer-token API used by the Lightroom Classic publish plugin in `lightroom/` |
 | Auth | `/login`, `/auth/signout` | Single admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD_HASH` |
@@ -65,7 +65,7 @@ Set `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` and `SESSION_SECRET` locally and in Ver
 
 ### 4. Stripe
 
-1. **Developers → API keys**: `STRIPE_SECRET_KEY` (test keys until launch).
+1. **Developers → API keys**: `STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (test keys until launch).
 2. **Developers → Webhooks → Add endpoint**: `https://meilechbiller.com/api/stripe/webhook` with events
    `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`.
    Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.

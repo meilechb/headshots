@@ -643,6 +643,8 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Button: ♥ Favorites (showing)
 - Button: Download all
 - Button (while zipping): Preparing 3/12…
+- Text (money still owed): Balance $125. Pay
+- Text (finals, money still owed): Downloads open once the balance is paid. Balance $125. Pay
 - Button: Lock gallery
 - Text (no photos): No photos yet.
 - Text (favorites filter, none): No favorites yet.
@@ -675,26 +677,47 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - H1: The gallery couldn’t load.
 - Button: Try again
 
-## Pay page  (`/pay/<order>`)
+## Session page  (`/pay/<session>`)
 
 - Browser tab title: Pay for your session | Meilech Biller
-- Text: Order #1001
 - H1: <session title>
-- Text: For <client name>
+- Text: <client name> · <shoot date>
 - Text: <note to client, if you typed one>
-- Term: Session date
-- Term: Status
-- Term: Total
-- Button: Pay $250.00
-- Text (already paid): Paid on <date>. Thank you.
-- Text (not payable): Nothing to pay right now.
+- Term: Session
+- Term: <N> extra photos × $<price>  (only when they picked more than the package includes)
+- Term: Paid  (only after a payment)
+- Term: Balance / Total
+- H2: Agreement  (shown until the deposit is paid)
+- Text: full agreement text, see "Agreement" below
+- Field label: Your full name
+- Checkbox: I have read and agree to the terms above.
+- Checkbox: My photos may be shown in the portfolio.
+- Button: Agree and continue
+- Error: Type your full name. / Tick the box to agree.
+- Button: Pay deposit $125 / Pay in full $250  (before the deposit)
+- Button: Pay $125  (balance)
+- Text (no Stripe keys yet): Card payments are not set up yet. Email hello@meilechbiller.com to pay.
+- Text (all paid): Paid in full. Thank you.
+- Link: Open your gallery
+
+## Agreement (signed on the session page before the deposit)
+
+- Parties: This agreement is between Meilech Biller Headshot Photography ("Photographer") and <client> ("Client") for the session "<title>" on <date>.
+- Fee and payment: The session fee is $250. A retainer of $125 is due to reserve the date. The remaining balance of $125 is due when the final images are delivered, and may be paid at any time before that. / The price includes N final retouched images. Each additional image chosen is $X and is added to the balance. / Final images are released for download once the balance is paid in full.
+- Rescheduling and cancellation: The retainer reserves the date and is non-refundable. The Client may reschedule once at no charge with at least 48 hours notice, and the retainer carries over to the new date within 90 days. / If the Client cancels or does not attend, the retainer is kept. If the Photographer must cancel because of illness, emergency or equipment failure, the Photographer will offer a new date or refund every amount paid, which is the full extent of the Photographer's liability.
+- The session: The Client agrees to arrive on time. Time lost to a late arrival comes out of the session and is not made up or refunded. / For on-location sessions the Client provides a space of roughly 8 by 10 feet with access to a power outlet.
+- Proofs, selection and delivery: Lightly edited proofs are posted to a private online gallery within two business days of the session. The Client marks the images to be retouched. / Retouched final images are delivered to the online gallery within five business days of the selection. Retouching covers skin, stray hairs, blemishes and minor clothing fixes. Requests beyond that are quoted separately. / Unedited original files are not delivered. Files stay online for 90 days after delivery; the Client is responsible for downloading and backing them up.
+- Copyright and use: The Photographer owns the copyright in all images. The Client receives a licence to use the final images for personal and business purposes, including websites, social media, print and press, without time limit. / The final images may not be sold, entered in competitions, or edited beyond cropping. Filters and re-editing are not permitted. Credit to the Photographer is appreciated where practical. / With the Client's permission (given below), the Photographer may show the images in a portfolio, on the website and on social media. The Client can withdraw this permission at any time by email.
+- Limitation of liability: The Photographer takes every reasonable care with the images. If files are lost or damaged before delivery through no fault of the Client, the Photographer will re-shoot at no charge or refund the amounts paid. Liability under this agreement is limited to the total amount paid by the Client.
+- General: This is the whole agreement between the parties and is governed by the laws of the State of New York. Typing your name below and clicking Agree has the same effect as a handwritten signature.
 
 ## Payment received  (`/pay/success`)
 
 - Browser tab title: Payment received | Meilech Biller
 - H1: Thank you
-- Text: Payment of $250.00 received. Receipt sent to <email>.
-- Link: Back to site
+- Text: Payment of $125.00 received. Receipt sent to <email>.
+- Link: Open your gallery
+- Link: Back to your session / Back to site
 
 ## Emails (sent automatically once email is turned on)
 
@@ -724,6 +747,12 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Body: Hi <first name>,
 - Body: Your photos are ready: <link>
 - Body: Code: <code>
+- Body: Meilech Biller / hello@meilechbiller.com
+
+### To the client, copy of the agreement
+
+- Subject: Your agreement: Meilech Biller
+- Body: Hi <first name>, / Here is a copy of the agreement you signed on <date>. / <the agreement text> / Signed by <name>. Portfolio use: allowed.
 - Body: Meilech Biller / hello@meilechbiller.com
 
 ### To the client, payment receipt

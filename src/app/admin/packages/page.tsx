@@ -8,7 +8,7 @@ function PackageForm({ pkg }: { pkg?: Package }) {
   const k = pkg?.id ?? "new";
   return (
     <ActionForm
-      key={pkg ? `${pkg.name}-${pkg.slug}-${pkg.price_cents}-${pkg.sort_order}-${pkg.is_featured}-${pkg.is_active}` : "new"}
+      key={pkg ? `${pkg.name}-${pkg.slug}-${pkg.price_cents}-${pkg.sort_order}-${pkg.is_featured}-${pkg.is_active}-${pkg.included_finals}-${pkg.extra_final_cents}` : "new"}
       action={upsertPackage}
       className="card space-y-4 p-5"
       submitLabel={pkg ? "Save" : "Add package"}
@@ -49,6 +49,14 @@ function PackageForm({ pkg }: { pkg?: Package }) {
           <Field label="Turnaround" htmlFor={`turnaround-${k}`}>
             <input id={`turnaround-${k}`} name="turnaround" defaultValue={pkg?.turnaround ?? ""} className="input" placeholder="3 business days" />
           </Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Finals included" htmlFor={`finals-${k}`}>
+              <input id={`finals-${k}`} name="included_finals" type="number" min={0} defaultValue={pkg?.included_finals ?? 0} className="input" />
+            </Field>
+            <Field label="Extra photo" htmlFor={`extra-${k}`}>
+              <input id={`extra-${k}`} name="extra_final" inputMode="decimal" defaultValue={pkg ? (pkg.extra_final_cents / 100).toFixed(0) : "0"} className="input" />
+            </Field>
+          </div>
           <Field label="Order" htmlFor={`sort-${k}`}>
             <input id={`sort-${k}`} name="sort_order" type="number" defaultValue={pkg?.sort_order ?? 0} className="input w-24" />
           </Field>

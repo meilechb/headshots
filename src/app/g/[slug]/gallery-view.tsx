@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useSwipe } from "@/lib/use-swipe";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { zipSync } from "fflate";
+import { formatMoney } from "@/lib/types";
 import { addClientComment, lockGallery, toggleSelection } from "./actions";
 
 export type ViewPhoto = {
@@ -31,6 +32,7 @@ export function GalleryView({
   welcome,
   allowDownloads,
   expiresAt,
+  balance,
   photos,
 }: {
   slug: string;
@@ -40,6 +42,8 @@ export function GalleryView({
   welcome: string | null;
   allowDownloads: boolean;
   expiresAt: string | null;
+  /** Money still owed on the session this gallery belongs to, if any. */
+  balance: { due_cents: number; currency: string; payUrl: string; locked: boolean } | null;
   photos: ViewPhoto[];
 }) {
   const [active, setActive] = useState<number | null>(null);
@@ -125,6 +129,13 @@ export function GalleryView({
               ? ` · Available until ${new Date(expiresAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`
               : ""}
           </p>
+          {balance ? (
+            <p className="mt-3 text-sm text-ink-2">
+              {balance.locked ? "Downloads open once the balance is paid. " : ""}
+              Balance {formatMoney(balance.due_cents, balance.currency)}.{" "}
+              <a href={balance.payUrl} className="underline hover:text-ink">Pay</a>
+            </p>
+          ) : null}
         </div>
         <div className="flex flex-wrap gap-2">
           {favoriteCount > 0 ? (

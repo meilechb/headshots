@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { getPhotoForDelivery, isGalleryExpired } from "@/lib/data/galleries";
+import { getOrderMoney } from "@/lib/data/orders";
 import { hasGalleryAccess } from "@/lib/gallery-access";
 import { dbConfigured, UUID_RE } from "@/lib/db";
 import { getPrivateBlob } from "@/lib/storage";
@@ -39,6 +40,12 @@ export async function GET(
   const variant = request.nextUrl.searchParams.get("v") === "full" ? "full" : "web";
   if (variant === "full" && !admin && !photo.gallery.allow_downloads) {
     return new NextResponse("Downloads are not enabled for this gallery", { status: 403 });
+  }
+  if (variant === "full" && !admin && photo.gallery.kind === "final") {
+    const money = await getOrderMoney(photo.gallery.order_id);
+    if (money && money.due_cents > 0) {
+      return new NextResponse("Pay the balance to download", { status: 403 });
+    }
   }
 
   const result = await getPrivateBlob(

@@ -212,3 +212,45 @@ create table if not exists reviews (
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- ---------------------------------------------------------------------------
+-- Deposits, balances, extra picks and the signed agreement
+-- ---------------------------------------------------------------------------
+
+alter table packages add column if not exists included_finals integer not null default 0;
+alter table packages add column if not exists extra_final_cents integer not null default 0;
+
+alter table orders add column if not exists deposit_cents integer not null default 0;
+alter table orders add column if not exists included_finals integer not null default 0;
+alter table orders add column if not exists extra_final_cents integer not null default 0;
+alter table orders add column if not exists contract_version text;
+alter table orders add column if not exists contract_signed_at timestamptz;
+alter table orders add column if not exists contract_signed_name text;
+alter table orders add column if not exists contract_signed_ip text;
+alter table orders add column if not exists contract_portfolio_ok boolean;
+
+-- One row per payment attempt. Only status = 'paid' rows count toward the balance.
+create table if not exists payments (
+  id uuid primary key default gen_random_uuid(),
+  order_id uuid not null references orders (id) on delete cascade,
+  kind text not null check (kind in ('deposit', 'balance', 'full', 'manual')),
+  amount_cents integer not null check (amount_cents > 0),
+  currency text not null default 'usd',
+  status text not null default 'pending' check (status in ('pending', 'paid')),
+  method text not null default 'card',
+  stripe_checkout_session_id text unique,
+  stripe_payment_intent_id text,
+  paid_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists payments_order_idx on payments (order_id, created_at);
+
+-- Backfill: sessions paid before payments existed count as paid in full.
+insert into payments (order_id, kind, amount_cents, currency, status, method, stripe_checkout_session_id, stripe_payment_intent_id, paid_at)
+select o.id, 'full', o.amount_cents, o.currency, 'paid',
+       case when o.stripe_payment_intent_id is null then 'manual' else 'card' end,
+       o.stripe_checkout_session_id, o.stripe_payment_intent_id, o.paid_at
+from orders o
+where o.paid_at is not null and o.amount_cents > 0
+  and not exists (select 1 from payments p where p.order_id = o.id);

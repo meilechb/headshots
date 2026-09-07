@@ -64,7 +64,7 @@ export async function getGalleryPhotos(gallery: Gallery): Promise<GalleryPhoto[]
 }
 
 export type DeliverablePhoto = Photo & {
-  gallery: Pick<Gallery, "id" | "status" | "allow_downloads" | "expires_at">;
+  gallery: Pick<Gallery, "id" | "status" | "allow_downloads" | "expires_at" | "kind" | "order_id">;
 };
 
 /** Used by /api/photo/[id] to decide whether a request may see a file. */
@@ -72,7 +72,7 @@ export async function getPhotoForDelivery(id: string): Promise<DeliverablePhoto 
   const result = await db()`
     select p.*,
       json_build_object(
-        'id', g.id, 'status', g.status,
+        'id', g.id, 'status', g.status, 'kind', g.kind, 'order_id', g.order_id,
         'allow_downloads', g.allow_downloads, 'expires_at', g.expires_at
       ) as gallery
     from photos p

@@ -5,6 +5,7 @@ import {
   getGalleryPhotos,
   isGalleryExpired,
 } from "@/lib/data/galleries";
+import { getOrderMoney } from "@/lib/data/orders";
 import { hasGalleryAccess } from "@/lib/gallery-access";
 import { site } from "@/lib/site";
 import { AccessForm } from "./access-form";
@@ -56,7 +57,12 @@ export default async function ClientGalleryPage({ params }: Props) {
     );
   }
 
-  const photos = await getGalleryPhotos(gallery);
+  const [photos, money] = await Promise.all([getGalleryPhotos(gallery), getOrderMoney(gallery.order_id)]);
+  const due = money && money.due_cents > 0 ? money : null;
+  const locked = gallery.kind === "final" && due !== null;
+  const balance = due
+    ? { due_cents: due.due_cents, currency: "usd", payUrl: `/pay/${gallery.order_id}`, locked }
+    : null;
 
   return (
     <GalleryView
@@ -65,13 +71,14 @@ export default async function ClientGalleryPage({ params }: Props) {
       kind={gallery.kind}
       clientName={gallery.client.name}
       welcome={gallery.welcome_message}
-      allowDownloads={gallery.allow_downloads}
+      allowDownloads={gallery.allow_downloads && !locked}
       expiresAt={gallery.expires_at}
+      balance={balance}
       photos={photos.map((p) => ({
         id: p.id,
         filename: p.filename,
         url: p.url,
-        downloadUrl: p.downloadUrl,
+        downloadUrl: locked ? null : p.downloadUrl,
         width: p.width,
         height: p.height,
         selected: p.selected,

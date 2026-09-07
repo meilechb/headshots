@@ -3,6 +3,7 @@ import type { Review } from "@/lib/data/public";
 
 import { db, one, rows } from "@/lib/db";
 import { photoWebUrl } from "@/lib/data/galleries";
+import { orderMoney } from "@/lib/types";
 import type {
   Client,
   ClientStage,
@@ -14,6 +15,8 @@ import type {
   PhotoComment,
   PhotoSelection,
   PortfolioImage,
+  OrderMoney,
+  Payment,
 } from "@/lib/types";
 
 /** Admin reads. Callers are already behind requireAdminPage() in the admin layout. */
@@ -102,14 +105,17 @@ export async function listClientOptions(): Promise<Pick<Client, "id" | "name" | 
   );
 }
 
-export type SessionRow = Order & { package: { name: string } | null };
+export type SessionRow = Order & { package: { name: string } | null; payments: Payment[]; picks: number; money: OrderMoney };
 
 export async function getClient(id: string) {
   const [client, messages, sessions, galleries] = await Promise.all([
     db()`select * from clients where id = ${id} limit 1`,
     db()`select * from inquiries where client_id = ${id} order by created_at desc`,
     db()`
-      select o.*, case when p.id is null then null else json_build_object('name', p.name) end as package
+      select o.*, case when p.id is null then null else json_build_object('name', p.name) end as package,
+        (select coalesce(json_agg(pm.* order by pm.created_at), '[]'::json) from payments pm where pm.order_id = o.id) as payments,
+        (select count(*)::int from photo_selections ps join galleries g on g.id = ps.gallery_id
+          where g.order_id = o.id and g.kind = 'proof' and ps.selected) as picks
       from orders o left join packages p on p.id = o.package_id
       where o.client_id = ${id}
       order by o.created_at desc`,
@@ -128,7 +134,7 @@ export async function getClient(id: string) {
   return {
     client: c,
     messages: rows<Inquiry>(messages),
-    sessions: rows<SessionRow>(sessions),
+    sessions: rows<Omit<SessionRow, "money">>(sessions).map((o) => ({ ...o, money: orderMoney(o, o.payments, o.picks) })),
     galleries: rows<Gallery & { photo_count: number; favorites: number; open_notes: number }>(galleries),
   };
 }

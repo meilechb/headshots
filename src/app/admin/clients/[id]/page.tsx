@@ -174,40 +174,53 @@ export default async function ClientPage({
           <h2 className="font-medium">Sessions</h2>
           <ul className="mt-3 divide-y divide-line">
             {sessions.map((s) => {
-              const paid = Boolean(s.paid_at) || !["draft", "pending_payment", "cancelled"].includes(s.status);
+              const m = s.money;
               const payUrl = `${site.url}/pay/${s.id}`;
-              const payMail = `mailto:${client.email}?subject=${encodeURIComponent(`Payment: ${site.name}`)}&body=${encodeURIComponent(`Hi ${firstName},\n\nPay ${formatMoney(s.amount_cents, s.currency)} here:\n${payUrl}\n\n${site.name}`)}`;
+              const payMail = `mailto:${client.email}?subject=${encodeURIComponent(`${s.title}: ${site.name}`)}&body=${encodeURIComponent(`Hi ${firstName},\n\nHere is your session page:\n${payUrl}\n\n${site.name}`)}`;
+              const hasManual = s.payments.some((p) => p.method === "manual" && p.status === "paid");
+              const status = m.fully_paid
+                ? "Paid in full"
+                : m.deposit_paid
+                  ? `Deposit paid · ${formatMoney(m.due_cents, s.currency)} due`
+                  : `Not paid · deposit ${formatMoney(m.deposit_due_cents, s.currency)}`;
               return (
                 <li key={s.id} className="py-3 first:pt-0 last:pb-0">
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                     <span className="font-medium">{s.title}</span>
-                    <span className="font-display text-lg">{formatMoney(s.amount_cents, s.currency)}</span>
-                    <span className={`text-xs ${paid ? "text-success" : "text-brass-2"}`}>
-                      {paid ? `Paid${s.paid_at ? ` ${formatDate(s.paid_at, true)}` : ""}` : "Not paid"}
-                    </span>
+                    <span className="font-display text-lg">{formatMoney(m.total_cents, s.currency)}</span>
+                    <span className={`text-xs ${m.fully_paid ? "text-success" : "text-brass-2"}`}>{status}</span>
                     <span className="text-xs text-muted">
                       {s.shoot_date ? formatDate(s.shoot_date, true) : "No date"} · #{s.order_number}
+                      {m.extra_picks ? ` · ${m.extra_picks} extra photo${m.extra_picks === 1 ? "" : "s"}` : ""}
+                      {" · "}
+                      {s.contract_signed_at
+                        ? `Signed ${formatDate(s.contract_signed_at, true)}`
+                        : "Agreement not signed"}
                     </span>
                   </div>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    {!paid ? (
-                      <>
-                        <CopyButton value={payUrl} label="Copy pay link" />
-                        <a href={payMail} className={btn}>Email pay link</a>
-                        <form action={markSessionPaid.bind(null, s.id)}>
-                          <SubmitButton className={btn} pendingLabel="…">Mark paid</SubmitButton>
-                        </form>
-                      </>
-                    ) : !s.stripe_payment_intent_id ? (
+                    <CopyButton value={payUrl} label="Copy link" />
+                    <a href={payMail} className={btn}>Email link</a>
+                    {!m.fully_paid && !m.deposit_paid ? (
+                      <form action={markSessionPaid.bind(null, s.id, "deposit")}>
+                        <SubmitButton className={btn} pendingLabel="…">Deposit paid</SubmitButton>
+                      </form>
+                    ) : null}
+                    {!m.fully_paid ? (
+                      <form action={markSessionPaid.bind(null, s.id, "balance")}>
+                        <SubmitButton className={btn} pendingLabel="…">Balance paid</SubmitButton>
+                      </form>
+                    ) : null}
+                    {hasManual ? (
                       <form action={markSessionUnpaid.bind(null, s.id)}>
-                        <SubmitButton className={btn} pendingLabel="…">Mark unpaid</SubmitButton>
+                        <SubmitButton className={btn} pendingLabel="…">Undo payment</SubmitButton>
                       </form>
                     ) : null}
                     <Disclosure label="Edit" openLabel="Close" className={btn}>
                       <ActionForm
                         key={s.updated_at}
                         action={updateSession.bind(null, s.id)}
-                        className="mt-2 grid grid-cols-1 gap-4 border border-line p-4 sm:grid-cols-3"
+                        className="mt-2 grid grid-cols-2 gap-4 border border-line p-4 sm:grid-cols-3"
                         buttonClassName="btn-primary"
                         extra={
                           <ConfirmSubmit
@@ -219,21 +232,32 @@ export default async function ClientPage({
                           </ConfirmSubmit>
                         }
                       >
-                        <Field label="Title" htmlFor={`title-${s.id}`}>
-                          <input id={`title-${s.id}`} name="title" defaultValue={s.title} required className="input" />
-                        </Field>
+                        <div className="col-span-2 sm:col-span-3">
+                          <Field label="Title" htmlFor={`title-${s.id}`}>
+                            <input id={`title-${s.id}`} name="title" defaultValue={s.title} required className="input" />
+                          </Field>
+                        </div>
                         <Field label="Price" htmlFor={`amount-${s.id}`}>
                           <input id={`amount-${s.id}`} name="amount" inputMode="decimal" defaultValue={(s.amount_cents / 100).toFixed(2)} className="input" />
+                        </Field>
+                        <Field label="Deposit" htmlFor={`deposit-${s.id}`}>
+                          <input id={`deposit-${s.id}`} name="deposit" inputMode="decimal" defaultValue={(s.deposit_cents / 100).toFixed(2)} className="input" />
                         </Field>
                         <Field label="Shoot date" htmlFor={`date-${s.id}`}>
                           <input id={`date-${s.id}`} name="shoot_date" type="date" defaultValue={s.shoot_date ?? ""} className="input" />
                         </Field>
-                        <div className="sm:col-span-3">
+                        <Field label="Finals included" htmlFor={`finals-${s.id}`}>
+                          <input id={`finals-${s.id}`} name="included_finals" type="number" min={0} defaultValue={s.included_finals} className="input" />
+                        </Field>
+                        <Field label="Extra photo" htmlFor={`extra-${s.id}`}>
+                          <input id={`extra-${s.id}`} name="extra_final" inputMode="decimal" defaultValue={(s.extra_final_cents / 100).toFixed(2)} className="input" />
+                        </Field>
+                        <div className="col-span-2 sm:col-span-3">
                           <Field label="Note to client" htmlFor={`description-${s.id}`}>
                             <input id={`description-${s.id}`} name="description" defaultValue={s.description ?? ""} className="input" />
                           </Field>
                         </div>
-                        <div className="sm:col-span-3">
+                        <div className="col-span-2 sm:col-span-3">
                           <Field label="Notes" htmlFor={`notes-${s.id}`}>
                             <input id={`notes-${s.id}`} name="notes" defaultValue={s.notes ?? ""} className="input" />
                           </Field>

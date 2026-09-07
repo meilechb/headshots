@@ -1,5 +1,5 @@
 import type Stripe from "stripe";
-import { markOrderPaid } from "@/lib/data/orders";
+import { recordPaidCheckoutSession } from "@/lib/data/orders";
 import { db } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 
@@ -51,24 +51,21 @@ export async function POST(request: Request) {
     case "checkout.session.completed":
     case "checkout.session.async_payment_succeeded": {
       const session = event.data.object;
-      // Delayed payment methods complete later; only fulfill when paid.
+      // Delayed payment methods complete later; only record once paid.
       if (session.payment_status === "paid") {
-        const orderId = session.metadata?.order_id ?? session.client_reference_id;
-        if (orderId) {
-          await markOrderPaid({
-            orderId,
-            sessionId: session.id,
-            paymentIntentId:
-              typeof session.payment_intent === "string"
-                ? session.payment_intent
-                : (session.payment_intent?.id ?? null),
-          });
-        }
+        await recordPaidCheckoutSession({
+          sessionId: session.id,
+          amountTotal: session.amount_total,
+          paymentIntentId:
+            typeof session.payment_intent === "string"
+              ? session.payment_intent
+              : (session.payment_intent?.id ?? null),
+        });
       }
       break;
     }
     case "checkout.session.async_payment_failed":
-      // Order stays pending_payment; the client can retry from the pay link.
+      // The payment row stays pending; the client can pay again from the link.
       break;
     default:
       break;
