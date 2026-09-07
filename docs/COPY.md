@@ -11,18 +11,40 @@ The eight "Landing page" sections are the Google-only local pages. They are not 
 Not included: the studio admin (only you see it) and the Lightroom plugin.
 
 
+## Header (top of every page)
+
+- Link: Meilech Biller
+- Link: Pricing
+- Link: Portfolio
+- Link: Contact
+
+
+## Footer (bottom of every page)
+
+- Text: Meilech Biller
+- Text: Headshot photographer in Rockland County, NY. Studio in Spring Valley and on-location sessions at offices across the county.
+- Link: hello@meilechbiller.com
+- Text: Site
+- Link: Portfolio
+- Link: Pricing
+- Link: Contact
+- Text: Clients
+- Link: Open your gallery
+- Link: Studio login
+- Text: © 2026 Meilech Biller Headshot Photography. All rights reserved.
+- Text: Photos may not be reproduced without written permission.
+
+
 ## Home  (`/`)
 
 - Browser tab title: Meilech Biller | Headshot Photographer in Rockland County, NY
 - Search result description: Professional headshot photographer in Rockland County, NY. Business, LinkedIn, team and actor headshots in the studio or at your office in Spring Valley, Monsey, Nanuet, New City, Suffern and nearby.
-- H1: Stand outfrom the crowd
+- H1: Stand out / from the crowd  (two lines)
 - Text: Professional headshots in Rockland County, NY.
 - Link: Get in touch
 - Link: Portfolio
-- Text: Header image: set one in Admin → Portfolio
 - H2: Recent work
 - Link: See more →
-- Text: Sample layout. Upload your work in the studio dashboard to replace these tiles.  (placeholder, disappears once real photos are uploaded)
 - Link: See more
 - Link: Send a message
 - Link: hello@meilechbiller.com
@@ -33,92 +55,31 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Browser tab title: Headshot Portfolio, Rockland County, NY | Meilech Biller
 - Search result description: Recent headshots photographed in Rockland County, NY: business and LinkedIn headshots, team photos, actor headshots and personal brand portraits.
 - H1: Portfolio
-- Text: Sample layout. Upload your work in the studio dashboard to replace these tiles.  (placeholder, disappears once real photos are uploaded)
-- Text: Want to stand out? or .
+- Text: Want to stand out? See pricing or get in touch.  (See pricing and get in touch are links)
 - Link: See pricing
 - Link: get in touch
 
 
 ## Pricing  (`/pricing`)
 
-- Browser tab title: Headshot Pricing and Packages, Rockland County, NY | Meilech Biller
-- Search result description: Headshot session prices in Rockland County, NY. Individual sessions from $295, team sessions per person. Retouching, online proof gallery and full-resolution files included.
+- Browser tab title: Headshot Pricing, Rockland County, NY | Meilech Biller
+- Search result description: Individual headshot $250 at the studio in Spring Valley, NY. Custom packages for groups and on-site sessions anywhere in Rockland County.
 - H1: Pricing
-- Text: Every package includes retouching, an online proof gallery, and full-resolution files for personal and business use. Prices are the same for the studio in Spring Valley and for on-location sessions anywhere in Rockland County.
-- H2: Essential
-- Text: A focused 30-minute session for one polished, professional headshot.
-- Text: $295
-- Text: Delivered in 3 business days
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- List item: Online proof gallery
-- List item: Web + print resolution files
-- Link: Book Essential
-- Text: Most booked
-- H2: Professional
-- Text: The most popular choice: more time, more looks, more images to choose from.
-- Text: $495
-- Text: Delivered in 3 business days
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- List item: Online proof gallery with comments
-- List item: LinkedIn crop included
-- List item: Web + print resolution files
-- Link: Book Professional
-- H2: Executive
-- Text: An unhurried session with full creative direction and a complete image library.
-- Text: $895
-- Text: Delivered in 2 business days
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- List item: On-location option
-- List item: Online proof gallery with comments
-- List item: Priority 48-hour turnaround
-- Link: Book Executive
-- H2: Team & Office
-- Text: Consistent headshots for your whole team, on-site at your office.
-- Text: $150/ person
-- Text: Delivered in 5 business days
-- List item: Per person, 5-person minimum
+- H2: Individual headshot
+- Text: $250
+- Text: At the studio in Spring Valley.
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- H2: Custom package
+- Text: Custom
+- Text: We come to you. Two or more people.
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- List item: Consistent lighting and background
-- List item: Shared team gallery
-- Link: Book Team & Office
-- H2: Questions
-- Term: How do I pay?
-- Text: After we confirm a date you get a payment link. Cards, Apple Pay and Google Pay are accepted. Payment is due before the session.
-- Term: Is there a travel fee?
-- Text: No travel fee anywhere in Rockland County. For Bergen County, NJ or Westchester, ask and I will quote it.
-- Term: What should I wear?
-- Text: Solid colors, well fitted, in tones you wear to work. Bring two or three options and we choose together.
-- Term: How do I get my photos?
-- Text: Proofs are posted to a private online gallery protected by a code. You mark the frames you want and leave notes. Retouched finals are delivered to the same gallery for download.
-- Term: Can I buy extra retouched images?
-- Text: Yes. Additional retouched images from your session can be added at any time after the proofs are posted.
-- Term: Can you photograph a whole team?
-- Text: Yes. Team sessions are at your office with a portable setup so every headshot matches. Five-person minimum; larger groups get a quote.
+- List item: Priced per group
+- Link: Get a quote
 
 
-## About  (`/about`)
-
-- Browser tab title: About Meilech Biller, Rockland County Headshot Photographer | Meilech Biller
-- Search result description: About Meilech Biller, headshot photographer based in Spring Valley, NY. How sessions work, where they happen, and how photos are retouched and delivered.
-- Text: portrait  (placeholder, disappears once real photos are uploaded)
-- H1: About Meilech Biller
-- Text: I am a headshot photographer based in Spring Valley, in Rockland County, NY. I photograph business owners, professionals, teams and actors, in my studio or at their office.
-- Text: A session is short and calm. I tell you where to stand, how to hold your shoulders and chin, and when the expression is right. Most people are surprised how quickly it goes. You do not need to know how to pose.
-- Text: Retouching is kept natural: skin is cleaned up, stray hairs and blemishes are removed, and the photo still looks like you. I do not reshape faces or bodies.
-- Text: Proofs are delivered to a private online gallery within a day or two. You mark your favorites and leave notes on any frame. The retouched files come to the same gallery, sized for the web and for print.
-- Text: Sessions are available on weekdays, weekday evenings and Sundays. The studio is closed Friday afternoon and Saturday. On-location sessions cover all of Rockland County.
-- Link: Book a session
-- Link: See photos
-
-
-## Contact / Book a session  (`/contact`)
+## Contact  (`/contact`)
 
 - Browser tab title: Contact Meilech Biller, Headshot Photographer in Rockland County, NY | Meilech Biller
 - Search result description: Contact Meilech Biller about a headshot session. Studio in Spring Valley, NY, or on-site anywhere in Rockland County. Reply within one business day.
@@ -141,7 +102,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -163,32 +124,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Proofs are posted to a private online gallery protected by a code. You mark the frames you want and leave a note on any of them. Retouched files are delivered to the same gallery within two to three business days, sized for the web and for print. Team galleries are shared with one link so an office manager can collect everyone's picks.
 - H2: Hours
 - Text: Sessions run Sunday through Thursday, plus Friday mornings. Evenings are available on request. The studio is closed Friday afternoon and Saturday.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Rockland County
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Rockland County
 - Term: Do you charge for travel within Rockland County?
 - Text: No. On-site sessions anywhere in Rockland County are the same price as the studio. Bergen County, NJ and Westchester are quoted separately.
@@ -213,13 +162,13 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Landing page: Spring Valley  (`/headshots/spring-valley`)
 
 - Browser tab title: Headshots in Spring Valley, NY | Studio Sessions
-- Search result description: Headshot studio in Spring Valley, NY 10977. Business, LinkedIn and professional headshots from $295, retouching included. Walk-in distance from Main Street and Route 59; on-site sessions for offices, clinics and schools.
+- Search result description: Headshot studio in Spring Valley, NY 10977. Business, LinkedIn and professional headshots, $250 in the studio, retouching included. Walk-in distance from Main Street and Route 59; on-site sessions for offices, clinics and schools.
 - H1: Headshots in Spring Valley, NY
 - Text: The studio is in Spring Valley, so this is the easiest place to get a headshot in Rockland County. Sessions take 30 to 90 minutes and proofs are online within one or two business days. For offices, clinics and schools in the village I also come to you.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -241,32 +190,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Directions during the session are simple and I show you the frames on the back of the camera as we go, so you see what is working. Sessions are unhurried; there is no one waiting behind you.
 - H2: Hours
 - Text: Sunday through Thursday, plus Friday mornings. Evening sessions are available Sunday through Thursday on request. Closed Friday afternoon and Saturday.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Spring Valley
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Spring Valley
 - Term: Can I come in the same week?
 - Text: Often yes. Individual sessions are usually available within a few days. Send the form with two or three times that work.
@@ -297,7 +234,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -319,39 +256,27 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Every session is private. Nothing is posted anywhere unless you ask me to. If you prefer a same-gender photographer setup or a chaperone present, say so when booking and it is arranged.
 - H2: Delivery
 - Text: Proofs go to a private online gallery, usually the next business day. You pick, and retouched files follow within two to three business days. Files are sized for LinkedIn, websites and print. If you need a specific crop for a listing service or a journal, tell me and I will include it.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Monsey
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Monsey
 - Term: Do you come to Monsey for one person?
 - Text: The studio is five minutes away, so for one person the studio is quicker and the light is better controlled. For three or more people I come to you at no extra charge.
 - Term: Can I get the photo the same day?
 - Text: If you have a deadline, say so when booking. A quick-turn edited photo can usually be delivered the same or next day for an additional fee.
 - Term: What do you charge?
-- Text: Individual sessions start at $295 with two retouched photos. Staff sessions are $150 per person with a five-person minimum. Full details are on the pricing page.
+- Text: An individual headshot in the studio is $250. For groups or on-site sessions, send the form and I quote it.
 - Term: Do you photograph children or families?
 - Text: I focus on headshots for adults and staff. For a school that needs student photos, ask and I will tell you whether it fits.
 - H2: Ready to book?
@@ -375,7 +300,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -396,32 +321,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: For one person, come to the studio in Spring Valley: Route 59 west, about 15 minutes from Nanuet, with parking. Sessions run Sunday through Thursday, Friday mornings, and evenings on request, so you can come after the train.
 - H2: Delivery
 - Text: Proofs are posted to a private gallery within one or two business days. For teams, one shared link goes to the office manager and each person can mark their own pick. Retouched files follow within two to three business days.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Nanuet
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Nanuet
 - Term: How long does a team session at our Nanuet office take?
 - Text: About 20 minutes to set up, then 10 to 15 minutes per person. A team of ten is finished in about two and a half hours.
@@ -452,7 +365,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -473,32 +386,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Route 304 south to Route 59 west, or New Hempstead Road west to Route 45, about 15 minutes either way. Parking at the building. Sessions Sunday through Thursday, Friday mornings, evenings on request.
 - H2: Delivery
 - Text: Proofs online within one or two business days, retouched files within two to three business days after you pick. Firms get one shared gallery so an administrator can collect picks and download everything at once.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in New City
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from New City
 - Term: Can you photograph our whole firm in one visit?
 - Text: Yes. Set aside a conference room for a morning; each person takes 10 to 15 minutes and can go straight back to work.
@@ -529,7 +430,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -550,32 +451,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Sessions are calm and directed. You do not need experience in front of a camera; I tell you where to look and when the expression is right, and I show you frames as we go. Bring two or three outfits in solid colors.
 - H2: Delivery
 - Text: Proofs online within one or two business days. Pick your favorites in the gallery and retouched files follow within two to three business days, sized for web and print.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Airmont
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Airmont
 - Term: Which is faster for one person, studio or on-site?
 - Text: The studio. Ten minutes away, everything is set up, and the light is fully controlled. On-site makes sense for three or more people.
@@ -606,7 +495,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -626,32 +515,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Route 59 east about 15 minutes to Spring Valley. Parking at the building. Sessions Sunday through Thursday, Friday mornings, evenings on request.
 - H2: Delivery
 - Text: Proofs are online within one or two business days. For a practice, one shared gallery goes to the office manager. Retouched files follow within two to three business days.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Suffern
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Suffern
 - Term: Can you photograph providers between patients?
 - Text: Yes. That is how most practice sessions run: I set up once, and each provider steps in for about ten minutes when they have a gap.
@@ -682,7 +559,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Link: Book a session
 - Link: Email hello@meilechbiller.com
 - Term: From
-- Text: $295
+- Text: $250
 - Term: Proofs
 - Text: 1–2 business days
 - Term: Travel fee
@@ -702,32 +579,20 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Every package includes direction during the session, natural retouching, a private online proof gallery where you mark your picks, and full-resolution files sized for web and print. Prices are the same in the studio and on-site anywhere in the town.
 - H2: Privacy and scheduling
 - Text: Sessions are private, one person or one group at a time. Nothing is published without permission. If you have a deadline, such as a dinner journal or a listing going live, tell me when you book and I schedule the delivery around it.
+- H2: Recent headshots
+- Link: More photos →
 - H2: Pricing in Ramapo
-- Text: Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
-- Text: Essential
-- Text: $295
-- List item: 30-minute session
-- List item: 1 look, 1 background
-- List item: 2 retouched images
-- Link: Book Essential
-- Text: Professional
-- Text: $495
-- List item: 60-minute session
-- List item: 2 looks, 2 backgrounds
-- List item: 5 retouched images
-- Link: Book Professional
-- Text: Executive
-- Text: $895
-- List item: 90-minute session
-- List item: Unlimited looks
-- List item: 10 retouched images
-- Link: Book Executive
-- Text: Team & Office
-- Text: $150/ person
-- List item: Per person, 5-person minimum
+- Text: An individual headshot is $250 in the studio. Groups and on-site sessions are quoted.
+- Text: Individual headshot
+- Text: $250
+- List item: One person
+- List item: Retouched photos delivered online
+- Link: Book
+- Text: Custom package
+- Text: Custom
 - List item: On-site at your office
-- List item: 1 retouched image per person
-- Link: Book Team & Office
+- List item: Priced per group
+- Link: Get a quote
 - H2: Questions from Ramapo
 - Term: Which villages do you cover without a travel fee?
 - Text: All of them. Every village and hamlet in the Town of Ramapo, and the rest of Rockland County, is included.
@@ -787,38 +652,10 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: I reply within one business day.
 
 
-## Header (top of every page)
-
-- Text: Meilech Biller
-- Link: Portfolio
-- Link: Pricing
-- Link: About
-- Link: Contact
-- Button: Book a session
-- Button (phone menu): Open menu / Close menu
-- Link (phone menu only): Open your client gallery
-
-## Footer (bottom of every page)
-
-- Text: Meilech Biller
-- Text: Headshot photographer in Rockland County, NY. Studio in Spring Valley and on-location sessions at offices across the county.
-- Link: hello@meilechbiller.com
-- Heading: Site
-- Link: Portfolio
-- Link: Pricing
-- Link: About
-- Link: Book a session
-- Heading: Clients
-- Link: Open your gallery
-- Link: Studio login
-- Text: © 2026 Meilech Biller Headshot Photography. All rights reserved.
-- Text: Photos may not be reproduced without written permission.
-
 ## Client gallery: enter the code  (`/g/<gallery-name>`, before the code is entered)
 
-- Text: For <client name>
+- Text: <client name>
 - H1: <gallery title>
-- Text: Enter the access code from your email to view your photos.
 - Field label: Access code
 - Placeholder: ABC123
 - Button: View photos
@@ -831,27 +668,23 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text (above title, proofs): Proofs for review · <client name>
 - Text (above title, finals): Final delivery · <client name>
 - H1: <gallery title>
-- Text (proofs, when no welcome message is set): Tap a photo to view it large. Mark your favorites and leave a note on any frame you’d like retouched or adjusted.
-- Text (finals, when no welcome message is set): Your retouched files are ready. Download individually or all at once.
+- Text: <note to client, if you typed one in Settings>
 - Text: <N> photos · <N> favorites · Available until <date>
 - Button: ♥ Favorites (showing)
 - Button: Download all
 - Button (while zipping): Preparing 3/12…
 - Button: Lock gallery
-- Text (no photos yet): Photos are on their way.
+- Text (no photos): No photos yet.
 - Text (favorites filter, none): No favorites yet.
-- Error: Couldn’t build the zip in your browser. Use the download button on each photo instead.
-- Photo overlay: <file name> · 💬 <number of notes> · ♥
+- Error: Could not build the zip. Download photos one at a time instead.
 
-## Client gallery: single photo view (lightbox)
+## Client gallery: single photo view
 
-- Text: 3 / 12
 - Button: ♡ Mark favorite
 - Button: ♥ Favorite
 - Button: Download
 - Heading: Notes
-- Text (proofs, no notes): No notes yet. Ask for a retouch, a different crop, or just say this is the one.
-- Text (finals, no notes): No notes on this photo.
+- Text (no notes): No notes yet.
 - Text: Photographer  (label on your replies)
 - Placeholder: Leave a note on this photo…
 - Button: Send note
@@ -859,86 +692,75 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Error: Write a note first.
 - Error: Could not save your note. Try again.
 - Error: Could not save your pick. Try again.
-- Button: Close / Previous / Next
 
 ## Client gallery: closed
 
 - Text: Gallery closed
 - H1: <gallery title>
-- Text: This gallery is no longer available online. Email hello@meilechbiller.com to have it reopened.
+- Text: This gallery is closed. Email hello@meilechbiller.com.
 
 ## Client gallery: error screen
 
-- H1: Something went wrong
-- Text: <the technical error message>
+- Text: Something went wrong
+- H1: The gallery couldn’t load.
 - Button: Try again
 
 ## Pay page  (`/pay/<order>`)
 
 - Browser tab title: Pay for your session | Meilech Biller
 - Text: Order #1001
-- H1: <order title>
+- H1: <session title>
 - Text: For <client name>
-- Text: <order description you typed>
+- Text: <note to client, if you typed one>
 - Term: Session date
 - Term: Status
 - Term: Total
-- Button: Pay $495.00 securely
-- Text: Card, Apple Pay and Google Pay via Stripe. You’ll return here after payment.
+- Button: Pay $250.00
 - Text (already paid): Paid on <date>. Thank you.
-- Text (not payable): This order isn’t awaiting payment right now.
-- Text: Questions? Email hello@meilechbiller.com
+- Text (not payable): Nothing to pay right now.
 
 ## Payment received  (`/pay/success`)
 
 - Browser tab title: Payment received | Meilech Biller
-- Text: Payment received
-- H1: Thank you.
-- Text: Your payment of $495.00 went through. A receipt is on its way to <email>.
-- Text: I’ll follow up shortly to confirm your session details. Your photos will be delivered to a private online gallery afterward.
-- Button: Back to site
-- Link: hello@meilechbiller.com
+- H1: Thank you
+- Text: Payment of $250.00 received. Receipt sent to <email>.
+- Link: Back to site
 
 ## Emails (sent automatically once email is turned on)
 
 ### To you, when someone sends the form
 
 - Subject: New inquiry: <name> (<kind of session>)
-- Body: Name / Email / Phone / Session / People / Package / Where / Town / Timing / Heard about me / Message, then: Open in the studio: <link>. Reply to this email to answer <first name> directly.
+- Body: Name / Email / Phone / Message, then: Open in the studio: <link>. Reply to this email to answer <first name> directly.
 
 ### To the person who sent the form
 
 - Subject: Got your message, <first name>
 - Body: Hi <first name>,
-- Body: Thanks for reaching out. I received your inquiry and will reply within one business day with available dates and next steps.
-- Body: What you sent: <their answers>
-- Body: If anything changes, just reply to this email.
-- Body: Meilech Biller / meilechbiller.com / hello@meilechbiller.com
+- Body: Got your message. I reply within one business day.
+- Body: Meilech Biller / hello@meilechbiller.com
 
 ### To the client, proofs ready
 
-- Subject: Your proofs are ready — Meilech Biller
+- Subject: Your proofs are ready: Meilech Biller
 - Body: Hi <first name>,
-- Body: Your proofs are ready to review: <link> Access code: <code>
-- Body: Open a photo, tap the heart to mark it as a favorite, and leave a note on any frame you would like adjusted. I retouch your picks from there.
-- Body: The gallery stays online until <date>.  (only if an expiry is set)
+- Body: Your proofs are ready: <link>
+- Body: Code: <code>
 - Body: Meilech Biller / hello@meilechbiller.com
 
 ### To the client, final photos ready
 
-- Subject: Your final photos are ready — Meilech Biller
+- Subject: Your photos are ready: Meilech Biller
 - Body: Hi <first name>,
-- Body: Your retouched photos are ready to download: <link> Access code: <code>
-- Body: Each photo has a download button, and you can download everything at once.
-- Body: Thank you for working with me.
+- Body: Your photos are ready: <link>
+- Body: Code: <code>
 - Body: Meilech Biller / hello@meilechbiller.com
 
 ### To the client, payment receipt
 
-- Subject: Payment received — order #1001
+- Subject: Payment received: Meilech Biller
 - Body: Hi <first name>,
-- Body: Your payment of $495.00 for "<order title>" (order #1001) went through. Session date: <date>
-- Body: I will be in touch to confirm the details. Your photos will be delivered to a private online gallery after the session.
+- Body: Payment of $250.00 received for <session title>. Thank you.
 - Body: Meilech Biller / hello@meilechbiller.com
 
 ## Link preview image (when the site is shared on WhatsApp, LinkedIn, etc.)
@@ -948,9 +770,7 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 - Text: Professional headshots in Rockland County, NY.
 - Text: meilechbiller.com
 
-## Packages (editable in Admin → Packages; shown on Home, Pricing and the landing pages)
+## Packages (editable in Admin → Packages; shown on Pricing and the landing pages)
 
-- Essential — $295 — A focused 30-minute session for one polished, professional headshot. — 30-minute session / 1 look, 1 background / 2 retouched images / Online proof gallery / Web + print resolution files — Delivered in 3 business days
-- Professional — $495 — The most popular choice: more time, more looks, more images to choose from. — 60-minute session / 2 looks, 2 backgrounds / 5 retouched images / Online proof gallery with comments / LinkedIn crop included / Web + print resolution files — Delivered in 3 business days — badge: Most booked
-- Executive — $895 — An unhurried session with full creative direction and a complete image library. — 90-minute session / Unlimited looks / 10 retouched images / On-location option / Online proof gallery with comments / Priority 48-hour turnaround — Delivered in 2 business days
-- Team & Office — $150 / person — Consistent headshots for your whole team, on-site at your office. — Per person, 5-person minimum / On-site at your office / 1 retouched image per person / Consistent lighting and background / Shared team gallery — Delivered in 5 business days
+- Individual headshot, $250, at the studio.
+- Custom package, price on request, we come to you, more than one person. Button goes to the contact form.
