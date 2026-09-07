@@ -17,6 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       { url: base, lastModified: updated, changeFrequency: "monthly", priority: 1 },
       { url: `${base}/portfolio`, lastModified: updated, changeFrequency: "weekly", priority: 0.9 },
       { url: `${base}/pricing`, lastModified: updated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${base}/linkedin-headshots`, lastModified: updated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${base}/team-headshots`, lastModified: updated, changeFrequency: "monthly", priority: 0.85 },
       ...areas.map((a) => ({
         url: `${base}/headshots/${a.slug}`,
         lastModified: updated,

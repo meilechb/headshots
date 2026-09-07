@@ -44,6 +44,8 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-1.5 text-sm">
             <li><Link href="/portfolio" className="inline-block py-1 hover:text-brass-2">Portfolio</Link></li>
             <li><Link href="/pricing" className="inline-block py-1 hover:text-brass-2">Pricing</Link></li>
+            <li><Link href="/linkedin-headshots" className="inline-block py-1 hover:text-brass-2">LinkedIn headshots</Link></li>
+            <li><Link href="/team-headshots" className="inline-block py-1 hover:text-brass-2">Team headshots</Link></li>
             <li><Link href="/contact" className="inline-block py-1 hover:text-brass-2">Contact</Link></li>
           </ul>
         </div>
