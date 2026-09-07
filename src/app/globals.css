@@ -131,6 +131,29 @@ textarea::placeholder {
   .badge {
     @apply inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium;
   }
+
+  /* Studio (admin) only: round controls, one height for every button and input. */
+  .admin .btn-primary,
+  .admin .btn-secondary,
+  .admin .btn-ghost,
+  .admin .btn-danger {
+    @apply h-10 whitespace-nowrap rounded-full px-4 py-0 text-sm leading-none;
+  }
+  .admin .input {
+    @apply h-10 rounded-lg py-0;
+  }
+  .admin textarea.input {
+    @apply h-auto py-2.5;
+  }
+  .admin .card {
+    @apply rounded-xl;
+  }
+  .admin .label {
+    @apply text-xs text-muted;
+  }
+  .admin table thead th {
+    @apply font-medium;
+  }
 }
 
 /* Masonry-style columns for the portfolio grid */

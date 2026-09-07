@@ -38,7 +38,7 @@ export default async function GalleriesPage() {
       ) : (
         <div className="card overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-left text-xs uppercase tracking-wider text-muted">
+            <thead className="text-left text-xs text-muted">
               <tr>
                 <th className="px-4 py-3">Gallery</th>
                 <th className="px-4 py-3">Client</th>

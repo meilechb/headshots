@@ -44,7 +44,7 @@ export const areas: Area[] = [
         heading: "Studio or your office",
         paragraphs: [
           "For one person, the studio in Spring Valley is the simplest option. It is a few minutes off Route 59 and Route 45, with parking. A session takes 30 to 90 minutes depending on the package.",
-          "For two or more people, I bring the studio to you. The kit is a background, two lights and a laptop, and it sets up in about 20 minutes in a conference room, lobby or spare office. Each person needs 10 to 15 minutes, so a team of twelve is done in a morning.",
+          "For on-site sessions, I bring the studio to you. The kit is a background, two lights and a laptop, and it sets up in about 20 minutes in a conference room, lobby or spare office. Each person needs 10 to 15 minutes, so a team of twelve is done in a morning.",
         ],
       },
       {

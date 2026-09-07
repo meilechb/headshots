@@ -22,7 +22,7 @@ import {
   updateSession,
 } from "../../actions";
 
-const btn = "btn-secondary px-3 py-2 text-xs";
+const btn = "btn-secondary";
 
 export default async function ClientPage({
   params,
@@ -96,7 +96,7 @@ export default async function ClientPage({
             key={`${client.name}-${client.email}-${client.phone}-${client.company}-${client.notes}`}
             action={updateClient.bind(null, client.id)}
             className="card mt-2 grid grid-cols-1 gap-4 p-4 sm:grid-cols-2"
-            buttonClassName="btn-primary px-3 py-2 text-xs"
+            buttonClassName="btn-primary"
           >
             <Field label="Name" htmlFor="name">
               <input id="name" name="name" defaultValue={client.name} required className="input" />
@@ -124,7 +124,7 @@ export default async function ClientPage({
         </form>
         {canDelete ? (
           <form action={deleteClient.bind(null, client.id)}>
-            <ConfirmSubmit className="btn-danger px-3 py-2 text-xs" message={`Delete ${client.name}?`}>
+            <ConfirmSubmit className="btn-danger" message={`Delete ${client.name}?`}>
               Delete
             </ConfirmSubmit>
           </form>
@@ -208,10 +208,10 @@ export default async function ClientPage({
                         key={s.updated_at}
                         action={updateSession.bind(null, s.id)}
                         className="mt-2 grid grid-cols-1 gap-4 border border-line p-4 sm:grid-cols-3"
-                        buttonClassName="btn-primary px-3 py-2 text-xs"
+                        buttonClassName="btn-primary"
                         extra={
                           <ConfirmSubmit
-                            className="btn-danger px-3 py-2 text-xs"
+                            className="btn-danger"
                             message="Delete this session?"
                             formAction={deleteSession.bind(null, s.id)}
                           >

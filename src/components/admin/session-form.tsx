@@ -59,7 +59,7 @@ export function SessionForm({
       />
       <input name="shoot_date" type="date" aria-label="Shoot date" className="input w-auto" />
       <input ref={descriptionRef} type="hidden" name="description" />
-      <button type="submit" disabled={pending} className="btn-primary px-3 py-2 text-xs">
+      <button type="submit" disabled={pending} className="btn-primary">
         {pending ? "Adding…" : "Add session"}
       </button>
       {state.error ? (

@@ -18,7 +18,7 @@ export function ThemeToggle({ theme, compact = false }: { theme: AdminTheme; com
       <button
         type="button"
         onClick={toggle}
-        className="inline-flex h-10 w-10 items-center justify-center border border-line text-base text-ink-2 transition hover:border-ink/40 hover:text-ink"
+        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-line text-base text-ink-2 transition hover:border-ink/40 hover:text-ink"
         aria-label={`Switch to ${next} mode`}
         title={`Switch to ${next} mode`}
       >
@@ -31,7 +31,7 @@ export function ThemeToggle({ theme, compact = false }: { theme: AdminTheme; com
     <button
       type="button"
       onClick={toggle}
-      className="flex min-h-11 w-full items-center justify-between border border-line px-3 py-2 text-xs uppercase tracking-[0.08em] text-ink-2 transition hover:border-ink/40 hover:text-ink"
+      className="flex h-10 w-full items-center justify-between rounded-full border border-line px-4 text-xs text-ink-2 transition hover:border-ink/40 hover:text-ink"
       aria-label={`Switch to ${next} mode`}
     >
       <span>{next === "light" ? "Light mode" : "Dark mode"}</span>

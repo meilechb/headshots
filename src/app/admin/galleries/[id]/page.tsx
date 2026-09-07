@@ -15,7 +15,7 @@ import { deleteGallery, regenerateAccessCode, setGalleryStatus, updateGallery } 
 // Image processing in server actions can exceed the default function timeout.
 export const maxDuration = 60;
 
-const btn = "btn-secondary px-3 py-2 text-xs";
+const btn = "btn-secondary";
 
 export default async function GalleryDetailPage({
   params,
@@ -63,7 +63,7 @@ export default async function GalleryDetailPage({
         {gallery.status !== "published" ? (
           <form action={setGalleryStatus.bind(null, gallery.id, "published")}>
             <SubmitButton
-              className="btn-primary px-3 py-2 text-xs"
+              className="btn-primary"
               pendingLabel="…"
               disabled={photos.length === 0}
               title={photos.length === 0 ? "Upload photos first" : undefined}
@@ -92,7 +92,7 @@ export default async function GalleryDetailPage({
             key={`${gallery.kind}-${gallery.allow_downloads}-${gallery.expires_at ?? ""}-${gallery.title}-${gallery.welcome_message ?? ""}`}
             action={updateGallery.bind(null, gallery.id)}
             className="card mt-2 grid grid-cols-1 gap-4 p-4 sm:grid-cols-2"
-            buttonClassName="btn-primary px-3 py-2 text-xs"
+            buttonClassName="btn-primary"
           >
             <Field label="Title" htmlFor="title">
               <input id="title" name="title" defaultValue={gallery.title} required className="input" />
@@ -122,7 +122,7 @@ export default async function GalleryDetailPage({
           </ActionForm>
         </Disclosure>
         <form action={deleteGallery.bind(null, gallery.id)}>
-          <ConfirmSubmit className="btn-danger px-3 py-2 text-xs" message="Delete this gallery and all its photos?">
+          <ConfirmSubmit className="btn-danger" message="Delete this gallery and all its photos?">
             Delete
           </ConfirmSubmit>
         </form>

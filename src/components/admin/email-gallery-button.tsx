@@ -10,7 +10,7 @@ export function EmailGalleryButton({ galleryId }: { galleryId: string }) {
   );
   return (
     <form action={action} className="flex flex-wrap items-center gap-2">
-      <button type="submit" disabled={pending} className="btn-secondary px-3 py-2 text-xs">
+      <button type="submit" disabled={pending} className="btn-secondary">
         {pending ? "Sending…" : "Email client"}
       </button>
       {state.ok ? <span className="text-xs text-success">Sent</span> : null}

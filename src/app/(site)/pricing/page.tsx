@@ -6,7 +6,7 @@ import { formatMoney } from "@/lib/types";
 export const metadata: Metadata = {
   title: "Headshot Pricing, Rockland County, NY",
   description:
-    "Individual headshot $250 at the studio in Spring Valley, NY. Custom packages for groups and on-site sessions anywhere in Rockland County.",
+    "Individual headshot $250 at the studio in Spring Valley, NY. Custom packages on request anywhere in Rockland County.",
   alternates: { canonical: "/pricing" },
 };
 

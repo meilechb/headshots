@@ -23,13 +23,13 @@ export default async function PortfolioAdminPage() {
             {hero ? (
               <Image src={hero.url} alt={hero.alt || "Home page header image"} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover object-[center_30%]" />
             ) : (
-              <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.2em] text-muted">None set</div>
+              <div className="flex h-full items-center justify-center text-xs text-muted">None set</div>
             )}
           </div>
           <div className="space-y-3">
             <Uploader target={{ kind: "hero" }} />
             {hero ? (
-              <ActionForm action={clearHeroImage} submitLabel="Remove" pendingLabel="Removing…" successMessage="Removed" buttonClassName="btn-ghost px-3 py-1.5 text-xs" className="space-y-0">
+              <ActionForm action={clearHeroImage} submitLabel="Remove" pendingLabel="Removing…" successMessage="Removed" buttonClassName="btn-ghost" className="space-y-0">
                 <span className="sr-only">Remove the home page header image</span>
               </ActionForm>
             ) : null}
@@ -48,18 +48,18 @@ export default async function PortfolioAdminPage() {
               <div className="relative aspect-[4/5] bg-paper-2">
                 <Image src={img.url} alt={img.alt} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
                 {!img.is_published ? (
-                  <span className="absolute left-2 top-2 bg-black/60 px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-white">Hidden</span>
+                  <span className="absolute left-2 top-2 bg-black/60 rounded-full px-2 py-0.5 text-[11px] text-white">Hidden</span>
                 ) : null}
                 {img.is_featured ? (
-                  <span className="absolute right-2 top-2 bg-ink px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-paper">Featured</span>
+                  <span className="absolute right-2 top-2 bg-ink rounded-full px-2 py-0.5 text-[11px] text-paper">Featured</span>
                 ) : null}
                 {hero?.url === img.url ? (
-                  <span className="absolute bottom-2 left-2 bg-ink px-1.5 py-0.5 text-[11px] uppercase tracking-wide text-paper">Home header</span>
+                  <span className="absolute bottom-2 left-2 bg-ink rounded-full px-2 py-0.5 text-[11px] text-paper">Home header</span>
                 ) : null}
               </div>
               {hero?.url !== img.url ? (
                 <div className="border-b border-line px-4 py-2">
-                  <ActionForm action={useAsHeroImage.bind(null, img.id)} submitLabel="Use as header" pendingLabel="Setting…" successMessage="Set" buttonClassName="btn-ghost px-2 py-1 text-xs" className="space-y-0">
+                  <ActionForm action={useAsHeroImage.bind(null, img.id)} submitLabel="Use as header" pendingLabel="Setting…" successMessage="Set" buttonClassName="btn-ghost" className="space-y-0">
                     <span className="sr-only">Use this photo as the home page header</span>
                   </ActionForm>
                 </div>
@@ -68,10 +68,10 @@ export default async function PortfolioAdminPage() {
                 key={`${img.is_featured}-${img.is_published}-${img.sort_order}-${img.alt}`}
                 action={updatePortfolioImage.bind(null, img.id)}
                 className="space-y-3 p-4 text-sm"
-                buttonClassName="btn-secondary px-3 py-1.5 text-xs"
+                buttonClassName="btn-secondary"
                 extra={
                   <ConfirmSubmit
-                    className="btn-danger ml-auto px-3 py-1.5 text-xs"
+                    className="btn-danger ml-auto"
                     message="Delete this image from the portfolio?"
                     formAction={deletePortfolioImage.bind(null, img.id)}
                   >

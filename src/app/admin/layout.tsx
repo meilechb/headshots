@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
   return (
     <div
       data-theme={theme}
-      className="flex min-h-screen flex-col bg-paper text-ink md:flex-row"
+      className="admin flex min-h-screen flex-col bg-paper text-ink md:flex-row"
     >
       <aside className="border-b border-line bg-paper-4 md:sticky md:top-0 md:flex md:h-screen md:w-60 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
         <div className="flex items-center justify-between gap-3 px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 md:block md:px-5 md:py-5">
@@ -31,20 +31,20 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
             <ThemeToggle theme={theme} compact />
             <Link
               href="/"
-              className="inline-flex h-10 items-center border border-line px-3 text-xs uppercase tracking-[0.08em] text-ink-2 hover:text-ink"
+              className="inline-flex h-10 items-center rounded-full border border-line px-4 text-xs text-ink-2 hover:text-ink"
             >
               Site
             </Link>
             <form action="/auth/signout" method="post">
               <button
                 type="submit"
-                className="inline-flex h-10 items-center border border-line px-3 text-xs uppercase tracking-[0.08em] text-ink-2 hover:text-ink"
+                className="inline-flex h-10 items-center rounded-full border border-line px-4 text-xs text-ink-2 hover:text-ink"
               >
                 Sign out
               </button>
             </form>
           </div>
-          <Link href="/" className="hidden text-xs uppercase tracking-[0.08em] text-ink-2 hover:text-ink md:mt-3 md:block">
+          <Link href="/" className="hidden text-xs text-ink-2 hover:text-ink md:mt-3 md:block">
             View site →
           </Link>
         </div>

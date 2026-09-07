@@ -25,7 +25,7 @@ export function AdminNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`shrink-0 whitespace-nowrap px-3 py-2.5 text-xs uppercase tracking-[0.06em] transition md:py-2 ${
+            className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm transition ${
               active ? "bg-ink text-paper" : "text-ink-2 hover:bg-ink/5 hover:text-ink"
             }`}
           >
@@ -51,7 +51,7 @@ export function CopyButton({ value, label = "Copy" }: { value: string; label?: s
           // Clipboard unavailable (insecure context); user can select the text.
         }
       }}
-      className="btn-secondary shrink-0 px-3 py-1.5 text-xs"
+      className="btn-secondary shrink-0"
     >
       {copied ? "Copied" : label}
     </button>

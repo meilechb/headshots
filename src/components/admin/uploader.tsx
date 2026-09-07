@@ -126,7 +126,7 @@ export function Uploader({ target }: { target: Target }) {
     <div className="card p-5">
       <label
         htmlFor={`uploader-${target.kind}`}
-        className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-line bg-paper-3/40 px-6 py-10 text-center transition hover:border-ink/40 hover:bg-paper-2/40"
+        className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-line bg-paper-3/40 px-6 py-10 text-center transition hover:border-ink/40 hover:bg-paper-2/40"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();

@@ -50,7 +50,7 @@ export default async function IntegrationsPage() {
                   </p>
                 </div>
                 <form action={revokeApiToken.bind(null, t.id)}>
-                  <ConfirmSubmit className="btn-danger px-3 py-1.5 text-xs" message={`Revoke “${t.name}”? Lightroom will stop being able to publish until you enter a new token.`}>
+                  <ConfirmSubmit className="btn-danger" message={`Revoke “${t.name}”? Lightroom will stop being able to publish until you enter a new token.`}>
                     Revoke
                   </ConfirmSubmit>
                 </form>

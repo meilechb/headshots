@@ -61,15 +61,15 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                   </p>
                   <div className="flex shrink-0 gap-0.5">
                     <form action={movePhoto.bind(null, p.id, -1)}>
-                      <button type="submit" className="btn-ghost min-h-9 px-2 py-1 text-xs" aria-label="Move earlier" disabled={i === 0}>↑</button>
+                      <button type="submit" className="btn-ghost" aria-label="Move earlier" disabled={i === 0}>↑</button>
                     </form>
                     <form action={movePhoto.bind(null, p.id, 1)}>
-                      <button type="submit" className="btn-ghost min-h-9 px-2 py-1 text-xs" aria-label="Move later" disabled={i === photos.length - 1}>↓</button>
+                      <button type="submit" className="btn-ghost" aria-label="Move later" disabled={i === photos.length - 1}>↓</button>
                     </form>
                     <button
                       type="button"
                       onClick={() => setOpen(expanded ? null : p.id)}
-                      className="btn-ghost min-h-9 px-2 py-1 text-xs"
+                      className="btn-ghost"
                     >
                       {expanded ? "Close" : "Notes"}
                     </button>
@@ -79,7 +79,7 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                 {expanded ? (
                   <div className="mt-3 space-y-4">
                     <div>
-                      <p className="text-xs uppercase tracking-[0.18em] text-muted">Notes</p>
+                      <p className="text-xs text-muted">Notes</p>
                       {p.comments.length === 0 ? (
                         <p className="mt-2 text-sm text-muted">No notes on this photo.</p>
                       ) : (
@@ -107,10 +107,10 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                     </div>
                     <form action={addAdminComment.bind(null, p.id)} className="flex gap-2">
                       <input name="body" required placeholder="Reply to the client…" className="input" />
-                      <button type="submit" className="btn-primary px-4 py-2">Send</button>
+                      <button type="submit" className="btn-primary">Send</button>
                     </form>
                     <form action={deletePhoto.bind(null, p.id)}>
-                      <ConfirmSubmit className="btn-danger px-3 py-1.5 text-xs" message={`Delete ${p.filename}? The file is removed from storage.`}>
+                      <ConfirmSubmit className="btn-danger" message={`Delete ${p.filename}? The file is removed from storage.`}>
                         Delete photo
                       </ConfirmSubmit>
                     </form>

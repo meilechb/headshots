@@ -52,7 +52,7 @@ export default async function ClientsPage({
               <Link
                 key={t.label}
                 href={query ? `${href}${t.key ? "&" : "?"}q=${encodeURIComponent(q ?? "")}` : href}
-                className={`inline-flex min-h-9 shrink-0 items-center gap-1.5 border px-3 text-xs transition ${
+                className={`inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm transition ${
                   active ? "border-ink bg-ink text-paper" : "border-line text-ink-2 hover:border-ink hover:text-ink"
                 }`}
               >
@@ -70,7 +70,7 @@ export default async function ClientsPage({
             defaultValue={q ?? ""}
             placeholder="Search"
             aria-label="Search clients"
-            className="input min-h-9 py-1.5 md:w-56"
+            className="input md:w-56"
           />
         </form>
       </div>
@@ -80,7 +80,7 @@ export default async function ClientsPage({
       ) : (
         <div className="card overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-left text-xs uppercase tracking-wider text-muted">
+            <thead className="text-left text-xs text-muted">
               <tr>
                 <th className="px-4 py-3">Client</th>
                 <th className="px-4 py-3">Stage</th>
