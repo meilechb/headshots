@@ -1056,7 +1056,6 @@ Not included: the studio admin (only you see it) and the Lightroom plugin.
 ## Header (top of every page)
 
 - Text: Meilech Biller
-- Text: Headshots · Rockland County
 - Link: Portfolio
 - Link: Pricing
 - Link: About

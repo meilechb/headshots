@@ -29,9 +29,11 @@ export default async function HomePage() {
         )}
         {/* Darkens the lower half so the text stays readable on any photo. */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0e] via-[#0d0d0e]/55 to-[#0d0d0e]/10" aria-hidden />
-        <div className="container-x relative pb-14 pt-40 md:pb-20 md:pt-56">
+        <div className="container-x relative pb-14 pt-36 md:pb-20 md:pt-52">
           <h1 className="max-w-3xl font-display text-4xl leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Stand out from the crowd
+            Stand out
+            <br />
+            from the crowd
           </h1>
           <p className="mt-5 max-w-lg text-lg leading-8 text-white/80">
             Professional headshots in Rockland County, NY.

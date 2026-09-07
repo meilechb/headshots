@@ -12,14 +12,9 @@ export const navItems = [
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/60 bg-paper/70 backdrop-blur-lg">
-      <div className="container-x flex h-[76px] items-center justify-between">
-        <Link href="/" className="flex flex-col leading-none text-ink">
-          <span className="font-display text-sm tracking-[0.24em]">
-            {site.name}
-          </span>
-          <span className="mt-[3px] text-[10px] font-normal normal-case tracking-[0.3em] uppercase text-muted">
-            Headshots · Rockland County
-          </span>
+      <div className="container-x flex h-14 items-center justify-between">
+        <Link href="/" className="font-display text-sm leading-none tracking-[0.24em] text-ink">
+          {site.name}
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex" aria-label="Primary">

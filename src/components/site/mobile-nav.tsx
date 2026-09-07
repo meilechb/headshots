@@ -55,7 +55,7 @@ export function MobileNav({
         ? createPortal(
         <div
           id="mobile-nav"
-          className="fixed inset-x-0 bottom-0 top-[76px] z-30 overflow-y-auto border-t border-line bg-paper px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden"
+          className="fixed inset-x-0 bottom-0 top-14 z-30 overflow-y-auto border-t border-line bg-paper px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden"
         >
           <nav className="flex flex-col" aria-label="Mobile">
             {items.map((item) => (
