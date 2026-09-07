@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
   async redirects() {
     // The studio is organised around clients now. Old bookmarks still land somewhere useful.
     return [
+      { source: "/about", destination: "/", permanent: true },
       { source: "/admin", destination: "/admin/clients", permanent: false },
       { source: "/admin/inquiries", destination: "/admin/clients?stage=lead", permanent: false },
       { source: "/admin/orders", destination: "/admin/clients", permanent: false },

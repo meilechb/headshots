@@ -3,7 +3,7 @@ import { ApiError, json, listGalleryPhotos, loadGallery, readJson, serializeGall
 
 type Ctx = { params: Promise<{ id: string }> };
 
-/** GET /api/lr/galleries/:id — gallery, link, code and its photos. */
+/** GET /api/lr/galleries/:id, gallery, link, code and its photos. */
 export const GET = withApi(async (_request, { params }: Ctx) => {
   const { id } = await params;
   const gallery = await loadGallery(id);

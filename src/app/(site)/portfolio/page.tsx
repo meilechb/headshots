@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/portfolio" },
 };
 
+// Re-check the database at most every 5 minutes; admin saves also refresh these pages.
+export const revalidate = 300;
+
 export default async function PortfolioPage() {
   const images = await getPortfolio();
 

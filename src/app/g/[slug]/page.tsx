@@ -34,11 +34,11 @@ export default async function ClientGalleryPage({ params }: Props) {
           <p className="eyebrow">Gallery closed</p>
           <h1 className="mt-3 font-display text-3xl">{gallery.title}</h1>
           <p className="mt-3 text-sm text-muted">
-            This gallery is no longer available online. Email{" "}
+            This gallery is closed. Email{" "}
             <a href={`mailto:${site.email}`} className="underline">
               {site.email}
-            </a>{" "}
-            to have it reopened.
+            </a>
+            .
           </p>
         </div>
       </section>

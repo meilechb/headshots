@@ -236,7 +236,7 @@ async function insertGallery(clientId: string, kind: GalleryKind, title?: string
   const created = one<{ id: string }>(
     await db()`
       insert into galleries (client_id, order_id, title, kind, slug, access_code, allow_downloads, status)
-      values (${clientId}, ${order?.id ?? null}, ${title || `${client.name} — ${label}`}, ${kind}, ${slug},
+      values (${clientId}, ${order?.id ?? null}, ${title || `${client.name}, ${label}`}, ${kind}, ${slug},
               ${generateAccessCode(6)}, ${kind === "final"}, 'draft')
       returning id`
   );
@@ -493,7 +493,6 @@ export async function updatePortfolioImage(id: string, _prev: ActionState, formD
     revalidatePath("/admin/portfolio");
     revalidatePath("/");
     revalidatePath("/portfolio");
-    revalidatePath("/about");
   });
 }
 

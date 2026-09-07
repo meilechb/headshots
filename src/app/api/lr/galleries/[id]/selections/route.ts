@@ -3,7 +3,7 @@ import { json, loadGallery, withApi } from "@/lib/lr";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-/** GET /api/lr/galleries/:id/selections — the client's favorites. */
+/** GET /api/lr/galleries/:id/selections, the client's favorites. */
 export const GET = withApi(async (_request, { params }: Ctx) => {
   const { id } = await params;
   const gallery = await loadGallery(id);

@@ -32,7 +32,7 @@ export default async function GalleryLanding({
         />
         {error ? (
           <p role="alert" className="mt-3 text-sm text-red-400">
-            That doesn’t look like a gallery link.
+            Gallery not found.
           </p>
         ) : null}
         <button type="submit" className="btn-primary mt-6 w-full">

@@ -48,7 +48,7 @@ export function SessionForm({
           <option value="">Custom</option>
           {packages.map((p) => (
             <option key={p.id} value={p.id}>
-              {p.name} — ${(p.price_cents / 100).toFixed(0)}
+              {p.name}, ${(p.price_cents / 100).toFixed(0)}
             </option>
           ))}
         </select>

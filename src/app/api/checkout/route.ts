@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
           currency: order.currency,
           unit_amount: order.amount_cents,
           product_data: {
-            name: `${order.title} — Order #${order.order_number}`,
+            name: `${order.title}, order #${order.order_number}`,
             description: order.description ?? undefined,
           },
         },

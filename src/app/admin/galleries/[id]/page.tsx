@@ -34,7 +34,7 @@ export default async function GalleryDetailPage({
   const firstName = gallery.client.name.split(" ")[0];
   const canEmail = emailConfigured();
   const emailSubject =
-    gallery.kind === "proof" ? `Your proofs are ready — ${site.name}` : `Your final photos are ready — ${site.name}`;
+    gallery.kind === "proof" ? `Your proofs are ready, ${site.name}` : `Your final photos are ready, ${site.name}`;
   const emailBody =
     gallery.kind === "proof"
       ? `Hi ${firstName},\n\nYour proofs are ready to review:\n${link}\nAccess code: ${gallery.access_code}\n\nMark your favorites and leave a note on any frame you'd like adjusted. I'll retouch your picks from there.\n\n${site.name}`
@@ -94,7 +94,7 @@ export default async function GalleryDetailPage({
           </div>
           <div className="mt-2 flex items-center gap-2">
             <code className="min-w-0 flex-1 truncate border border-line bg-paper-2 px-3 py-2 font-mono text-base tracking-[0.3em]">
-              {gallery.access_code ?? "—"}
+              {gallery.access_code ?? "none"}
             </code>
             <CopyButton value={gallery.access_code ?? ""} />
           </div>

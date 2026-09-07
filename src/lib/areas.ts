@@ -96,7 +96,7 @@ export const areas: Area[] = [
     fullName: "Spring Valley, NY",
     title: "Headshots in Spring Valley, NY | Studio Sessions",
     description:
-      "Headshot studio in Spring Valley, NY 10977. Business, LinkedIn and professional headshots from $295, retouching included. Walk-in distance from Main Street and Route 59; on-site sessions for offices, clinics and schools.",
+      "Headshot studio in Spring Valley, NY 10977. Business, LinkedIn and professional headshots, $250 in the studio, retouching included. Walk-in distance from Main Street and Route 59; on-site sessions for offices, clinics and schools.",
     heading: "Headshots in Spring Valley, NY",
     lead:
       "The studio is in Spring Valley, so this is the easiest place to get a headshot in Rockland County. Sessions take 30 to 90 minutes and proofs are online within one or two business days. For offices, clinics and schools in the village I also come to you.",
@@ -202,7 +202,7 @@ export const areas: Area[] = [
       },
       {
         q: "What do you charge?",
-        a: "Individual sessions start at $295 with two retouched photos. Staff sessions are $150 per person with a five-person minimum. Full details are on the pricing page.",
+        a: "An individual headshot in the studio is $250. For groups or on-site sessions, send the form and I quote it.",
       },
       {
         q: "Do you photograph children or families?",

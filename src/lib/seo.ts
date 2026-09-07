@@ -55,7 +55,7 @@ export function personJsonLd() {
     "@id": personId,
     name: site.founder,
     jobTitle: "Headshot photographer",
-    url: `${site.url}/about`,
+    url: site.url,
     email: site.email,
     worksFor: { "@id": businessId },
     ...(sameAs.length ? { sameAs } : {}),
@@ -105,7 +105,6 @@ export const publicPaths = [
   "/",
   "/portfolio",
   "/pricing",
-  "/about",
   "/contact",
   ...areas.map((a) => `/headshots/${a.slug}`),
 ];

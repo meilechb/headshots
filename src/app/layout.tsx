@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const viewport: Viewport = {
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} h-full antialiased`}>
+    <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-paper">{children}</body>
     </html>
   );

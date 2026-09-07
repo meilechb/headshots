@@ -5,6 +5,9 @@ import { getFeaturedPortfolio } from "@/lib/data/public";
 import { getHeroImage } from "@/lib/data/settings";
 import { site } from "@/lib/site";
 
+// Re-check the database at most every 5 minutes; admin saves also refresh these pages.
+export const revalidate = 300;
+
 export default async function HomePage() {
   const [featured, chosenHero] = await Promise.all([getFeaturedPortfolio(6), getHeroImage()]);
   // Admin-chosen header image, otherwise the first featured portfolio photo.

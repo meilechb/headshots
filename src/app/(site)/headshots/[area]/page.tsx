@@ -12,6 +12,9 @@ import { formatMoney } from "@/lib/types";
 
 type Props = { params: Promise<{ area: string }> };
 
+// Re-check the database at most every 5 minutes; admin saves also refresh these pages.
+export const revalidate = 300;
+
 export function generateStaticParams() {
   return areas.map((a) => ({ area: a.slug }));
 }
@@ -131,22 +134,21 @@ export default async function AreaPage({ params }: Props) {
           <section className="container-x py-14 md:py-16" aria-labelledby={`${area.slug}-pricing`}>
             <h2 id={`${area.slug}-pricing`} className="font-display text-2xl tracking-tight">Pricing in {area.name}</h2>
             <p className="mt-3 max-w-xl text-sm text-ink-2">
-              Same price in the studio and on-site anywhere in Rockland County. Retouching, an online proof gallery and full-resolution files are included in every package.
+              An individual headshot is {packages[0] ? formatMoney(packages[0].price_cents) : "$250"} in the studio. Groups and on-site sessions are quoted.
             </p>
             <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {packages.map((p) => (
                 <li key={p.id} className={`card flex flex-col p-5 ${p.is_featured ? "border-ink" : ""}`}>
                   <p className="font-medium">{p.name}</p>
                   <p className="mt-1 font-display text-3xl">
-                    {formatMoney(p.price_cents)}
-                    {p.slug === "team" ? <span className="ml-1 text-sm text-muted">/ person</span> : null}
+                    {p.price_cents > 0 ? formatMoney(p.price_cents) : "Custom"}
                   </p>
                   <ul className="mt-3 flex-1 space-y-1.5 text-sm text-ink-2">
                     {p.includes.slice(0, 3).map((line) => (
                       <li key={line}>{line}</li>
                     ))}
                   </ul>
-                  <a href="#book" className={`mt-5 ${p.is_featured ? "btn-primary" : "btn-secondary"}`}>Book {p.name}</a>
+                  <a href="#book" className="btn-secondary mt-5">{p.price_cents > 0 ? "Book" : "Get a quote"}</a>
                 </li>
               ))}
             </ul>

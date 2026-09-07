@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getOrderForPayment } from "@/lib/data/orders";
-import { site } from "@/lib/site";
 import { formatMoney, orderStatusLabels } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -62,12 +61,8 @@ export default async function PayPage({
           <form action="/api/checkout" method="POST" className="mt-6">
             <input type="hidden" name="orderId" value={order.id} />
             <button type="submit" className="btn-primary w-full">
-              Pay {formatMoney(order.amount_cents, order.currency)} securely
+              Pay {formatMoney(order.amount_cents, order.currency)}
             </button>
-            <p className="mt-3 text-center text-xs text-muted">
-              Card, Apple Pay and Google Pay via Stripe. You’ll return here
-              after payment.
-            </p>
           </form>
         ) : (
           <div className="mt-6 border border-line bg-paper-2 p-4 text-sm">
@@ -82,18 +77,11 @@ export default async function PayPage({
                 . Thank you.
               </>
             ) : (
-              <>This order isn’t awaiting payment right now.</>
+              <>Nothing to pay right now.</>
             )}
           </div>
         )}
 
-        <p className="mt-6 text-xs text-muted">
-          Questions? Email{" "}
-          <a href={`mailto:${site.email}`} className="underline">
-            {site.email}
-          </a>
-          .
-        </p>
       </div>
     </section>
   );

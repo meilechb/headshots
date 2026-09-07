@@ -70,7 +70,7 @@ export function MobileNav({
               </Link>
             ))}
             <Link href="/contact" onClick={() => setOpen(false)} className="btn-primary mt-6 py-4">
-              Book a session
+              Contact
             </Link>
             <Link
               href="/g"

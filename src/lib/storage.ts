@@ -4,8 +4,8 @@ import { del, get } from "@vercel/blob";
 
 /**
  * Vercel Blob. Two stores:
- *   galleries  (private) — client photos, streamed through /api/photo/[id]
- *   portfolio  (public)  — marketing images served directly by next/image
+ *   galleries  (private), client photos, streamed through /api/photo/[id]
+ *   portfolio  (public) , marketing images served directly by next/image
  */
 export type Store = "galleries" | "portfolio";
 

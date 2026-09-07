@@ -4,7 +4,7 @@ import type { PhotoComment } from "@/lib/types";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-/** GET /api/lr/galleries/:id/comments — every note in the gallery, oldest first. */
+/** GET /api/lr/galleries/:id/comments, every note in the gallery, oldest first. */
 export const GET = withApi(async (_request, { params }: Ctx) => {
   const { id } = await params;
   const gallery = await loadGallery(id);

@@ -29,7 +29,7 @@ export default async function GalleriesPage() {
                 <select id="gallery-client" name="client_id" required defaultValue="" className="input">
                   <option value="" disabled>Choose…</option>
                   {clients.map((c) => (
-                    <option key={c.id} value={c.id}>{c.name} — {c.email}</option>
+                    <option key={c.id} value={c.id}>{c.name} ({c.email})</option>
                   ))}
                 </select>
               </Field>
@@ -40,7 +40,7 @@ export default async function GalleriesPage() {
                 </select>
               </Field>
               <Field label="Title" htmlFor="gallery-title" hint="optional">
-                <input id="gallery-title" name="title" className="input" placeholder="Client name — Proofs" />
+                <input id="gallery-title" name="title" className="input" placeholder="Client name, Proofs" />
               </Field>
             </ActionForm>
           </Disclosure>
@@ -85,7 +85,7 @@ export default async function GalleriesPage() {
                           g.favorites ? `${g.favorites} favorite${g.favorites === 1 ? "" : "s"}` : null,
                           g.open_notes ? `${g.open_notes} open note${g.open_notes === 1 ? "" : "s"}` : null,
                         ].filter(Boolean).join(" · ")
-                      : "—"}
+                      : ""}
                   </td>
                   <td className="px-4 py-3"><GalleryStatusBadge status={g.status} /></td>
                   <td className="px-4 py-3 text-right text-muted">{formatDate(g.created_at)}</td>

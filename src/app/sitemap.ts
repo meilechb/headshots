@@ -17,7 +17,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: a.slug === "rockland-county" ? 0.8 : 0.7,
     })),
-    { url: `${base}/about`, lastModified: updated, changeFrequency: "yearly", priority: 0.6 },
     { url: `${base}/contact`, lastModified: updated, changeFrequency: "yearly", priority: 0.7 },
   ];
 }

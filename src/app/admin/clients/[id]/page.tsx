@@ -64,7 +64,7 @@ Pricing is on ${site.url}/pricing. Once you pick a date I send a payment link to
 ${site.name}
 ${site.url}`
     : `Hi ${firstName},\n\n`;
-  const replyHref = `mailto:${client.email}?subject=${encodeURIComponent(`Your headshot session — ${site.name}`)}&body=${encodeURIComponent(replyBody)}`;
+  const replyHref = `mailto:${client.email}?subject=${encodeURIComponent(`Your headshot session, ${site.name}`)}&body=${encodeURIComponent(replyBody)}`;
 
   return (
     <div className="space-y-8">
@@ -198,7 +198,7 @@ ${site.url}`
                           </div>
                           <div className="flex flex-wrap gap-2">
                             <a
-                              href={`mailto:${client.email}?subject=${encodeURIComponent(`Payment for your headshot session — ${site.name}`)}&body=${encodeURIComponent(`Hi ${firstName},\n\nHere is the secure payment link for your session (${formatMoney(s.amount_cents, s.currency)}):\n${payUrl}\n\nThank you,\n${site.name}`)}`}
+                              href={`mailto:${client.email}?subject=${encodeURIComponent(`Payment for your headshot session, ${site.name}`)}&body=${encodeURIComponent(`Hi ${firstName},\n\nHere is the secure payment link for your session (${formatMoney(s.amount_cents, s.currency)}):\n${payUrl}\n\nThank you,\n${site.name}`)}`}
                               className="btn-primary px-3 py-1.5 text-xs"
                             >
                               Email payment link

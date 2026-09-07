@@ -14,8 +14,8 @@
   --color-success: #4ade80;
   --color-danger: #f87171;
 
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
 
   --shadow-soft: none;
@@ -101,27 +101,26 @@ textarea::placeholder {
   }
   .font-display {
     font-family: var(--font-display);
-    font-weight: 700;
-    text-transform: uppercase;
+    font-weight: 600;
     letter-spacing: -0.02em;
   }
   .eyebrow {
-    @apply text-xs font-medium uppercase tracking-[0.28em] text-muted;
+    @apply text-xs font-medium text-muted;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-none bg-ink px-5 py-3 text-xs font-medium tracking-[0.12em] uppercase text-paper transition hover:bg-ink-2 hover:text-paper disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none bg-ink px-5 py-3 text-sm font-medium text-paper transition hover:bg-ink-2 hover:text-paper disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-none border border-ink/30 bg-transparent px-5 py-3 text-xs font-medium tracking-[0.12em] uppercase text-ink transition hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none border border-ink/30 bg-transparent px-5 py-3 text-sm font-medium text-ink transition hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-60;
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 rounded-none px-4 py-2 text-xs font-medium tracking-[0.1em] uppercase text-ink-2 transition hover:bg-ink/5 hover:text-ink disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none px-4 py-2 text-sm font-medium text-ink-2 transition hover:bg-ink/5 hover:text-ink disabled:opacity-60;
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center gap-2 rounded-none border border-danger/40 bg-transparent px-4 py-2 text-xs font-medium tracking-[0.1em] uppercase text-danger transition hover:bg-danger/10 disabled:opacity-60;
+    @apply inline-flex items-center justify-center gap-2 rounded-none border border-danger/40 bg-transparent px-4 py-2 text-sm font-medium text-danger transition hover:bg-danger/10 disabled:opacity-60;
   }
   .label {
-    @apply mb-1.5 block text-xs font-medium uppercase tracking-[0.1em] text-ink-2/80;
+    @apply mb-1.5 block text-sm font-medium text-ink-2;
   }
   .input {
     @apply block w-full rounded-none border border-line bg-paper px-3.5 py-2.5 text-sm text-ink placeholder:text-muted focus:border-ink focus:outline-none;

@@ -29,7 +29,7 @@ export function GalleryStatusBadge({ status }: { status: GalleryStatus }) {
 }
 
 export function formatDate(value: string | null | undefined, withYear = false) {
-  if (!value) return "—";
+  if (!value) return "";
   return new Date(value).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",

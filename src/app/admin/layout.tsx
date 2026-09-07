@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/admin/theme-toggle";
 import { getAdminTheme } from "@/lib/theme";
 
 export const metadata: Metadata = {
-  title: { default: "Studio", template: "%s — Studio" },
+  title: { default: "Studio", template: "%s | Studio" },
   robots: { index: false, follow: false },
 };
 
@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: LayoutProps<"/admin">) {
     >
       <aside className="border-b border-line bg-paper-4 md:sticky md:top-0 md:flex md:h-screen md:w-60 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
         <div className="flex items-center justify-between gap-3 px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 md:block md:px-5 md:py-5">
-          <Link href="/admin/clients" className="min-w-0 font-display text-sm tracking-[0.2em]">
+          <Link href="/admin/clients" className="min-w-0 font-display text-sm uppercase tracking-[0.2em]">
             <span className="block truncate">{site.name}</span>
             <span className="mt-1 block font-sans text-[10px] font-normal normal-case tracking-[0.24em] text-muted">
               Studio

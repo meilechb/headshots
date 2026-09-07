@@ -22,7 +22,7 @@ export default async function LoginPage({
   return (
     <main className="min-h-screen grid place-items-center bg-paper px-6 py-16">
       <div className="w-full max-w-sm">
-        <Link href="/" className="font-display text-2xl tracking-tight">
+        <Link href="/" className="font-display text-2xl uppercase tracking-[0.12em]">
           {site.name}
         </Link>
         <h1 className="mt-8 font-display text-3xl">Studio login</h1>

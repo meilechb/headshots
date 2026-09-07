@@ -14,7 +14,7 @@ export const GET = withApi(async (_request, { params }: Ctx) => {
   return json({ comments });
 });
 
-/** POST /api/lr/photos/:id/comments { body } — a reply typed in Lightroom's Comments panel. */
+/** POST /api/lr/photos/:id/comments { body }, a reply typed in Lightroom's Comments panel. */
 export const POST = withApi(async (request, { params }: Ctx) => {
   const { id } = await params;
   assertUuid(id, "photo id");

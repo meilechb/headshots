@@ -20,11 +20,8 @@ export function AccessForm({
   return (
     <section className="container-x grid min-h-[60vh] place-items-center py-16">
       <form action={action} className="card w-full max-w-md p-8">
-        <p className="eyebrow">For {clientName}</p>
-        <h1 className="mt-3 font-display text-3xl">{title}</h1>
-        <p className="mt-2 text-sm text-muted">
-          Enter the access code from your email to view your photos.
-        </p>
+        <p className="text-sm text-muted">{clientName}</p>
+        <h1 className="mt-2 font-display text-3xl">{title}</h1>
         <input type="hidden" name="slug" value={slug} />
         <label htmlFor="code" className="label mt-6">
           Access code

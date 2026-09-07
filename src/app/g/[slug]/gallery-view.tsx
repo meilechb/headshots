@@ -100,7 +100,7 @@ export function GalleryView({
       setTimeout(() => URL.revokeObjectURL(url), 10_000);
     } catch {
       setZipError(
-        "Couldn’t build the zip in your browser. Use the download button on each photo instead."
+        "Could not build the zip. Download photos one at a time instead."
       );
     } finally {
       setZipping(null);
@@ -117,17 +117,7 @@ export function GalleryView({
           <h1 className="mt-3 font-display text-4xl tracking-tight">{title}</h1>
           {welcome ? (
             <p className="mt-3 max-w-xl whitespace-pre-line text-ink-2">{welcome}</p>
-          ) : kind === "proof" ? (
-            <p className="mt-3 max-w-xl text-ink-2">
-              Tap a photo to view it large. Mark your favorites and leave a note
-              on any frame you’d like retouched or adjusted.
-            </p>
-          ) : (
-            <p className="mt-3 max-w-xl text-ink-2">
-              Your retouched files are ready. Download individually or all at
-              once.
-            </p>
-          )}
+          ) : null}
           <p className="mt-3 text-xs text-muted">
             {photos.length} photo{photos.length === 1 ? "" : "s"}
             {favoriteCount ? ` · ${favoriteCount} favorite${favoriteCount === 1 ? "" : "s"}` : ""}
@@ -171,7 +161,7 @@ export function GalleryView({
 
       {visible.length === 0 ? (
         <p className="mt-16 text-center text-muted">
-          {onlyFavorites ? "No favorites yet." : "Photos are on their way."}
+          {onlyFavorites ? "No favorites yet." : "No photos yet."}
         </p>
       ) : (
         <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -206,7 +196,6 @@ export function GalleryView({
       {active !== null && visible[active] ? (
         <Lightbox
           slug={slug}
-          kind={kind}
           photo={visible[active]}
           index={active}
           total={visible.length}
@@ -220,7 +209,6 @@ export function GalleryView({
 
 function Lightbox({
   slug,
-  kind,
   photo,
   index,
   total,
@@ -228,7 +216,6 @@ function Lightbox({
   onStep,
 }: {
   slug: string;
-  kind: "proof" | "final";
   photo: ViewPhoto;
   index: number;
   total: number;
@@ -344,9 +331,7 @@ function Lightbox({
           </p>
           {photo.comments.length === 0 ? (
             <p className="mt-2 text-sm text-white/60">
-              {kind === "proof"
-                ? "No notes yet. Ask for a retouch, a different crop, or just say this is the one."
-                : "No notes on this photo."}
+              No notes yet.
             </p>
           ) : (
             <ul className="mt-2 space-y-3">

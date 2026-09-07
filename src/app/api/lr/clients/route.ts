@@ -4,7 +4,7 @@ import type { Client } from "@/lib/types";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** GET /api/lr/clients — for the client picker in the collection settings dialog. */
+/** GET /api/lr/clients, for the client picker in the collection settings dialog. */
 export const GET = withApi(async () => {
   const clients = rows<Client>(await db()`select id, name, email, company from clients order by name asc`);
   return json({ clients: clients.map((c) => ({ id: c.id, name: c.name, email: c.email, company: c.company })) });
