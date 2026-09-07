@@ -46,10 +46,10 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                 ) : null}
                 <div className="absolute left-2 top-2 flex gap-1 text-[11px]">
                   {p.selected ? (
-                    <span className="bg-[oklch(0.65_0.16_20)] px-1.5 py-0.5 text-white">♥ Favorite</span>
+                    <span className="rounded-full bg-[oklch(0.65_0.16_20)] px-2 py-0.5 text-white">♥ Favorite</span>
                   ) : null}
                   {openComments ? (
-                    <span className="bg-black/60 px-1.5 py-0.5 text-white">💬 {openComments}</span>
+                    <span className="rounded-full bg-black/60 px-2 py-0.5 text-white">💬 {openComments}</span>
                   ) : null}
                 </div>
               </div>
@@ -59,17 +59,17 @@ export function PhotoManager({ photos }: { photos: AdminPhoto[] }) {
                   <p className="truncate text-xs" title={p.filename}>
                     {i + 1}. {p.filename}
                   </p>
-                  <div className="flex shrink-0 gap-0.5">
+                  <div className="flex shrink-0 items-center gap-0.5">
                     <form action={movePhoto.bind(null, p.id, -1)}>
-                      <button type="submit" className="btn-ghost" aria-label="Move earlier" disabled={i === 0}>↑</button>
+                      <button type="submit" className="btn-ghost h-8 w-8 px-0" aria-label="Move earlier" title="Move earlier" disabled={i === 0}>↑</button>
                     </form>
                     <form action={movePhoto.bind(null, p.id, 1)}>
-                      <button type="submit" className="btn-ghost" aria-label="Move later" disabled={i === photos.length - 1}>↓</button>
+                      <button type="submit" className="btn-ghost h-8 w-8 px-0" aria-label="Move later" title="Move later" disabled={i === photos.length - 1}>↓</button>
                     </form>
                     <button
                       type="button"
                       onClick={() => setOpen(expanded ? null : p.id)}
-                      className="btn-ghost"
+                      className="btn-ghost h-8 px-2.5 text-xs"
                     >
                       {expanded ? "Close" : "Notes"}
                     </button>
