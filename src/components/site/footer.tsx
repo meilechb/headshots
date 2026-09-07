@@ -1,11 +1,13 @@
 import Link from "next/link";
+import { linkedAreas } from "@/lib/areas";
 import { site, socialLinks } from "@/lib/site";
 
 export function SiteFooter() {
   const socials = socialLinks();
+  const areas = linkedAreas();
   return (
     <footer className="mt-24 border-t border-line bg-paper-2/60">
-      <div className="container-x grid grid-cols-1 gap-10 py-14 md:grid-cols-[1.6fr_1fr_1fr]">
+      <div className="container-x grid grid-cols-1 gap-10 py-14 md:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
         <div>
           <p className="font-display text-2xl uppercase tracking-[0.12em]">{site.name}</p>
           <p className="mt-3 max-w-sm text-sm leading-6 text-muted">
@@ -50,6 +52,18 @@ export function SiteFooter() {
           <ul className="mt-3 space-y-1.5 text-sm">
             <li><Link href="/g" className="inline-block py-1 hover:text-brass-2">Open your gallery</Link></li>
             <li><Link href="/login" className="inline-block py-1 text-muted hover:text-brass-2">Studio login</Link></li>
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-muted">Headshots near you</p>
+          <ul className="mt-3 columns-2 gap-x-6 space-y-1.5 text-sm">
+            {areas.map((a) => (
+              <li key={a.slug} className="break-inside-avoid">
+                <Link href={a.href} className="inline-block py-1 hover:text-brass-2">
+                  {a.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

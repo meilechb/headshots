@@ -4,6 +4,7 @@ import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { getFeaturedPortfolio, getReviews } from "@/lib/data/public";
 import { ContactForm } from "./contact/contact-form";
 import { getHeroImage } from "@/lib/data/settings";
+import { linkedAreas } from "@/lib/areas";
 import { site } from "@/lib/site";
 
 // Re-check the database at most every 5 minutes; admin saves also refresh these pages.
@@ -13,6 +14,7 @@ export default async function HomePage() {
   const [featured, chosenHero, reviews] = await Promise.all([getFeaturedPortfolio(6), getHeroImage(), getReviews()]);
   // Admin-chosen header image, otherwise the first featured portfolio photo.
   const hero = chosenHero ?? featured[0] ?? null;
+  const areas = linkedAreas();
 
   return (
     <>
@@ -35,13 +37,11 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0e] via-[#0d0d0e]/55 to-[#0d0d0e]/10" aria-hidden />
         <div className="container-x relative pb-14 pt-36 md:pb-20 md:pt-52">
           <h1 className="max-w-3xl font-display text-4xl leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Stand out
-            <br />
-            from the crowd
+            Professional headshots in Rockland County, NY
           </h1>
-          <p className="mt-5 max-w-lg text-lg leading-8 text-white/80">
-            Professional headshots in Rockland County, NY.
-          </p>
+          <h2 className="mt-5 max-w-lg text-lg font-normal leading-8 text-white/80">
+            Stand out from the crowd
+          </h2>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/contact" className="btn-primary bg-white text-[#0d0d0e] hover:bg-white/85 hover:text-[#0d0d0e]">
               Get in touch
@@ -75,6 +75,30 @@ export default async function HomePage() {
         <Link href="/portfolio" className="btn-secondary mt-8 sm:hidden">
           See more
         </Link>
+      </section>
+
+      {/* Areas we serve */}
+      <section className="border-t border-line" aria-labelledby="areas-we-serve">
+        <div className="container-x py-16">
+          <h2 id="areas-we-serve" className="font-display text-3xl tracking-tight sm:text-4xl">
+            Areas we serve
+          </h2>
+          <p className="mt-3 max-w-2xl text-ink-2">
+            Studio sessions in Spring Valley and on-site headshots across Rockland County — no travel fee in the county.
+          </p>
+          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {areas.map((a) => (
+              <li key={a.slug}>
+                <Link
+                  href={a.href}
+                  className="card flex h-full items-center px-4 py-3 text-sm font-medium hover:border-ink hover:text-brass-2"
+                >
+                  {a.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* Reviews */}
