@@ -105,6 +105,8 @@ export const publicPaths = [
   "/",
   "/portfolio",
   "/pricing",
+  "/linkedin-headshots",
+  "/team-headshots",
   "/contact",
   ...areas.map((a) => `/headshots/${a.slug}`),
 ];
