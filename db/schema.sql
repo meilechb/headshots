@@ -199,3 +199,16 @@ create table if not exists site_settings (
   value text not null,
   updated_at timestamptz not null default now()
 );
+
+-- ---------------------------------------------------------------------------
+-- Reviews: short client quotes shown on the home page
+-- ---------------------------------------------------------------------------
+
+create table if not exists reviews (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  body text not null,
+  is_published boolean not null default true,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);

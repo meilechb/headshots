@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
-import { getFeaturedPortfolio } from "@/lib/data/public";
+import { getFeaturedPortfolio, getReviews } from "@/lib/data/public";
+import { ContactForm } from "./contact/contact-form";
 import { getHeroImage } from "@/lib/data/settings";
 import { site } from "@/lib/site";
 
@@ -9,7 +10,7 @@ import { site } from "@/lib/site";
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [featured, chosenHero] = await Promise.all([getFeaturedPortfolio(6), getHeroImage()]);
+  const [featured, chosenHero, reviews] = await Promise.all([getFeaturedPortfolio(6), getHeroImage(), getReviews()]);
   // Admin-chosen header image, otherwise the first featured portfolio photo.
   const hero = chosenHero ?? featured[0] ?? null;
 
@@ -76,15 +77,35 @@ export default async function HomePage() {
         </Link>
       </section>
 
+      {/* Reviews */}
+      {reviews.length ? (
+        <section className="border-t border-line" aria-labelledby="reviews">
+          <div className="container-x py-16">
+            <h2 id="reviews" className="font-display text-3xl tracking-tight sm:text-4xl">
+              Reviews
+            </h2>
+            <ul className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {reviews.map((r) => (
+                <li key={r.id} className="card flex flex-col p-6">
+                  <p className="text-brass-2" aria-label="5 stars">★★★★★</p>
+                  <p className="mt-3 flex-1 text-ink-2">{r.body}</p>
+                  <p className="mt-4 text-sm font-medium">{r.name}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
       {/* Contact */}
-      <section className="border-t border-line">
-        <div className="container-x flex flex-wrap items-center justify-between gap-4 py-10 text-sm">
-          <Link href="/contact" className="btn-primary">
-            Send a message
-          </Link>
-          <a href={`mailto:${site.email}`} className="text-ink-2 underline hover:text-ink">
-            {site.email}
-          </a>
+      <section className="border-t border-line" aria-labelledby="contact">
+        <div className="container-x max-w-2xl py-16">
+          <h2 id="contact" className="font-display text-3xl tracking-tight sm:text-4xl">
+            Contact
+          </h2>
+          <div className="mt-8">
+            <ContactForm email={site.email} />
+          </div>
         </div>
       </section>
     </>

@@ -615,3 +615,36 @@ export async function clearHeroImage(): Promise<ActionState> {
   await replaceHero(null);
   return { ok: true, at: Date.now() };
 }
+
+// ------------------------------------------------------------------ reviews
+
+export async function createReview(_prev: ActionState, formData: FormData) {
+  return run(async () => {
+    const name = str(formData, "name", 120);
+    const body = str(formData, "body", 1000);
+    if (!name) fail("Name is required.");
+    if (!body) fail("Write the review.");
+    await db()`insert into reviews (name, body) values (${name}, ${body})`;
+    revalidatePath("/admin/reviews");
+    revalidatePath("/");
+  });
+}
+
+export async function updateReview(id: string, _prev: ActionState, formData: FormData) {
+  return run(async () => {
+    const name = str(formData, "name", 120);
+    const body = str(formData, "body", 1000);
+    if (!name) fail("Name is required.");
+    if (!body) fail("Write the review.");
+    await db()`update reviews set name = ${name}, body = ${body}, is_published = ${bool(formData, "is_published")} where id = ${id}`;
+    revalidatePath("/admin/reviews");
+    revalidatePath("/");
+  });
+}
+
+export async function deleteReview(id: string) {
+  await requireAdmin();
+  await db()`delete from reviews where id = ${id}`;
+  revalidatePath("/admin/reviews");
+  revalidatePath("/");
+}

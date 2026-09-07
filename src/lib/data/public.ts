@@ -43,3 +43,17 @@ export const getActivePackages = cache(async (): Promise<Package[]> => {
     return [];
   }
 });
+
+export type Review = { id: string; name: string; body: string; is_published: boolean; sort_order: number; created_at: string };
+
+export const getReviews = cache(async (): Promise<Review[]> => {
+  if (!dbConfigured()) return [];
+  try {
+    return rows<Review>(
+      await db()`select * from reviews where is_published order by sort_order asc, created_at desc`
+    );
+  } catch (error) {
+    console.error("getReviews failed", error);
+    return [];
+  }
+});

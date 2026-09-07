@@ -1,4 +1,5 @@
 import "server-only";
+import type { Review } from "@/lib/data/public";
 
 import { db, one, rows } from "@/lib/db";
 import { photoWebUrl } from "@/lib/data/galleries";
@@ -204,4 +205,8 @@ export async function listPortfolioAdmin(): Promise<PortfolioImage[]> {
   return rows<PortfolioImage>(
     await db()`select * from portfolio_images order by sort_order asc, created_at desc`
   );
+}
+
+export async function listReviews(): Promise<Review[]> {
+  return rows<Review>(await db()`select * from reviews order by sort_order asc, created_at desc`);
 }

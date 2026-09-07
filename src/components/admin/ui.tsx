@@ -8,6 +8,7 @@ export const adminNav = [
   { href: "/admin/clients", label: "Clients" },
   { href: "/admin/galleries", label: "Galleries" },
   { href: "/admin/portfolio", label: "Portfolio" },
+  { href: "/admin/reviews", label: "Reviews" },
   { href: "/admin/packages", label: "Packages" },
   { href: "/admin/integrations", label: "Lightroom" },
 ] as const;
