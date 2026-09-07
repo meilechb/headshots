@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export const adminNav = [
+  { href: "/admin", label: "Dashboard" },
   { href: "/admin/clients", label: "Clients" },
   { href: "/admin/galleries", label: "Galleries" },
   { href: "/admin/portfolio", label: "Portfolio" },
@@ -21,7 +22,7 @@ export function AdminNav() {
       aria-label="Admin"
     >
       {adminNav.map((item) => {
-        const active = pathname.startsWith(item.href);
+        const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
         return (
           <Link
             key={item.href}

@@ -210,3 +210,14 @@ export async function listPortfolioAdmin(): Promise<PortfolioImage[]> {
 export async function listReviews(): Promise<Review[]> {
   return rows<Review>(await db()`select * from reviews order by sort_order asc, created_at desc`);
 }
+
+export async function getPaidThisMonth(): Promise<{ total_cents: number; count: number }> {
+  return (
+    one<{ total_cents: number; count: number }>(
+      await db()`
+        select coalesce(sum(amount_cents), 0)::int as total_cents, count(*)::int as count
+        from orders
+        where paid_at >= date_trunc('month', now())`
+    ) ?? { total_cents: 0, count: 0 }
+  );
+}
