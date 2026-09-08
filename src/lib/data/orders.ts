@@ -199,7 +199,7 @@ async function sendReceipt(payment: Payment) {
       where o.id = ${payment.order_id} limit 1`
   );
   if (!row) return;
-  const mail = paymentReceiptEmail({
+  const mail = await paymentReceiptEmail({
     clientName: row.name,
     orderNumber: row.order_number,
     title: row.title,

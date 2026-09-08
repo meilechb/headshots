@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { CONTRACT_VERSION, contractSections } from "@/lib/contract";
 import { getOrderForPayment, signContract as saveSignature } from "@/lib/data/orders";
 import { sendEmail } from "@/lib/email";
-import { site } from "@/lib/site";
+import { agreementEmail } from "@/lib/emails";
 
 export type SignState = { ok?: boolean; error?: string };
 
@@ -35,18 +35,8 @@ export async function signContract(orderId: string, _prev: SignState, formData: 
     extraFinalCents: order.extra_final_cents,
     currency: order.currency,
   });
-  const text = [
-    `Hi ${order.client.name.split(" ")[0]},`,
-    "",
-    `Here is a copy of the agreement you signed on ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.`,
-    "",
-    ...sections.flatMap((s) => [s.heading.toUpperCase(), ...s.body, ""]),
-    `Signed by ${name}. Portfolio use: ${portfolioOk ? "allowed" : "not allowed"}.`,
-    "",
-    site.name,
-    site.email,
-  ].join("\n");
-  await sendEmail({ to: order.client.email, subject: `Your agreement: ${site.name}`, text, kind: "agreement" });
+  const mail = await agreementEmail({ clientName: order.client.name, sections, signedBy: name, portfolioOk });
+  await sendEmail({ to: order.client.email, subject: mail.subject, text: mail.text, kind: "agreement" });
 
   revalidatePath(`/pay/${orderId}`);
   return { ok: true };
