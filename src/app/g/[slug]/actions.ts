@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { GA_EVENTS } from "@/lib/analytics";
+import { sendServerEvent } from "@/lib/analytics-server";
 import { db, one } from "@/lib/db";
 import {
   grantGalleryAccess,
@@ -32,6 +34,7 @@ export async function unlockGallery(
   } catch (error) {
     return { error: `Could not unlock the gallery: ${error instanceof Error ? error.message : String(error)}` };
   }
+  await sendServerEvent(GA_EVENTS.galleryUnlock, { gallery: slug });
   revalidatePath(`/g/${slug}`);
   return {};
 }

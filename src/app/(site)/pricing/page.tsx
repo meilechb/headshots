@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { TrackedLink } from "@/components/analytics/tracked-link";
+import { GA_EVENTS } from "@/lib/analytics";
 import { getActivePackages } from "@/lib/data/public";
 import { formatMoney } from "@/lib/types";
 
@@ -32,9 +33,14 @@ export default async function PricingPage() {
                 ))}
               </ul>
             ) : null}
-            <Link href="/contact" className="btn-primary mt-8 self-start">
+            <TrackedLink
+              href="/contact"
+              event={GA_EVENTS.bookCtaClick}
+              params={{ package: p.slug, cta: p.price_cents > 0 ? "book" : "quote" }}
+              className="btn-primary mt-8 self-start"
+            >
               {p.price_cents > 0 ? "Book" : "Get a quote"}
-            </Link>
+            </TrackedLink>
           </div>
         ))}
       </div>

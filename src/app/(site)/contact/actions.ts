@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { GA_EVENTS } from "@/lib/analytics";
+import { sendServerEvent } from "@/lib/analytics-server";
 import { db, one } from "@/lib/db";
 import { notifyAddress, sendEmail } from "@/lib/email";
 import { inquiryAutoReply, inquiryNotification } from "@/lib/emails";
@@ -89,7 +91,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
   }
   revalidatePath("/admin/clients");
 
-  // Best effort: the inquiry is saved even if email is not configured or fails.
+  // Best effort: the inquiry is saved even if email or analytics is not configured or fails.
   let emailed = false;
   if (inquiry) {
     const packageName = values.package
@@ -100,6 +102,13 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
     const [a, b] = await Promise.all([
       sendEmail({ to: notifyAddress(), subject: notice.subject, text: notice.text, cta: notice.cta, replyTo: inquiry.email, kind: "inquiry_notice" }),
       sendEmail({ to: inquiry.email, subject: reply.subject, text: reply.text, kind: "inquiry_reply" }),
+      // GA4 conversion. Runs only here, after the database write, so the honeypot
+      // early return above never counts as a lead.
+      sendServerEvent(GA_EVENTS.generateLead, {
+        lead_source: (values.source || "contact_form").slice(0, 100),
+        ...(sessionType ? { session_type: sessionType } : {}),
+        ...(values.package ? { package: values.package } : {}),
+      }),
     ]);
     emailed = a.ok && b.ok;
   }
