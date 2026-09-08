@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { gaVisitorToMetadata, readGaVisitor } from "@/lib/analytics-server";
 import { createPendingPayment, getOrderForPayment } from "@/lib/data/orders";
 import { getStripe } from "@/lib/stripe";
 import { site } from "@/lib/site";
@@ -48,6 +49,9 @@ export async function POST(request: NextRequest) {
   }
 
   const origin = request.nextUrl.origin || site.url;
+  // The payer's GA client and session ids ride along in the metadata so the
+  // purchase event can be attributed even when the webhook records it.
+  const gaMetadata = gaVisitorToMetadata(await readGaVisitor());
   const session = await getStripe().checkout.sessions.create({
     ui_mode: "elements",
     mode: "payment",
@@ -63,7 +67,7 @@ export async function POST(request: NextRequest) {
         },
       },
     ],
-    metadata: { order_id: order.id, kind },
+    metadata: { order_id: order.id, kind, ...gaMetadata },
     payment_intent_data: { metadata: { order_id: order.id, kind } },
     return_url: `${origin}/pay/success?session_id={CHECKOUT_SESSION_ID}`,
   });

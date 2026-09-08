@@ -1,4 +1,6 @@
 import "server-only";
+import { GA_EVENTS } from "@/lib/analytics";
+import { sendServerEvent, type GaVisitor } from "@/lib/analytics-server";
 import { sendEmail } from "@/lib/email";
 import { paymentReceiptEmail } from "@/lib/emails";
 import { db, one, rows, UUID_RE } from "@/lib/db";
@@ -97,6 +99,8 @@ export async function recordPaidCheckoutSession(input: {
   sessionId: string;
   paymentIntentId: string | null;
   amountTotal: number | null;
+  /** GA visitor carried in the Checkout Session metadata, so the webhook can attribute the purchase. */
+  visitor?: GaVisitor | null;
 }) {
   const paid = one<Payment>(
     await db()`
@@ -109,8 +113,35 @@ export async function recordPaidCheckoutSession(input: {
   );
   if (!paid) return null; // already recorded, or unknown session
   await syncOrderAfterPayment(paid.order_id);
-  await sendReceipt(paid);
+  await Promise.all([sendReceipt(paid), trackPurchase(paid, input.sessionId, input.visitor)]);
   return paid;
+}
+
+const paymentLabels: Record<PaymentKind, string> = {
+  deposit: "Deposit",
+  balance: "Balance",
+  full: "Session",
+  manual: "Manual payment",
+};
+
+/**
+ * GA4 ecommerce purchase for a payment that just became paid. Fires once per
+ * Checkout Session because recordPaidCheckoutSession only returns a row on the
+ * pending → paid transition. Best effort; never blocks the payment.
+ */
+async function trackPurchase(paid: Payment, checkoutSessionId: string, visitor?: GaVisitor | null) {
+  const value = paid.amount_cents / 100;
+  const currency = paid.currency.toUpperCase();
+  await sendServerEvent(
+    GA_EVENTS.purchase,
+    {
+      transaction_id: checkoutSessionId,
+      value,
+      currency,
+      items: [{ item_id: paid.kind, item_name: paymentLabels[paid.kind], price: value, quantity: 1 }],
+    },
+    visitor
+  );
 }
 
 /** Cash, Zelle, check: recorded by the studio. */

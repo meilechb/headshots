@@ -71,6 +71,12 @@ Set `ADMIN_EMAIL`, `ADMIN_PASSWORD_HASH` and `SESSION_SECRET` locally and in Ver
    Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
 3. Local testing: `stripe listen --forward-to localhost:3000/api/stripe/webhook`, test card `4242 4242 4242 4242`.
 
+### 5. Google Analytics (optional)
+
+1. In GA, open **Admin → Data streams → your web stream** and copy the **Measurement ID** into `NEXT_PUBLIC_GA_MEASUREMENT_ID`. The tag loads on the public site and client galleries only, never on `/admin` or `/login`.
+2. In the same stream, open **Measurement Protocol API secrets → Create** and copy the secret into `GA_API_SECRET`. The server sends the conversion events with it: `generate_lead` when a contact inquiry is saved, `purchase` when a Stripe payment is recorded (transaction id = Checkout Session id), `gallery_unlock` when a client opens a gallery. The pricing page also sends `book_cta_click` from the browser.
+3. In GA, mark `generate_lead` and `purchase` as key events (**Admin → Events**).
+
 ## Lightroom Classic plugin
 
 `lightroom/meilechbiller.lrplugin` is a Lightroom Classic **publish service**. One published collection = one client gallery.

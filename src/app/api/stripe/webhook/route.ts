@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { gaVisitorFromMetadata } from "@/lib/analytics-server";
 import { recordPaidCheckoutSession } from "@/lib/data/orders";
 import { db } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
             typeof session.payment_intent === "string"
               ? session.payment_intent
               : (session.payment_intent?.id ?? null),
+          visitor: gaVisitorFromMetadata(session.metadata),
         });
       }
       break;

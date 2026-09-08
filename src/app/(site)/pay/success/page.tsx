@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { gaVisitorFromMetadata } from "@/lib/analytics-server";
 import { recordPaidCheckoutSession } from "@/lib/data/orders";
 import { db, one } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
@@ -34,6 +35,7 @@ export default async function PaySuccessPage({
       typeof session.payment_intent === "string"
         ? session.payment_intent
         : (session.payment_intent?.id ?? null),
+    visitor: gaVisitorFromMetadata(session.metadata),
   });
 
   const info = one<{ order_id: string; due: boolean; gallery_slug: string | null }>(

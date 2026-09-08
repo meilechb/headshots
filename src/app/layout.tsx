@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { site } from "@/lib/site";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -41,7 +42,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-paper">{children}</body>
+      <body className="min-h-full flex flex-col bg-paper">
+        {children}
+        <GoogleAnalytics />
+      </body>
     </html>
   );
 }
