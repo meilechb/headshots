@@ -1,12 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getHeroImage, HERO_KEY, setSetting } from "@/lib/data/settings";
+import { getHeroImage, HERO_KEY, saveEmailTemplateOverride, setSetting } from "@/lib/data/settings";
 import { redirect, unstable_rethrow } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { db, one, rows } from "@/lib/db";
 import { emailConfigured, notifyAddress, sendEmail } from "@/lib/email";
-import { galleryReadyEmail } from "@/lib/emails";
+import { galleryReadyEmail, renderEmailSample } from "@/lib/emails";
+import { getTemplate, sameAsDefaults, type TemplateKey, type TemplateValues } from "@/lib/email-templates";
 import { site } from "@/lib/site";
 import { generateAccessCode } from "@/lib/gallery-access";
 import { deleteBlobs } from "@/lib/storage";
@@ -568,7 +569,7 @@ export async function emailGalleryLink(galleryId: string): Promise<GalleryEmailS
   if (!g) return { error: "Gallery not found." };
   if (g.status !== "published") return { error: "Make the gallery live first so the link works." };
   if (!g.access_code) return { error: "The gallery has no access code." };
-  const mail = galleryReadyEmail({
+  const mail = await galleryReadyEmail({
     clientName: g.client_name,
     kind: g.kind,
     link: `${site.url}/g/${g.slug}`,
@@ -678,6 +679,50 @@ export async function sendTestEmail(): Promise<ActionState> {
     subject: `Test email: ${site.name}`,
     text: `Hi,\n\nThis is a test from the studio. If you can read this, email is connected.\n\n${site.name}\n${site.email}`,
     cta: { label: "Open the studio", url: `${site.url}/admin` },
+    kind: "test",
+  });
+  revalidatePath("/admin/emails");
+  if (!result.ok) return { error: result.error ?? "Sending failed.", at: Date.now() };
+  return { ok: true, at: Date.now() };
+}
+
+// --------------------------------------------------------- email templates
+
+/** Saves the studio's wording for one email. Saving the shipped text removes the override. */
+export async function saveEmailTemplate(key: TemplateKey, _prev: ActionState, formData: FormData) {
+  return run(async () => {
+    const def = getTemplate(key) ?? fail("Unknown email template.");
+    const values: TemplateValues = {
+      subject: str(formData, "subject", 200).replace(/\s+/g, " "),
+      body: str(formData, "body", 8000),
+    };
+    if (def.hasCta) values.cta_label = str(formData, "cta_label", 60) || def.defaults.cta_label;
+    if (!values.subject) fail("Enter a subject line.");
+    if (!values.body) fail("Enter the email text.");
+    await saveEmailTemplateOverride(key, sameAsDefaults(def, values) ? null : values);
+    revalidatePath("/admin/emails");
+  });
+}
+
+/** Back to the shipped wording. Bound to a button's formAction on the Emails page. */
+export async function resetEmailTemplate(key: TemplateKey) {
+  await requireAdmin();
+  if (!getTemplate(key)) return;
+  await saveEmailTemplateOverride(key, null);
+  revalidatePath("/admin/emails");
+}
+
+/** Emails you the template filled with sample values, exactly as a client would get it. */
+export async function sendTemplatePreview(key: TemplateKey): Promise<ActionState> {
+  await requireAdmin();
+  if (!getTemplate(key)) return { error: "Unknown email template." };
+  if (!emailConfigured()) return { error: "Email is not connected yet." };
+  const mail = await renderEmailSample(key);
+  const result = await sendEmail({
+    to: notifyAddress(),
+    subject: `[Preview] ${mail.subject}`,
+    text: mail.text,
+    cta: mail.cta,
     kind: "test",
   });
   revalidatePath("/admin/emails");

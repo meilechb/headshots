@@ -97,8 +97,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
     const packageName = values.package
       ? (one<{ name: string }>(await db()`select name from packages where slug = ${values.package} limit 1`)?.name ?? null)
       : null;
-    const notice = inquiryNotification(inquiry, packageName);
-    const reply = inquiryAutoReply(inquiry);
+    const [notice, reply] = await Promise.all([inquiryNotification(inquiry, packageName), inquiryAutoReply(inquiry)]);
     const [a, b] = await Promise.all([
       sendEmail({ to: notifyAddress(), subject: notice.subject, text: notice.text, cta: notice.cta, replyTo: inquiry.email, kind: "inquiry_notice" }),
       sendEmail({ to: inquiry.email, subject: reply.subject, text: reply.text, kind: "inquiry_reply" }),

@@ -1,9 +1,21 @@
 import "server-only";
 
+import { getEmailTemplateOverrides } from "@/lib/data/settings";
+import {
+  formatAgreement,
+  getTemplate,
+  renderValues,
+  resolveValues,
+  type TemplateKey,
+} from "@/lib/email-templates";
 import { site } from "@/lib/site";
+import type { ContractSection } from "@/lib/contract";
 import { locationPrefs, sessionTypes, type Inquiry } from "@/lib/types";
 
-/** Email texts. Kept plain; the sender formats them as HTML. */
+/**
+ * Email texts. Each one is a template from lib/email-templates.ts, with the
+ * studio's edits applied. The sender formats the text as HTML.
+ */
 
 export function labelSessionType(value: string | null) {
   return sessionTypes.find((s) => s.value === value)?.label ?? value ?? "Not specified";
@@ -30,25 +42,39 @@ export function inquirySummary(q: Inquiry, packageName?: string | null) {
   return lines.join("\n");
 }
 
+export type RenderedEmail = { subject: string; text: string; cta?: { label: string; url: string } };
+
+/** Renders a template with the studio's saved edits and the given values. */
+export async function renderEmail(
+  key: TemplateKey,
+  vars: Record<string, string>,
+  ctaUrl?: string | null
+): Promise<RenderedEmail> {
+  const def = getTemplate(key);
+  if (!def) throw new Error(`Unknown email template: ${key}`);
+  const overrides = await getEmailTemplateOverrides();
+  return renderValues(def, resolveValues(def, overrides[key]), vars, ctaUrl);
+}
+
+/** The template filled with its sample values, for previews and test sends. */
+export async function renderEmailSample(key: TemplateKey): Promise<RenderedEmail> {
+  const def = getTemplate(key);
+  if (!def) throw new Error(`Unknown email template: ${key}`);
+  return renderEmail(key, def.sample, def.sampleCtaUrl);
+}
+
+const firstName = (name: string) => name.trim().split(/\s+/)[0] || name;
+
 export function inquiryNotification(q: Inquiry, packageName?: string | null) {
-  return {
-    subject: `New inquiry: ${q.name}`,
-    text: `${inquirySummary(q, packageName)}\n\nReply to this email to answer ${q.name.split(" ")[0]} directly.`,
-    cta: { label: "Open in the studio", url: `${site.url}/admin/clients${q.client_id ? `/${q.client_id}` : ""}` },
-  };
+  return renderEmail(
+    "inquiry_notice",
+    { name: q.name, first_name: firstName(q.name), email: q.email, summary: inquirySummary(q, packageName) },
+    `${site.url}/admin/clients${q.client_id ? `/${q.client_id}` : ""}`
+  );
 }
 
 export function inquiryAutoReply(q: Inquiry) {
-  const first = q.name.split(" ")[0];
-  return {
-    subject: `Got your message, ${first}`,
-    text: `Hi ${first},
-
-Got your message. I reply within one business day.
-
-${site.name}
-${site.email}`,
-  };
+  return renderEmail("inquiry_reply", { first_name: firstName(q.name), name: q.name });
 }
 
 export function galleryReadyEmail(input: {
@@ -58,20 +84,11 @@ export function galleryReadyEmail(input: {
   code: string;
   expiresAt?: string | null;
 }) {
-  const first = input.clientName.split(" ")[0];
-  const what = input.kind === "proof" ? "Your proofs are ready" : "Your photos are ready";
-  return {
-    subject: `${what}: ${site.name}`,
-    text: `Hi ${first},
-
-${what}.
-Code: ${input.code}
-${input.link}
-
-${site.name}
-${site.email}`,
-    cta: { label: input.kind === "proof" ? "See your proofs" : "See your photos", url: input.link },
-  };
+  return renderEmail(
+    input.kind === "proof" ? "gallery_proofs" : "gallery_final",
+    { first_name: firstName(input.clientName), name: input.clientName, code: input.code, link: input.link },
+    input.link
+  );
 }
 
 export function paymentReceiptEmail(input: {
@@ -81,14 +98,30 @@ export function paymentReceiptEmail(input: {
   amount: string;
   shootDate: string | null;
 }) {
-  const first = input.clientName.split(" ")[0];
-  return {
-    subject: `Payment received: ${site.name}`,
-    text: `Hi ${first},
+  return renderEmail("receipt", {
+    first_name: firstName(input.clientName),
+    name: input.clientName,
+    amount: input.amount,
+    title: input.title,
+    order_number: String(input.orderNumber),
+    shoot_date: input.shootDate ?? "",
+  });
+}
 
-Payment of ${input.amount} received for ${input.title}. Thank you.
-
-${site.name}
-${site.email}`,
-  };
+export function agreementEmail(input: {
+  clientName: string;
+  sections: ContractSection[];
+  signedBy: string;
+  portfolioOk: boolean;
+  signedAt?: Date;
+}) {
+  const when = (input.signedAt ?? new Date()).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  return renderEmail("agreement", {
+    first_name: firstName(input.clientName),
+    name: input.clientName,
+    signed_date: when,
+    agreement: formatAgreement(input.sections),
+    signed_by: input.signedBy,
+    portfolio_use: input.portfolioOk ? "allowed" : "not allowed",
+  });
 }

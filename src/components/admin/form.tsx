@@ -51,7 +51,8 @@ export function ActionForm({
   );
 }
 
-function FormNote({
+/** Inline error, or a short-lived success note, for a form bound to an ActionState action. */
+export function FormNote({
   state,
   pending,
   successMessage,
