@@ -190,9 +190,10 @@ function Payment({
   }
 
   // Amount chosen: summary and options on the left, payment form on the right.
-  // Below the lg breakpoint the two cards stack.
+  // Each card keeps its own height; the summary does not stretch to match the
+  // form as payment methods expand. Below the lg breakpoint the cards stack.
   return (
-    <div className="grid w-full max-w-4xl gap-4 lg:grid-cols-2">
+    <div className="grid w-full max-w-4xl gap-4 lg:grid-cols-2 lg:items-start">
       <div className="card p-8">
         {summary}
         {picker}
