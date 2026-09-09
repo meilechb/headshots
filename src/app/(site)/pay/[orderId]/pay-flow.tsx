@@ -13,6 +13,7 @@ import {
 import type { ContractSection } from "@/lib/contract";
 import { formatMoney } from "@/lib/types";
 import { signContract, type SignState } from "./actions";
+import { POSTAL_CODE_REQUIRED, countryOptions } from "./countries";
 
 export type PayChoice = { kind: "deposit" | "full" | "balance"; label: string; amount_cents: number };
 
@@ -31,6 +32,7 @@ export function PayFlow({
   contract,
   choices,
   currency,
+  clientName,
   email,
 }: {
   /** Order title, client and price breakdown, rendered by the page. */
@@ -42,6 +44,8 @@ export function PayFlow({
   contract: ContractSection[];
   choices: PayChoice[];
   currency: string;
+  /** Goes on the card's billing details with the country and postal code. */
+  clientName: string;
   email: string;
 }) {
   const [signState, signAction, signing] = useActionState<SignState, FormData>(
@@ -94,6 +98,7 @@ export function PayFlow({
       publishableKey={publishableKey}
       choices={choices}
       currency={currency}
+      clientName={clientName}
       email={email}
     />
   );
@@ -105,6 +110,7 @@ function Payment({
   publishableKey,
   choices,
   currency,
+  clientName,
   email,
 }: {
   summary: ReactNode;
@@ -112,6 +118,7 @@ function Payment({
   publishableKey: string | null;
   choices: PayChoice[];
   currency: string;
+  clientName: string;
   email: string;
 }) {
   const [chosen, setChosen] = useState<PayChoice | null>(choices.length === 1 ? choices[0] : null);
@@ -196,20 +203,24 @@ function Payment({
   }
 
   // Amount chosen: summary and options on the left, payment form on the right.
-  // Each card keeps its own height, so the summary does not stretch when the
-  // payment form grows. Below the lg breakpoint the two cards stack.
+  // The payment column is the wider of the two so the Apple Pay and Google Pay
+  // buttons have room to sit side by side. Each card keeps its own height, so
+  // the summary does not stretch when the payment form grows. Below the lg
+  // breakpoint the two cards stack.
   return (
-    <div className="grid w-full max-w-4xl gap-4 lg:grid-cols-2 lg:items-start">
-      <div className="card p-8">
+    <div className="grid w-full max-w-5xl gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
+      <div className="card p-6 lg:p-8">
         {summary}
         {picker}
       </div>
-      <div ref={payColumn} className="card scroll-mt-24 p-8">
-        <h2 className="font-medium">Payment</h2>
-        <p className="mt-1 text-sm text-muted">
-          {AMOUNT_LABEL[chosen.kind]} · {formatMoney(chosen.amount_cents, currency)}
-        </p>
-        <div className="mt-6">
+      <div ref={payColumn} className="card scroll-mt-24 p-6">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="font-medium">Payment</h2>
+          <p className="text-sm text-muted">
+            {AMOUNT_LABEL[chosen.kind]} · {formatMoney(chosen.amount_cents, currency)}
+          </p>
+        </div>
+        <div className="mt-4">
           {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
           {!secret && !error ? <p className="text-sm text-muted">Loading…</p> : null}
           {secret && stripePromise ? (
@@ -224,7 +235,7 @@ function Payment({
                 },
               }}
             >
-              <PayForm sessionId={secret.sessionId} />
+              <PayForm sessionId={secret.sessionId} clientName={clientName} />
             </CheckoutElementsProvider>
           ) : null}
         </div>
@@ -233,13 +244,20 @@ function Payment({
   );
 }
 
-function PayForm({ sessionId }: { sessionId: string }) {
+function PayForm({ sessionId, clientName }: { sessionId: string; clientName: string }) {
   const state = useCheckoutElements();
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // null until Stripe reports which wallet buttons, if any, this device can show.
   const [walletAvailable, setWalletAvailable] = useState<boolean | null>(null);
+  // Billing country and postal code are collected here, side by side, instead
+  // of inside the Stripe form, which stacks them on separate rows.
+  const [country, setCountry] = useState("US");
+  const [postalCode, setPostalCode] = useState("");
+  const countries = useMemo(() => countryOptions(typeof navigator === "undefined" ? "en" : navigator.language), []);
+  const postalRequired = POSTAL_CODE_REQUIRED.has(country);
+  const postalMissing = postalRequired && postalCode.trim() === "";
 
   if (state.type === "loading") return <p className="text-sm text-muted">Loading…</p>;
   if (state.type === "error") return <p role="alert" className="text-sm text-danger">{state.error.message}</p>;
@@ -254,13 +272,24 @@ function PayForm({ sessionId }: { sessionId: string }) {
     router.push(`/pay/success?session_id=${encodeURIComponent(sessionId)}`);
   }
 
+  // Card path. The Payment Element collects no address (fields.billingDetails
+  // .address is "never"), so Stripe requires the omitted fields here.
   async function pay() {
     setBusy(true);
     setError(null);
-    finish(await checkout.confirm({ redirect: "if_required" }));
+    finish(
+      await checkout.confirm({
+        redirect: "if_required",
+        billingAddress: {
+          name: clientName,
+          address: { country, postal_code: postalCode.trim() || null },
+        },
+      })
+    );
   }
 
-  // Apple Pay / Google Pay sheet approved: hand the wallet's payment details to Stripe.
+  // Apple Pay / Google Pay sheet approved. The wallet supplies its own billing
+  // details, so nothing from the fields below is sent.
   async function payWithWallet(event: StripeExpressCheckoutElementConfirmEvent) {
     setBusy(true);
     setError(null);
@@ -283,7 +312,8 @@ function PayForm({ sessionId }: { sessionId: string }) {
         on Android, and does render in Chrome and Edge on Windows and macOS
         only because "always" is set. No user-agent checks here. Link, Klarna,
         Amazon Pay and PayPal are turned off by name so no wallet-borne option
-        can appear. The two buttons sit side by side, Google Pay first.
+        can appear. The two buttons share one row, Google Pay first; Stripe
+        stacks them only when the column is too narrow for two.
       */}
       <div className={walletBlock}>
         <ExpressCheckoutElement
@@ -296,7 +326,7 @@ function PayForm({ sessionId }: { sessionId: string }) {
               amazonPay: "never",
               paypal: "never",
             },
-            buttonHeight: 44,
+            buttonHeight: 40,
             buttonTheme: { applePay: "white", googlePay: "white" },
             buttonType: { applePay: "plain", googlePay: "plain" },
             layout: { maxColumns: 2, maxRows: 1 },
@@ -312,25 +342,64 @@ function PayForm({ sessionId }: { sessionId: string }) {
           </p>
         ) : null}
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {/*
-          Card fields only. Wallets are handled above, and Link is off both here
-          and on the Checkout Session, so its Klarna and Bank rows cannot show.
-          With a single payment method the tabs layout draws no tab strip, just
-          the fields. `address: "if_required"` keeps only the billing address
-          fields Stripe needs for the card (typically the postal code) and
-          drops the rest, such as the country selector. Stripe notes that
-          collecting less address can lower authorization rates a little.
+          Card number, expiry and security code only. Wallets are handled
+          above, and Link is off both here and on the Checkout Session, so its
+          Klarna and Bank rows cannot show. With a single payment method the
+          tabs layout draws no tab strip. The billing address is collected by
+          the two fields below and passed to confirm().
         */}
         <PaymentElement
           options={{
             layout: { type: "tabs", defaultCollapsed: false },
             wallets: { applePay: "never", googlePay: "never", link: "never" },
-            fields: { billingDetails: { address: "if_required" } },
+            fields: { billingDetails: { address: "never" } },
           }}
         />
+        <div className="grid grid-cols-2 gap-2.5">
+          <div>
+            <label htmlFor="billing-country" className="mb-1 block text-[13px] text-ink-2">
+              Country
+            </label>
+            <select
+              id="billing-country"
+              name="country"
+              autoComplete="billing country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              className="input h-10 py-0 text-sm"
+            >
+              {countries.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="billing-postal" className="mb-1 block text-[13px] text-ink-2">
+              {country === "US" ? "ZIP" : "Postal code"}
+            </label>
+            <input
+              id="billing-postal"
+              name="postal_code"
+              inputMode={country === "US" ? "numeric" : "text"}
+              autoComplete="billing postal-code"
+              required={postalRequired}
+              value={postalCode}
+              onChange={(e) => setPostalCode(e.target.value)}
+              className="input h-10 py-0 text-sm"
+            />
+          </div>
+        </div>
         {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
-        <button type="button" onClick={pay} disabled={!checkout.canConfirm || busy} className="btn-primary w-full">
+        <button
+          type="button"
+          onClick={pay}
+          disabled={!checkout.canConfirm || busy || postalMissing}
+          className="btn-primary w-full"
+        >
           {busy ? "Paying…" : `Pay ${checkout.total.total.amount}`}
         </button>
       </div>
@@ -363,11 +432,13 @@ function appearanceFromPage(): Appearance {
       fontSizeSm: "13px",
       borderRadius: "0px",
       spacingUnit: "3px",
-      spacingGridRow: "10px",
+      spacingGridRow: "8px",
       spacingGridColumn: "10px",
     },
     rules: {
-      ".Input": { border: `1px solid ${line}`, boxShadow: "none" },
+      // 40px tall at 16px text, matching the country and postal code fields.
+      ".Input": { border: `1px solid ${line}`, boxShadow: "none", padding: "9px 10px" },
+      ".Label": { marginBottom: "4px" },
       ".Input:focus": { border: `1px solid ${ink}`, boxShadow: "none" },
       ".Tab": { border: `1px solid ${line}`, boxShadow: "none" },
       ".Tab--selected": { border: `1px solid ${ink}`, boxShadow: "none" },
