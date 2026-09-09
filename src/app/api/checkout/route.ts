@@ -57,8 +57,16 @@ export async function POST(request: NextRequest) {
     mode: "payment",
     // Cards only, plus the wallets that ride on cards (Apple Pay and Google
     // Pay). Listing the types here replaces the Dashboard's dynamic payment
-    // methods, which is what was surfacing Affirm, Klarna and Amazon Pay.
+    // methods, which is what was surfacing Affirm, Klarna and Amazon Pay as
+    // payment method types. `excluded_payment_method_types` is only for
+    // sessions whose methods are managed in the Dashboard, so it is not used;
+    // with a fixed list nothing toggled on there can reach this page.
     payment_method_types: ["card"],
+    // Link is a wallet, not a payment method type, so the list above does not
+    // touch it. Left on, Link adds its own "Pay later with Klarna" and "Bank"
+    // rows to the form. It is switched off here at the session, and again on
+    // the Payment Element and Express Checkout Element in pay-flow.tsx.
+    wallet_options: { link: { display: "never" } },
     customer_email: order.client.email,
     client_reference_id: order.id,
     line_items: [

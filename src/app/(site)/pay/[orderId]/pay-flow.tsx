@@ -3,7 +3,13 @@
 import { useActionState, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { loadStripe, type Appearance } from "@stripe/stripe-js";
-import { CheckoutElementsProvider, PaymentElement, useCheckoutElements } from "@stripe/react-stripe-js/checkout";
+import type { StripeCheckoutConfirmResult, StripeExpressCheckoutElementConfirmEvent } from "@stripe/stripe-js";
+import {
+  CheckoutElementsProvider,
+  ExpressCheckoutElement,
+  PaymentElement,
+  useCheckoutElements,
+} from "@stripe/react-stripe-js/checkout";
 import type { ContractSection } from "@/lib/contract";
 import { formatMoney } from "@/lib/types";
 import { signContract, type SignState } from "./actions";
@@ -231,15 +237,14 @@ function PayForm({ sessionId }: { sessionId: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // null until Stripe reports which wallet buttons, if any, this device can show.
+  const [walletAvailable, setWalletAvailable] = useState<boolean | null>(null);
 
   if (state.type === "loading") return <p className="text-sm text-muted">Loading…</p>;
   if (state.type === "error") return <p role="alert" className="text-sm text-danger">{state.error.message}</p>;
   const { checkout } = state;
 
-  async function pay() {
-    setBusy(true);
-    setError(null);
-    const result = await checkout.confirm({ redirect: "if_required" });
+  function finish(result: StripeCheckoutConfirmResult) {
     if (result.type === "error") {
       setError(result.error.message);
       setBusy(false);
@@ -248,19 +253,71 @@ function PayForm({ sessionId }: { sessionId: string }) {
     router.push(`/pay/success?session_id=${encodeURIComponent(sessionId)}`);
   }
 
+  async function pay() {
+    setBusy(true);
+    setError(null);
+    finish(await checkout.confirm({ redirect: "if_required" }));
+  }
+
+  // Apple Pay / Google Pay sheet approved: hand the wallet's payment details to Stripe.
+  async function payWithWallet(event: StripeExpressCheckoutElementConfirmEvent) {
+    setBusy(true);
+    setError(null);
+    finish(await checkout.confirm({ expressCheckoutConfirmEvent: event, redirect: "if_required" }));
+  }
+
+  // Stripe asks that the Express Checkout Element stay in the layout (only
+  // invisible) while it works out which buttons it can show. Once it reports,
+  // the block is either shown with a divider or removed from the flow.
+  const walletBlock = walletAvailable === null ? "invisible" : walletAvailable ? "mb-4" : "hidden";
+
   return (
-    <div className="space-y-4">
+    <div>
       {/*
-        Apple Pay and Google Pay are not payment method types on the session;
-        Stripe shows them alongside `card` when the browser and device support
-        them (and, for Apple Pay, the domain is registered in the Dashboard).
-        "auto" is the default; it is spelled out here so nobody has to guess.
+        One-click wallets live in the Express Checkout Element. Apple Pay and
+        Google Pay are set to "always" so they show wherever the browser and
+        device can pay with them (Stripe's default "auto" also weighs its own
+        conversion model, which can hide them). Link, Klarna, Amazon Pay and
+        PayPal are turned off here by name so no wallet-borne option can appear.
       */}
-      <PaymentElement options={{ wallets: { applePay: "auto", googlePay: "auto" } }} />
-      {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
-      <button type="button" onClick={pay} disabled={!checkout.canConfirm || busy} className="btn-primary w-full">
-        {busy ? "Paying…" : `Pay ${checkout.total.total.amount}`}
-      </button>
+      <div className={walletBlock}>
+        <ExpressCheckoutElement
+          options={{
+            paymentMethods: {
+              applePay: "always",
+              googlePay: "always",
+              link: "never",
+              klarna: "never",
+              amazonPay: "never",
+              paypal: "never",
+            },
+            buttonHeight: 48,
+            buttonTheme: { applePay: "white", googlePay: "white" },
+            buttonType: { applePay: "plain", googlePay: "pay" },
+            layout: { maxColumns: 1 },
+            paymentMethodOrder: ["apple_pay", "google_pay"],
+          }}
+          onConfirm={payWithWallet}
+          onReady={(event) => setWalletAvailable(Boolean(event.availablePaymentMethods))}
+          onAvailablePaymentMethodsChange={(event) => setWalletAvailable(Boolean(event.paymentMethods))}
+        />
+        {walletAvailable ? (
+          <p className="mt-4 flex items-center gap-3 text-xs uppercase tracking-wide text-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+            or pay by card
+          </p>
+        ) : null}
+      </div>
+      <div className="space-y-4">
+        {/*
+          Card fields only. Wallets are handled above, and Link is off both here
+          and on the Checkout Session, so its Klarna and Bank rows cannot show.
+        */}
+        <PaymentElement options={{ wallets: { applePay: "never", googlePay: "never", link: "never" } }} />
+        {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
+        <button type="button" onClick={pay} disabled={!checkout.canConfirm || busy} className="btn-primary w-full">
+          {busy ? "Paying…" : `Pay ${checkout.total.total.amount}`}
+        </button>
+      </div>
     </div>
   );
 }
