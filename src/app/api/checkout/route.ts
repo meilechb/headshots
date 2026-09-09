@@ -1,13 +1,15 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { gaVisitorToMetadata, readGaVisitor } from "@/lib/analytics-server";
-import { createPendingPayment, getOrderForPayment } from "@/lib/data/orders";
+import { createPendingPayment, findPendingPayment, getOrderForPayment } from "@/lib/data/orders";
 import { getStripe } from "@/lib/stripe";
 import { site } from "@/lib/site";
 import type { PaymentKind } from "@/lib/types";
 
 /**
- * Creates a Checkout Session for the embedded Payment Element and returns its
- * client secret. Amounts always come from the database, never from the client.
+ * Returns the client secret of a Checkout Session for the embedded Payment
+ * Element, reusing an open one for the same order, kind and amount when it
+ * exists and creating one otherwise. Amounts always come from the database,
+ * never from the client.
  * Body: { orderId, kind: "deposit" | "full" | "balance" }
  */
 export async function POST(request: NextRequest) {
@@ -46,6 +48,22 @@ export async function POST(request: NextRequest) {
   }
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json({ error: "Payments are not set up yet." }, { status: 503 });
+  }
+
+  // The pay page requests a session for every amount it offers as soon as it
+  // opens, so the form is ready before the client picks one. Hand back the
+  // session from an earlier visit while it is still open and for the same
+  // amount; Stripe keeps a Checkout Session open for 24 hours.
+  const pending = await findPendingPayment(order.id, kind);
+  if (pending?.stripe_checkout_session_id) {
+    try {
+      const existing = await getStripe().checkout.sessions.retrieve(pending.stripe_checkout_session_id);
+      if (existing.status === "open" && existing.amount_total === amount && existing.client_secret) {
+        return NextResponse.json({ clientSecret: existing.client_secret, sessionId: existing.id });
+      }
+    } catch {
+      // Unknown or deleted session: fall through and create a fresh one.
+    }
   }
 
   const origin = request.nextUrl.origin || site.url;
