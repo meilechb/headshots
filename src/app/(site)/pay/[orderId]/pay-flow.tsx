@@ -17,6 +17,8 @@ import { POSTAL_CODE_REQUIRED, countryOptions } from "./countries";
 
 export type PayChoice = { kind: "deposit" | "full" | "balance"; label: string; amount_cents: number };
 
+type Secret = { clientSecret: string; sessionId: string };
+
 const AMOUNT_LABEL: Record<PayChoice["kind"], string> = {
   deposit: "Deposit",
   full: "Full amount",
@@ -122,32 +124,36 @@ function Payment({
   email: string;
 }) {
   const [chosen, setChosen] = useState<PayChoice | null>(choices.length === 1 ? choices[0] : null);
-  const [secret, setSecret] = useState<{ clientSecret: string; sessionId: string } | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  // One Checkout Session per offered amount, requested together as soon as the
+  // page opens so both forms are mounted and ready before the client picks.
+  const [secrets, setSecrets] = useState<Partial<Record<PayChoice["kind"], Secret>>>({});
+  const [errors, setErrors] = useState<Partial<Record<PayChoice["kind"], string>>>({});
   const stripePromise = useMemo(() => (publishableKey ? loadStripe(publishableKey) : null), [publishableKey]);
   const payColumn = useRef<HTMLDivElement>(null);
+  const kinds = choices.map((c) => c.kind).join(",");
 
-  // Starts a Checkout Session for the chosen amount; state updates happen after the request resolves.
   useEffect(() => {
-    if (!chosen || !publishableKey) return;
+    if (!publishableKey) return;
     let cancelled = false;
-    fetch("/api/checkout", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ orderId, kind: chosen.kind }),
-    })
-      .then(async (r) => {
-        const data = await r.json();
-        if (!r.ok) throw new Error(data.error ?? "Could not start the payment.");
-        if (!cancelled) setSecret({ clientSecret: data.clientSecret, sessionId: data.sessionId });
+    for (const kind of kinds.split(",") as PayChoice["kind"][]) {
+      fetch("/api/checkout", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ orderId, kind }),
       })
-      .catch((e: Error) => {
-        if (!cancelled) setError(e.message);
-      });
+        .then(async (r) => {
+          const data = await r.json();
+          if (!r.ok) throw new Error(data.error ?? "Could not start the payment.");
+          if (!cancelled) setSecrets((s) => ({ ...s, [kind]: { clientSecret: data.clientSecret, sessionId: data.sessionId } }));
+        })
+        .catch((e: Error) => {
+          if (!cancelled) setErrors((s) => ({ ...s, [kind]: e.message }));
+        });
+    }
     return () => {
       cancelled = true;
     };
-  }, [chosen, orderId, publishableKey]);
+  }, [kinds, orderId, publishableKey]);
 
   // On narrow screens the columns stack, so bring the payment form into view
   // when the client picks an amount. Desktop shows both columns side by side.
@@ -159,8 +165,6 @@ function Payment({
 
   function choose(c: PayChoice) {
     if (chosen?.kind === c.kind) return;
-    setSecret(null);
-    setError(null);
     setChosen(c);
   }
 
@@ -192,52 +196,63 @@ function Payment({
     );
   }
 
-  // Nothing chosen yet: one compact card with the summary and the two options.
-  if (!chosen) {
-    return (
-      <div className="card w-full max-w-lg p-8">
-        {summary}
-        {picker}
-      </div>
-    );
-  }
-
-  // Amount chosen: summary and options on the left, payment form on the right.
-  // The payment column is the wider of the two so the Apple Pay and Google Pay
-  // buttons have room to sit side by side. Each card keeps its own height, so
-  // the summary does not stretch when the payment form grows. Below the lg
-  // breakpoint the two cards stack.
+  // One tree for both states, so the Stripe forms keep their place in the DOM
+  // and are never remounted. Before a choice, the page is one compact card and
+  // the payment card sits beside it invisibly (visibility, not display: Stripe
+  // asks that its elements stay laid out while they load) at roughly the width
+  // it will have later, so the wallet buttons measure correctly. After a
+  // choice, the payment card takes the wider column and only the chosen
+  // amount's form is visible; the other stays mounted and invisible on top.
+  const elementsOptions = {
+    appearance: appearanceFromPage(),
+    fonts: [{ cssSrc: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" }],
+  };
   return (
-    <div className="grid w-full max-w-5xl gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start">
+    <div
+      className={
+        chosen
+          ? "grid w-full max-w-5xl gap-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start"
+          : "relative w-full max-w-lg"
+      }
+    >
       <div className="card p-6 lg:p-8">
         {summary}
         {picker}
       </div>
-      <div ref={payColumn} className="card scroll-mt-24 p-6">
+      <div
+        ref={payColumn}
+        aria-hidden={!chosen}
+        className={chosen ? "card scroll-mt-24 p-6" : "invisible absolute left-0 top-0 w-[36rem] max-w-full p-6"}
+      >
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="font-medium">Payment</h2>
-          <p className="text-sm text-muted">
-            {AMOUNT_LABEL[chosen.kind]} · {formatMoney(chosen.amount_cents, currency)}
-          </p>
-        </div>
-        <div className="mt-4">
-          {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
-          {!secret && !error ? <p className="text-sm text-muted">Loading…</p> : null}
-          {secret && stripePromise ? (
-            <CheckoutElementsProvider
-              key={secret.sessionId}
-              stripe={stripePromise}
-              options={{
-                clientSecret: secret.clientSecret,
-                elementsOptions: {
-                  appearance: appearanceFromPage(),
-                  fonts: [{ cssSrc: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" }],
-                },
-              }}
-            >
-              <PayForm sessionId={secret.sessionId} clientName={clientName} />
-            </CheckoutElementsProvider>
+          {chosen ? (
+            <p className="text-sm text-muted">
+              {AMOUNT_LABEL[chosen.kind]} · {formatMoney(chosen.amount_cents, currency)}
+            </p>
           ) : null}
+        </div>
+        <div className="relative mt-4">
+          {choices.map((c) => {
+            const active = chosen?.kind === c.kind;
+            const secret = secrets[c.kind];
+            const error = errors[c.kind];
+            return (
+              <div key={c.kind} aria-hidden={!active} className={active ? "" : "invisible absolute inset-x-0 top-0"}>
+                {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
+                {!secret && !error ? <p className="text-sm text-muted">Loading…</p> : null}
+                {secret && stripePromise ? (
+                  <CheckoutElementsProvider
+                    key={secret.sessionId}
+                    stripe={stripePromise}
+                    options={{ clientSecret: secret.clientSecret, elementsOptions }}
+                  >
+                    <PayForm sessionId={secret.sessionId} clientName={clientName} />
+                  </CheckoutElementsProvider>
+                ) : null}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

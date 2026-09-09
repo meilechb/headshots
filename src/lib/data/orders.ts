@@ -62,6 +62,22 @@ export async function getOrderMoney(orderId: string | null): Promise<OrderMoney 
   return orderMoney(order, payments, picks);
 }
 
+/**
+ * Most recent card payment for this order and kind that is still waiting on
+ * Stripe. The pay page asks for a Checkout Session for every amount it offers
+ * as soon as it opens, so this lets the API hand back the session it already
+ * made instead of creating another one on each visit.
+ */
+export async function findPendingPayment(orderId: string, kind: PaymentKind): Promise<Payment | null> {
+  return one<Payment>(
+    await db()`
+      select * from payments
+      where order_id = ${orderId} and kind = ${kind} and status = 'pending'
+        and stripe_checkout_session_id is not null
+      order by created_at desc limit 1`
+  );
+}
+
 export async function createPendingPayment(input: {
   orderId: string;
   kind: PaymentKind;
