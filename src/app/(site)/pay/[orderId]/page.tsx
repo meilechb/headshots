@@ -108,7 +108,8 @@ export default async function PayPage({
           contract={contract}
           choices={choices}
           currency={cur}
-          email={site.email}
+          clientName={order.client.name}
+      email={site.email}
         />
       )}
     </section>
