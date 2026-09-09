@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { gaVisitorToMetadata, readGaVisitor } from "@/lib/analytics-server";
 import { createPendingPayment, getOrderForPayment } from "@/lib/data/orders";
-import { getStripe } from "@/lib/stripe";
+import { ensurePaymentMethodDomain, getStripe } from "@/lib/stripe";
 import { site } from "@/lib/site";
 import type { PaymentKind } from "@/lib/types";
 
@@ -49,15 +49,18 @@ export async function POST(request: NextRequest) {
   }
 
   const origin = request.nextUrl.origin || site.url;
+  // Wallets (Apple Pay, Google Pay) need this host registered with Stripe.
+  await ensurePaymentMethodDomain(request.nextUrl.hostname);
   // The payer's GA client and session ids ride along in the metadata so the
   // purchase event can be attributed even when the webhook records it.
   const gaMetadata = gaVisitorToMetadata(await readGaVisitor());
   const session = await getStripe().checkout.sessions.create({
     ui_mode: "elements",
     mode: "payment",
-    // Cards only, plus the wallets that ride on cards (Apple Pay and Google
-    // Pay). Listing the types here replaces the Dashboard's dynamic payment
-    // methods, which is what was surfacing Affirm, Klarna and Amazon Pay.
+    // Cards only, plus the wallets that ride on cards (Apple Pay, Google Pay
+    // and Link). Listing the types here replaces the Dashboard's dynamic
+    // payment methods, which is what was surfacing Affirm and Amazon Pay.
+    // Link's own Klarna and Bank rows are toggled in Dashboard → Link settings.
     payment_method_types: ["card"],
     customer_email: order.client.email,
     client_reference_id: order.id,
