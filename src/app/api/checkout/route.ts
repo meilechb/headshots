@@ -59,9 +59,6 @@ export async function POST(request: NextRequest) {
     // Pay). Listing the types here replaces the Dashboard's dynamic payment
     // methods, which is what was surfacing Affirm, Klarna and Amazon Pay.
     payment_method_types: ["card"],
-    // Link is a wallet, not a payment method type, so the line above does not
-    // touch it. Left on, it adds its own "Bank" and "Klarna" rows to the form.
-    wallet_options: { link: { display: "never" } },
     customer_email: order.client.email,
     client_reference_id: order.id,
     line_items: [
