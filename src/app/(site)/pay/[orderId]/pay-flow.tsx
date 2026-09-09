@@ -196,9 +196,10 @@ function Payment({
   }
 
   // Amount chosen: summary and options on the left, payment form on the right.
-  // Below the lg breakpoint the two cards stack.
+  // Each card keeps its own height, so the summary does not stretch when the
+  // payment form grows. Below the lg breakpoint the two cards stack.
   return (
-    <div className="grid w-full max-w-4xl gap-4 lg:grid-cols-2">
+    <div className="grid w-full max-w-4xl gap-4 lg:grid-cols-2 lg:items-start">
       <div className="card p-8">
         {summary}
         {picker}
@@ -269,7 +270,7 @@ function PayForm({ sessionId }: { sessionId: string }) {
   // Stripe asks that the Express Checkout Element stay in the layout (only
   // invisible) while it works out which buttons it can show. Once it reports,
   // the block is either shown with a divider or removed from the flow.
-  const walletBlock = walletAvailable === null ? "invisible" : walletAvailable ? "mb-4" : "hidden";
+  const walletBlock = walletAvailable === null ? "invisible" : walletAvailable ? "mb-3" : "hidden";
 
   return (
     <div>
@@ -277,8 +278,12 @@ function PayForm({ sessionId }: { sessionId: string }) {
         One-click wallets live in the Express Checkout Element. Apple Pay and
         Google Pay are set to "always" so they show wherever the browser and
         device can pay with them (Stripe's default "auto" also weighs its own
-        conversion model, which can hide them). Link, Klarna, Amazon Pay and
-        PayPal are turned off here by name so no wallet-borne option can appear.
+        conversion model, which can hide them). Stripe's own platform table
+        decides where each button can exist: Apple Pay never renders in Chrome
+        on Android, and does render in Chrome and Edge on Windows and macOS
+        only because "always" is set. No user-agent checks here. Link, Klarna,
+        Amazon Pay and PayPal are turned off by name so no wallet-borne option
+        can appear. The two buttons sit side by side, Google Pay first.
       */}
       <div className={walletBlock}>
         <ExpressCheckoutElement
@@ -291,18 +296,18 @@ function PayForm({ sessionId }: { sessionId: string }) {
               amazonPay: "never",
               paypal: "never",
             },
-            buttonHeight: 48,
+            buttonHeight: 44,
             buttonTheme: { applePay: "white", googlePay: "white" },
-            buttonType: { applePay: "plain", googlePay: "pay" },
-            layout: { maxColumns: 1 },
-            paymentMethodOrder: ["apple_pay", "google_pay"],
+            buttonType: { applePay: "plain", googlePay: "plain" },
+            layout: { maxColumns: 2, maxRows: 1 },
+            paymentMethodOrder: ["google_pay", "apple_pay"],
           }}
           onConfirm={payWithWallet}
           onReady={(event) => setWalletAvailable(Boolean(event.availablePaymentMethods))}
           onAvailablePaymentMethodsChange={(event) => setWalletAvailable(Boolean(event.paymentMethods))}
         />
         {walletAvailable ? (
-          <p className="mt-4 flex items-center gap-3 text-xs uppercase tracking-wide text-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+          <p className="mt-3 flex items-center gap-3 text-xs text-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
             or pay by card
           </p>
         ) : null}
@@ -311,8 +316,19 @@ function PayForm({ sessionId }: { sessionId: string }) {
         {/*
           Card fields only. Wallets are handled above, and Link is off both here
           and on the Checkout Session, so its Klarna and Bank rows cannot show.
+          With a single payment method the tabs layout draws no tab strip, just
+          the fields. `address: "if_required"` keeps only the billing address
+          fields Stripe needs for the card (typically the postal code) and
+          drops the rest, such as the country selector. Stripe notes that
+          collecting less address can lower authorization rates a little.
         */}
-        <PaymentElement options={{ wallets: { applePay: "never", googlePay: "never", link: "never" } }} />
+        <PaymentElement
+          options={{
+            layout: { type: "tabs", defaultCollapsed: false },
+            wallets: { applePay: "never", googlePay: "never", link: "never" },
+            fields: { billingDetails: { address: "if_required" } },
+          }}
+        />
         {error ? <p role="alert" className="text-sm text-danger">{error}</p> : null}
         <button type="button" onClick={pay} disabled={!checkout.canConfirm || busy} className="btn-primary w-full">
           {busy ? "Paying…" : `Pay ${checkout.total.total.amount}`}
@@ -341,9 +357,14 @@ function appearanceFromPage(): Appearance {
       colorTextPlaceholder: token("--color-muted", "#6a6a6a"),
       colorDanger: token("--color-danger", "#f87171"),
       fontFamily: "Plus Jakarta Sans, system-ui, sans-serif",
+      // Stripe asks for at least 16px in inputs so phones do not zoom on focus;
+      // labels and helper text scale down from fontSizeSm.
       fontSizeBase: "16px",
+      fontSizeSm: "13px",
       borderRadius: "0px",
-      spacingUnit: "4px",
+      spacingUnit: "3px",
+      spacingGridRow: "10px",
+      spacingGridColumn: "10px",
     },
     rules: {
       ".Input": { border: `1px solid ${line}`, boxShadow: "none" },
