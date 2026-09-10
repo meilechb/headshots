@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The multi-tenant SaaS app lives in saas/ with its own toolchain.
+    "saas/**",
   ]),
 ]);
 

@@ -1,0 +1,41 @@
+name: saas
+
+on:
+  push:
+    paths:
+      - "saas/**"
+      - ".github/workflows/saas.yml"
+  pull_request:
+    paths:
+      - "saas/**"
+      - ".github/workflows/saas.yml"
+
+concurrency:
+  group: saas-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: typecheck, lint, test, build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: saas
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: saas/.nvmrc
+          cache: npm
+          cache-dependency-path: saas/package-lock.json
+      - run: npm ci
+      - run: npx next typegen
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:coverage
+      # No secrets in CI: the build must succeed with every integration unconfigured.
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_APP_NAME: Proofroom
+          NEXT_PUBLIC_APP_DOMAIN: localhost:3000
+          NEXT_TELEMETRY_DISABLED: "1"
