@@ -1,0 +1,94 @@
+import "server-only";
+
+import { sendStudioEmail } from "@/lib/email";
+import type { Studio } from "@/lib/types";
+
+/** Emails a studio sends to its clients. Sender comes from senderFor: the studio's verified domain and from-name when set, otherwise "<Studio> via Proofroom"; reply-to the studio. */
+
+type StudioMail = Pick<Studio, "id" | "name" | "email">;
+
+export async function sendGalleryReadyEmail(studio: StudioMail, input: {
+  to: string;
+  clientName: string;
+  kind: "proof" | "final";
+  url: string;
+  accessCode: string | null;
+  subject?: string;
+  body?: string;
+}) {
+  const isProof = input.kind === "proof";
+  const subject = input.subject ?? (isProof ? `Your proofs are ready` : `Your photos are ready`);
+  const text =
+    input.body ??
+    `Hi ${input.clientName},\n\n${
+      isProof
+        ? "Your proofs are ready. Open the gallery, mark the ones you like as favorites, and leave a note on any photo if you want something changed."
+        : "Your final photos are ready. You can download them one at a time or all at once."
+    }\n\nGallery: ${input.url}${input.accessCode ? `\nAccess code: ${input.accessCode}` : ""}\n\n${studio.name}\n${studio.email}`;
+  return sendStudioEmail(studio, {
+    to: input.to,
+    subject,
+    text,
+    cta: { label: "Open gallery", url: input.url },
+    kind: isProof ? "gallery_proofs" : "gallery_final",
+  });
+}
+
+export async function sendPaymentLinkEmail(studio: StudioMail, input: { to: string; clientName: string; amount: string; title: string; url: string }) {
+  return sendStudioEmail(studio, {
+    to: input.to,
+    subject: `Payment for ${input.title}`,
+    text: `Hi ${input.clientName},\n\nHere is the secure link to review the agreement and pay for ${input.title} (${input.amount}):\n\n${input.url}\n\n${studio.name}\n${studio.email}`,
+    cta: { label: "Review and pay", url: input.url },
+    kind: "payment_link",
+  });
+}
+
+export async function sendReceiptEmail(studio: StudioMail, input: { to: string; clientName: string; amount: string; title: string; orderNumber: number }) {
+  return sendStudioEmail(studio, {
+    to: input.to,
+    subject: `Receipt: ${input.amount} for ${input.title}`,
+    text: `Hi ${input.clientName},\n\nThank you. We received your payment of ${input.amount} for ${input.title} (order #${input.orderNumber}).\n\n${studio.name}\n${studio.email}`,
+    kind: "receipt",
+  });
+}
+
+export async function sendStoreDeliveryEmail(studio: StudioMail, input: { to: string; buyerName: string | null; amount: string; orderNumber: number; url: string }) {
+  return sendStudioEmail(studio, {
+    to: input.to,
+    subject: `Your download from ${studio.name}`,
+    text: `Hi ${input.buyerName || "there"},\n\nThank you for your purchase (order #${input.orderNumber}, ${input.amount}). Download your files here:\n\n${input.url}\n\nThis link is yours to keep — come back any time within the download window.\n\n${studio.name}\n${studio.email}`,
+    kind: "store_delivery",
+  });
+}
+
+export async function sendStoreAbandonedEmail(studio: StudioMail, input: { to: string; buyerName: string | null; amount: string; url: string }) {
+  return sendStudioEmail(studio, {
+    to: input.to,
+    subject: `You left something at ${studio.name}`,
+    text: `Hi ${input.buyerName || "there"},\n\nYou started a purchase (${input.amount}) at ${studio.name} but didn't finish checking out. Your selection is still waiting whenever you're ready:\n\n${input.url}\n\n${studio.name}\n${studio.email}`,
+    kind: "store_abandoned",
+  });
+}
+
+export async function sendGiftCardEmail(studio: StudioMail, input: { to: string; buyerName: string | null; codes: { code: string; amount: string }[] }) {
+  const many = input.codes.length > 1;
+  const lines = input.codes.map((c) => `${c.code}  —  ${c.amount}`).join("\n");
+  return sendStudioEmail(studio, {
+    to: input.to,
+    subject: `Your ${studio.name} gift card`,
+    text: `Hi ${input.buyerName || "there"},\n\nThank you! Here ${many ? "are your gift cards" : "is your gift card"}:\n\n${lines}\n\nEnter the code at checkout to spend it in the store. Keep it somewhere safe — it won't be re-sent.\n\n${studio.name}\n${studio.email}`,
+    kind: "store_giftcard",
+  });
+}
+
+export async function sendInquiryNoticeEmail(studio: StudioMail, input: { name: string; email: string; message: string; url: string }) {
+  return sendStudioEmail(studio, {
+    to: studio.email,
+    subject: `New inquiry from ${input.name}`,
+    text: `${input.name} <${input.email}> wrote:\n\n${input.message}\n\nReply from your studio:\n${input.url}`,
+    cta: { label: "Open in studio", url: input.url },
+    replyTo: input.email,
+    kind: "inquiry_notice",
+  });
+}

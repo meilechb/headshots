@@ -1,0 +1,43 @@
+import "server-only";
+
+import { db } from "@/lib/db";
+import { toCsv } from "@/lib/csv";
+import type { ZipEntry } from "@/lib/zip";
+
+/**
+ * A studio's data as a zip of JSON files plus a clients CSV (plan 17.7). Photos
+ * and documents are excluded (they are large binaries the studio already holds);
+ * this is the records export.
+ */
+const encoder = new TextEncoder();
+const json = (value: unknown) => encoder.encode(JSON.stringify(value, null, 2));
+
+async function table(name: string, sql: Promise<unknown>): Promise<ZipEntry> {
+  const data = (await sql) as unknown[];
+  return { name: `${name}.json`, read: async () => json(data) };
+}
+
+export async function studioExportEntries(studioId: string): Promise<ZipEntry[]> {
+  const entries: ZipEntry[] = [];
+  entries.push(await table("studio", db()`select id, name, legal_name, email, phone, timezone, currency, slug, custom_domain, created_at from studios where id = ${studioId}`));
+  entries.push(await table("clients", db()`select id, name, email, phone, company, stage, tags, source, created_at from clients where studio_id = ${studioId} order by created_at`));
+  entries.push(await table("orders", db()`select id, order_number, client_id, title, amount_cents, currency, status, shoot_date, scheduled_at, paid_at, created_at from orders where studio_id = ${studioId} order by order_number`));
+  entries.push(await table("payments", db()`select id, order_id, kind, amount_cents, currency, status, method, created_at from payments where studio_id = ${studioId} order by created_at`));
+  entries.push(await table("galleries", db()`select id, order_id, client_id, slug, title, kind, status, expires_at, created_at from galleries where studio_id = ${studioId} order by created_at`));
+  entries.push(await table("inquiries", db()`select id, name, email, phone, message, source, status, created_at from inquiries where studio_id = ${studioId} order by created_at`));
+  entries.push(await table("packages", db()`select id, name, price_cents, deposit_cents, is_active, created_at from packages where studio_id = ${studioId} order by sort_order`));
+  entries.push(await table("tasks", db()`select id, client_id, order_id, title, due_on, done_at, created_at from tasks where studio_id = ${studioId} order by created_at`));
+  entries.push(await table("bookings", db()`select id, starts_at, ends_at, status, client_id, order_id, package_id, notes, created_at from booking_slots where studio_id = ${studioId} order by starts_at`));
+  entries.push(await table("agreement_versions", db()`select version, body_md, is_active, created_at from agreement_templates where studio_id = ${studioId} order by version`));
+  entries.push(await table("documents", db()`select id, client_id, order_id, kind, title, url, size_bytes, created_at from documents where studio_id = ${studioId} order by created_at`));
+
+  const clients = (await db()`select name, email, phone, company, stage, tags, source, created_at from clients where studio_id = ${studioId} order by created_at`) as Array<Record<string, unknown>>;
+  const header = ["Name", "Email", "Phone", "Company", "Stage", "Tags", "Source", "Created"];
+  const rows = clients.map((c) => [c.name, c.email, c.phone ?? "", c.company ?? "", c.stage, Array.isArray(c.tags) ? c.tags.join(" ") : "", c.source ?? "", String(c.created_at).slice(0, 10)]);
+  const csv = toCsv([header, ...rows] as string[][]);
+  entries.push({ name: "clients.csv", read: async () => encoder.encode(csv) });
+
+  const readme = `Data export for studio ${studioId}\nGenerated ${new Date().toISOString()}\n\nEach .json file is one table. clients.csv is a spreadsheet-friendly copy of your clients. Photos and documents are not included; download those from their galleries.`;
+  entries.push({ name: "README.txt", read: async () => encoder.encode(readme) });
+  return entries;
+}
