@@ -1,6 +1,6 @@
 import type Stripe from "stripe";
 import { gaVisitorFromMetadata } from "@/lib/analytics-server";
-import { recordPaidCheckoutSession } from "@/lib/data/orders";
+import { cancelPendingPayment, recordPaidCheckoutSession } from "@/lib/data/orders";
 import { db } from "@/lib/db";
 import { getStripe } from "@/lib/stripe";
 
@@ -10,6 +10,7 @@ import { getStripe } from "@/lib/stripe";
  *   checkout.session.completed
  *   checkout.session.async_payment_succeeded
  *   checkout.session.async_payment_failed
+ *   checkout.session.expired
  * Local testing: stripe listen --forward-to localhost:3000/api/stripe/webhook
  */
 export async function POST(request: Request) {
@@ -33,44 +34,60 @@ export async function POST(request: Request) {
     return new Response(`Webhook Error: ${message}`, { status: 400 });
   }
 
-  // Stripe may deliver the same event more than once; the primary key on
-  // stripe_events.id makes processing idempotent.
-  let inserted: Record<string, unknown>[];
+  // Stripe may deliver the same event more than once. The row in stripe_events
+  // claims the event; processed_at is set only after its work succeeded, so a
+  // delivery that fails part way leaves the claim open and the retry runs the
+  // event again instead of being dropped as a duplicate. Two deliveries racing
+  // on the same unprocessed event may both run it; recordPaidCheckoutSession
+  // moves a payment from pending to paid exactly once, so that is harmless.
+  let claimed: Record<string, unknown>[];
   try {
-    inserted = await db()`
+    claimed = await db()`
       insert into stripe_events (id, type) values (${event.id}, ${event.type})
-      on conflict (id) do nothing
+      on conflict (id) do update set type = excluded.type
+      where stripe_events.processed_at is null
       returning id`;
   } catch {
     return new Response("Could not record event", { status: 500 });
   }
-  if (inserted.length === 0) {
+  if (claimed.length === 0) {
     return Response.json({ received: true, duplicate: true });
   }
 
-  switch (event.type) {
-    case "checkout.session.completed":
-    case "checkout.session.async_payment_succeeded": {
-      const session = event.data.object;
-      // Delayed payment methods complete later; only record once paid.
-      if (session.payment_status === "paid") {
-        await recordPaidCheckoutSession({
-          sessionId: session.id,
-          amountTotal: session.amount_total,
-          paymentIntentId:
-            typeof session.payment_intent === "string"
-              ? session.payment_intent
-              : (session.payment_intent?.id ?? null),
-          visitor: gaVisitorFromMetadata(session.metadata),
-        });
+  try {
+    switch (event.type) {
+      case "checkout.session.completed":
+      case "checkout.session.async_payment_succeeded": {
+        const session = event.data.object;
+        // Delayed payment methods complete later; only record once paid.
+        if (session.payment_status === "paid") {
+          await recordPaidCheckoutSession({
+            sessionId: session.id,
+            amountTotal: session.amount_total,
+            paymentIntentId:
+              typeof session.payment_intent === "string"
+                ? session.payment_intent
+                : (session.payment_intent?.id ?? null),
+            visitor: gaVisitorFromMetadata(session.metadata),
+          });
+        }
+        break;
       }
-      break;
+      case "checkout.session.expired":
+        // Stripe closed the session (24 hours unpaid, or expired by the checkout
+        // route). Nothing can be paid through it, so its row stops being pending.
+        await cancelPendingPayment(event.data.object.id);
+        break;
+      case "checkout.session.async_payment_failed":
+        // The payment row stays pending; the client can pay again from the link.
+        break;
+      default:
+        break;
     }
-    case "checkout.session.async_payment_failed":
-      // The payment row stays pending; the client can pay again from the link.
-      break;
-    default:
-      break;
+    await db()`update stripe_events set processed_at = now() where id = ${event.id}`;
+  } catch {
+    // A 500 makes Stripe retry, and the open claim above lets that retry run.
+    return new Response("Could not process event", { status: 500 });
   }
 
   return Response.json({ received: true });
