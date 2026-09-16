@@ -145,6 +145,11 @@ create table if not exists stripe_events (
   created_at timestamptz not null default now()
 );
 
+-- Set once the event's work (recording the payment) has succeeded. A row with
+-- no processed_at was claimed by a delivery that failed part way, so Stripe's
+-- retry of the same event runs it again instead of being dropped as a duplicate.
+alter table stripe_events add column if not exists processed_at timestamptz;
+
 -- ---------------------------------------------------------------------------
 -- Lightroom Classic integration
 -- ---------------------------------------------------------------------------
@@ -245,6 +250,12 @@ create table if not exists payments (
 );
 
 create index if not exists payments_order_idx on payments (order_id, created_at);
+
+-- 'cancelled': a Checkout Session the studio expired because the client paid
+-- through a sibling session, or because a fresh session replaced it. Both
+-- statements re-run cleanly, which is how the check gains the new value.
+alter table payments drop constraint if exists payments_status_check;
+alter table payments add constraint payments_status_check check (status in ('pending', 'paid', 'cancelled'));
 
 -- Backfill: sessions paid before payments existed count as paid in full.
 insert into payments (order_id, kind, amount_cents, currency, status, method, stripe_checkout_session_id, stripe_payment_intent_id, paid_at)

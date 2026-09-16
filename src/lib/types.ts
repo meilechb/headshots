@@ -151,7 +151,8 @@ export type Payment = {
   kind: PaymentKind;
   amount_cents: number;
   currency: string;
-  status: "pending" | "paid";
+  /** cancelled: the Checkout Session was expired before it was paid. */
+  status: "pending" | "paid" | "cancelled";
   method: string;
   stripe_checkout_session_id: string | null;
   stripe_payment_intent_id: string | null;

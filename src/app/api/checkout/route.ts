@@ -1,6 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { gaVisitorToMetadata, readGaVisitor } from "@/lib/analytics-server";
-import { createPendingPayment, findPendingPayment, getOrderForPayment } from "@/lib/data/orders";
+import { gaVisitorFromMetadata, gaVisitorToMetadata, readGaVisitor } from "@/lib/analytics-server";
+import {
+  createPendingPayment,
+  expireOtherPendingSessions,
+  findPendingPayment,
+  getOrderForPayment,
+  recordPaidCheckoutSession,
+} from "@/lib/data/orders";
 import { getStripe } from "@/lib/stripe";
 import { site } from "@/lib/site";
 import type { PaymentKind } from "@/lib/types";
@@ -61,6 +67,24 @@ export async function POST(request: NextRequest) {
       if (existing.status === "open" && existing.amount_total === amount && existing.client_secret) {
         return NextResponse.json({ clientSecret: existing.client_secret, sessionId: existing.id });
       }
+      // Paid on Stripe but not yet in the database (the webhook is still on
+      // its way): record it now rather than hand out a second session for an
+      // amount that is no longer owed.
+      if (existing.status === "complete" && existing.payment_status === "paid") {
+        await recordPaidCheckoutSession({
+          sessionId: existing.id,
+          amountTotal: existing.amount_total,
+          paymentIntentId:
+            typeof existing.payment_intent === "string"
+              ? existing.payment_intent
+              : (existing.payment_intent?.id ?? null),
+          visitor: gaVisitorFromMetadata(existing.metadata),
+        });
+        return NextResponse.json(
+          { error: "This payment was already received. Refresh the page to see what is left." },
+          { status: 409 }
+        );
+      }
     } catch {
       // Unknown or deleted session: fall through and create a fresh one.
     }
@@ -112,5 +136,13 @@ export async function POST(request: NextRequest) {
     currency: order.currency,
     sessionId: session.id,
   });
+  // The new session replaces every earlier one for this amount, including any
+  // still open on Stripe for a figure that has since changed. Sessions for the
+  // other offered amount stay open on purpose: the pay page requests both at
+  // once so either form is ready, and recordPaidCheckoutSession closes the
+  // sibling the moment one of them is paid. Best effort: the client secret
+  // above is what the page needs, and a stale session left open here is
+  // closed again on the next payment.
+  await expireOtherPendingSessions(order.id, { except: session.id, kind }).catch(() => undefined);
   return NextResponse.json({ clientSecret: session.client_secret, sessionId: session.id });
 }

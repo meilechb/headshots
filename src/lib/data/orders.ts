@@ -1,9 +1,11 @@
 import "server-only";
+import Stripe from "stripe";
 import { GA_EVENTS } from "@/lib/analytics";
 import { sendServerEvent, type GaVisitor } from "@/lib/analytics-server";
 import { sendEmail } from "@/lib/email";
 import { paymentReceiptEmail } from "@/lib/emails";
 import { db, one, rows, UUID_RE } from "@/lib/db";
+import { getStripe } from "@/lib/stripe";
 import { formatMoney, orderMoney } from "@/lib/types";
 import type { Client, Order, OrderMoney, Payment, PaymentKind } from "@/lib/types";
 
@@ -90,6 +92,67 @@ export async function createPendingPayment(input: {
     values (${input.orderId}, ${input.kind}, ${input.amountCents}, ${input.currency}, 'pending', 'card', ${input.sessionId})`;
 }
 
+/** Pending card payments for an order that still point at a Checkout Session. */
+async function listOpenPendingPayments(orderId: string, except: string | null): Promise<Payment[]> {
+  return rows<Payment>(
+    await db()`
+      select * from payments
+      where order_id = ${orderId} and status = 'pending'
+        and stripe_checkout_session_id is not null
+        and stripe_checkout_session_id is distinct from ${except}
+      order by created_at asc`
+  );
+}
+
+/** The Checkout Session can no longer be paid; its row stops counting as pending. */
+export async function cancelPendingPayment(sessionId: string) {
+  await db()`
+    update payments set status = 'cancelled'
+    where stripe_checkout_session_id = ${sessionId} and status = 'pending'`;
+}
+
+/**
+ * Expires the order's other open Checkout Sessions, on Stripe and in the
+ * payments table. The pay page mounts one form per offered amount and a
+ * client may hold the page open in two tabs, so once one session is paid, or
+ * replaced by a fresh one, the others must stop accepting a card. Pass `kind`
+ * to limit this to sessions for that amount.
+ *
+ * A session Stripe reports as complete is left pending: its payment is on its
+ * way in through the webhook or the success page, and recordPaidCheckoutSession
+ * will settle it. Best effort throughout; one failure does not stop the rest.
+ */
+export async function expireOtherPendingSessions(
+  orderId: string,
+  options: { except?: string | null; kind?: PaymentKind } = {}
+) {
+  const pending = await listOpenPendingPayments(orderId, options.except ?? null);
+  const stripe = getStripe();
+  await Promise.all(
+    pending
+      .filter((p) => !options.kind || p.kind === options.kind)
+      .map(async (p) => {
+        const sessionId = p.stripe_checkout_session_id as string;
+        try {
+          await stripe.checkout.sessions.expire(sessionId);
+          await cancelPendingPayment(sessionId);
+          return;
+        } catch {
+          // Only an open session can be expired. Find out what it is instead.
+        }
+        try {
+          const session = await stripe.checkout.sessions.retrieve(sessionId);
+          if (session.status === "expired") await cancelPendingPayment(sessionId);
+        } catch (err) {
+          // Stripe has no such session: nothing can ever be paid through it.
+          if (err instanceof Stripe.errors.StripeInvalidRequestError && err.code === "resource_missing") {
+            await cancelPendingPayment(sessionId);
+          }
+        }
+      })
+  );
+}
+
 /**
  * After any payment lands: a paid deposit books the session, a paid balance
  * stamps paid_at. Safe to call repeatedly.
@@ -129,7 +192,15 @@ export async function recordPaidCheckoutSession(input: {
   );
   if (!paid) return null; // already recorded, or unknown session
   await syncOrderAfterPayment(paid.order_id);
-  await Promise.all([sendReceipt(paid), trackPurchase(paid, input.sessionId, input.visitor)]);
+  // Every other open session for this order now asks for a stale amount (a
+  // deposit paid makes "pay in full" wrong; a full payment leaves nothing to
+  // pay), so close them before the client can pay through one. Errors are
+  // swallowed: the payment is recorded and the webhook must still return 200.
+  await Promise.all([
+    expireOtherPendingSessions(paid.order_id, { except: input.sessionId }).catch(() => undefined),
+    sendReceipt(paid),
+    trackPurchase(paid, input.sessionId, input.visitor),
+  ]);
   return paid;
 }
 
