@@ -1,0 +1,160 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { APP_NAME } from "@/lib/env";
+import { PRO_SEAT_CENTS, FREE_STORAGE_BYTES, TRIAL_DAYS, formatPrice, formatBytes } from "@/lib/plans";
+import { Icon } from "@/components/ui/icons";
+import { StartFreeLink } from "@/components/marketing/header";
+import { Check, Faq, FeatureCard, FinalCta, PricingCards, Screenshot, Section, SectionHeader } from "@/components/marketing/sections";
+
+export const metadata: Metadata = {
+  title: `${APP_NAME}: client galleries, Lightroom plugin and payments in your own Stripe`,
+  description: `Cull in Lightroom, deliver in one click, get paid in your own Stripe — and keep 100% of what you charge. Galleries, website, CRM and email for photographers. Free to start; Pro is ${formatPrice(PRO_SEAT_CENTS)} per seat.`,
+  alternates: { canonical: "/" },
+};
+
+const trust = ["0% commission", "Paid into your own Stripe", "Your own domain", "Free forever plan", "Cancel anytime"];
+
+const steps = [
+  { n: "1", title: "Shoot", body: "Book the session from your website or booking page. The client, package and deposit are already in your CRM before you pick up a camera." },
+  { n: "2", title: "Publish from Lightroom", body: "Cull and edit as you always do. One click in the plugin creates the gallery, uploads the selects and emails the client." },
+  { n: "3", title: "Client picks and pays", body: "They favorite, leave notes on photos, sign the agreement and pay the balance. Favorites and notes sync back into Lightroom." },
+];
+
+const features = [
+  { icon: <Icon.Globe />, title: "Website from a template", href: "/features/website", body: "Two clean templates. Your photos, colors and words, on your own domain, live in an afternoon." },
+  { icon: <Icon.Image />, title: "Client galleries", href: "/features/galleries", body: "Favorites, per-photo notes, selection limits, downloads that unlock when the balance is paid." },
+  { icon: <Icon.Users />, title: "CRM", href: "/features/crm", body: "Inbox, clients, sessions, tasks and calendar in one place. No second tool to keep in sync." },
+  { icon: <Icon.Card />, title: "Payments in your Stripe", href: "/features/payments", body: "Deposits, balances and extras charged on your own Stripe account. We take 0%." },
+  { icon: <Icon.Mail />, title: "Email from your domain", href: "/features/email", body: "Gallery delivery, reminders and automations sent from you, not from us." },
+  { icon: <Icon.Camera />, title: "Team headshot days", href: "/features/team-headshots", body: "One gallery per person, a master view for the office manager, retouch selection with limits." },
+  { icon: <Icon.Calendar />, title: "Booking", href: "/features/booking", body: "A booking page with your real availability, holds, deposits and confirmation emails." },
+  { icon: <Icon.Upload />, title: "Import", href: "/features/crm#import", body: "Bring clients and galleries over from Pixieset, Pic-Time, ShootProof, CloudSpot or a CSV." },
+];
+
+const faq = [
+  { q: "Is it really free?", a: `Yes. The Free plan is free forever: 1 user, ${formatBytes(FREE_STORAGE_BYTES)} of galleries, client proofing, e-signed agreements, payments into your own Stripe and the Lightroom plugin. Upgrade to Pro when you want your team, a custom domain, automations, booking and more.` },
+  { q: "Do you take a cut of my sales?", a: "No. Clients pay on your own Stripe account and the money settles there. We charge the subscription and nothing else. Stripe's own card fees still apply, as they would with any processor." },
+  { q: "How does team pricing work?", a: `Pro is ${formatPrice(PRO_SEAT_CENTS)} per seat, per month. A solo photographer on Pro pays ${formatPrice(PRO_SEAT_CENTS)}; add a second shooter or an editor and it's ${formatPrice(PRO_SEAT_CENTS * 2)}. You only pay for the people on your account, and Free is always 1 seat at no cost.` },
+  { q: "What happens when the trial ends, or if I cancel?", a: "Your studio moves to the Free plan — it never goes read-only. Your galleries and website stay live and all your data is kept; the Pro features simply switch off until you upgrade again. Nothing is deleted." },
+  { q: "Do I need a Stripe account?", a: "For card payments, yes. You connect an existing account or create one in a few minutes during setup. You can also record cash, check or bank payments by hand." },
+  { q: "Which Lightroom does the plugin support?", a: "Lightroom Classic on macOS and Windows, on both Free and Pro. The plugin publishes galleries and pulls favorites and notes back as flags and keywords. Lightroom (cloud) is not supported by Adobe's plugin SDK." },
+  { q: "Can I use my own domain?", a: "On Pro, yes — for the website, the galleries and the emails you send. Setup walks you through the DNS records. Free studios get a clean subdomain." },
+  { q: "Is there a free trial of Pro?", a: `Every new studio gets ${TRIAL_DAYS} days of Pro with no card. Import your clients, publish a gallery from Lightroom and get paid before you decide. After that you stay on Free or upgrade — nothing is deleted either way.` },
+];
+
+export default function HomePage() {
+  return (
+    <>
+      {/* Hero — full-bleed dark, per the design handoff. A studio hero photo
+          can be dropped in behind the wash (absolute inset-0 object-cover). */}
+      <section className="relative overflow-hidden bg-pine-deep text-white">
+        <div className="absolute inset-0 bg-gradient-to-b from-pine-dark via-pine/60 to-pine-deep" aria-hidden />
+        <div className="container-x relative py-20 sm:py-28 lg:py-32">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden /> Built for photographers who bill for their time
+          </span>
+          <h1 className="mt-6 font-display font-normal text-[2.75rem] sm:text-6xl lg:text-[4.5rem] leading-[1.03] max-w-[18ch]">
+            Cull in Lightroom.<br />Deliver in one click.<br />Get paid in your own Stripe.
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg sm:text-xl leading-relaxed text-white/85">
+            {APP_NAME} is the gallery, website, CRM and email tool for working photographers. Favorites and notes sync back into Lightroom Classic. Clients pay you directly, and we take 0%.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <StartFreeLink className="btn-lg btn-pill inline-flex items-center justify-center bg-white text-pine px-7 h-12 text-base font-semibold hover:opacity-90">Start free</StartFreeLink>
+            <Link href="/lightroom" className="btn-lg btn-pill inline-flex items-center justify-center border border-white/40 text-white px-6 h-12 text-base font-semibold hover:bg-white/10">See the Lightroom plugin</Link>
+          </div>
+          <p className="mt-5 text-sm text-white/70">Free forever for solo photographers, no card. Every new studio also gets {TRIAL_DAYS} days of Pro.</p>
+          <ul className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/80">
+            {trust.map((t) => (
+              <li key={t} className="inline-flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" className="text-gold" aria-hidden><path d="m5 12 5 5L20 7" /></svg>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Three steps */}
+      <Section tone="surface">
+        <SectionHeader eyebrow="How it works" title="Three steps from shoot to paid" lead="The whole job runs in the tools you already use: your camera, Lightroom, and Stripe." />
+        <ol className="mt-12 grid gap-6 md:grid-cols-3">
+          {steps.map((s) => (
+            <li key={s.n} className="card card-pad">
+              <span className="font-display inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent/12 text-accent text-lg italic" aria-hidden>{s.n}</span>
+              <h3 className="mt-4 text-xl font-normal">{s.title}</h3>
+              <p className="mt-1.5 text-sm text-ink-2 leading-relaxed">{s.body}</p>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      {/* Your money is yours — pine panel, per the design handoff */}
+      <section className="container-x py-16 sm:py-24">
+        <div id="money" className="scroll-mt-24 rounded-[20px] bg-pine-dark text-white p-8 sm:p-12 grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <p className="eyebrow !text-gold mb-3">0% commission</p>
+            <h2 className="font-display text-3xl sm:text-[2.6rem] font-normal leading-[1.1]">Your money is yours</h2>
+            <p className="mt-4 leading-relaxed text-white/80">
+              Most gallery tools sit between you and your client&apos;s card and keep a percentage of what you sell. We do not. Clients pay on your Stripe account — we never hold, route or touch the money, and never add a platform fee.
+            </p>
+            <ul className="mt-6 space-y-2.5 text-sm text-white/85">
+              <li className="flex gap-3"><span className="text-gold" aria-hidden>✓</span> Clients pay on <strong className="text-white">your</strong> Stripe account. Only Stripe&apos;s standard card fee applies.</li>
+              <li className="flex gap-3"><span className="text-gold" aria-hidden>✓</span> Refunds and disputes are handled in your own Stripe dashboard.</li>
+              <li className="flex gap-3"><span className="text-gold" aria-hidden>✓</span> 0% commission on <strong className="text-white">both</strong> Free and Pro.</li>
+            </ul>
+            <Link href="/features/payments" className="mt-6 inline-block font-semibold text-gold hover:opacity-90">How payments work →</Link>
+          </div>
+          <div className="rounded-2xl bg-white/8 p-6 sm:p-8">
+            <p className="text-sm text-white/70">On a $1,200 wedding balance</p>
+            <dl className="mt-5 space-y-3.5 text-[15px]">
+              <div className="flex justify-between"><dt>Gallery tool · 15%</dt><dd className="text-white/70">keeps $180.00</dd></div>
+              <div className="flex justify-between"><dt>Marketplace · 6%</dt><dd className="text-white/70">keeps $72.00</dd></div>
+              <div className="flex justify-between border-t border-white/15 pt-3.5 font-display text-xl"><dt>{APP_NAME}</dt><dd className="text-gold">keeps $0.00</dd></div>
+            </dl>
+            <p className="mt-4 text-xs leading-relaxed text-white/60">Stripe&apos;s card fee applies in every case and goes to Stripe, not to us.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature grid */}
+      <Section tone="surface">
+        <SectionHeader eyebrow="One tool, not five" title="One tool for the business side of photography" lead="Website, galleries, CRM, payments and email in one place — so your client's whole experience is yours, start to finish." />
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((f) => (
+            <FeatureCard key={f.title} icon={f.icon} title={f.title} href={f.href}>{f.body}</FeatureCard>
+          ))}
+        </div>
+      </Section>
+
+      {/* Lightroom plugin */}
+      <Section>
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <Screenshot label="Lightroom Classic: Publish Services with favorites synced" ratio="4/3" className="lg:order-2" />
+          <div className="lg:order-1">
+            <SectionHeader eyebrow="Two-way Lightroom Classic plugin" title="Publish from Lightroom. Get favorites and notes back." lead="The plugin adds a Publish Service. Drag photos in, hit Publish, and the gallery is live. When the client picks, their favorites become a flag and their notes become keywords in your catalog — on Free and Pro alike." />
+            <ul className="mt-8 space-y-3">
+              <Check>Publish, not export — the link stays the same on re-publish.</Check>
+              <Check>Favorites come back as flags, notes as keywords.</Check>
+              <Check>macOS and Windows, Lightroom Classic 12 or later.</Check>
+            </ul>
+            <Link href="/lightroom" className="mt-8 inline-block font-medium underline">Install guide</Link>
+          </div>
+        </div>
+      </Section>
+
+      {/* Pricing */}
+      <Section tone="surface" id="pricing">
+        <SectionHeader center eyebrow="Pricing" title="Start free. Upgrade when your studio grows." lead="No commission, no storage tiers to game, no charge for taking payments. Pay for seats only when you add a team." />
+        <PricingCards className="mt-12" />
+        <p className="mt-8 text-center text-sm text-ink-2">Refer another studio and you both get a discount. <Link href="/pricing" className="underline">See the full comparison</Link>.</p>
+      </Section>
+
+      {/* FAQ and final CTA */}
+      <Section>
+        <Faq items={faq} />
+      </Section>
+      <FinalCta />
+    </>
+  );
+}
