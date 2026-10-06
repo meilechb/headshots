@@ -23,7 +23,8 @@ export default async function HomePage() {
             src={hero.url}
             alt={hero.alt || `Headshot photographed by ${site.name} in Rockland County, NY`}
             fill
-            priority
+            preload
+            fetchPriority="high"
             sizes="100vw"
             quality={85}
             className="object-cover object-[center_30%]"

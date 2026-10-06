@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    inlineCss: true,
+  },
   images: {
     // Public portfolio images live in the public Vercel Blob store.
     // Private gallery photos are streamed by /api/photo/[id] and rendered
