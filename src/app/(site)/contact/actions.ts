@@ -26,7 +26,35 @@ export type InquiryState = { ok?: boolean; error?: string; values?: InquiryValue
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const field = (fd: FormData, k: string, max = 200) => String(fd.get(k) ?? "").trim().slice(0, max);
 
+// Spam keeps arriving from look-alike domains (e.g. search-meilechbiller.com); an auto-reply to them just bounces.
+// Anything containing "meilechbiller" other than the real domain is flagged, plus a few known typo-squats.
+const LOOKALIKE_SPAM_FRAGMENTS = ["meilech-biller", "meilechbilller"];
+function isLookalikeSpamDomain(email: string) {
+  const domain = email.slice(email.lastIndexOf("@") + 1).trim().toLowerCase();
+  if (domain === "meilechbiller.com") return false;
+  return domain.includes("meilechbiller") || LOOKALIKE_SPAM_FRAGMENTS.some((f) => domain.includes(f));
+}
+
+const emptyValues: InquiryValues = {
+  name: "",
+  email: "",
+  phone: "",
+  session_type: "",
+  people_count: "",
+  package: "",
+  location_pref: "",
+  town: "",
+  timing: "",
+  message: "",
+  source: "",
+};
+
 export async function submitInquiry(_prev: InquiryState, formData: FormData): Promise<InquiryState> {
+  // Malformed payloads (not a real FormData) get the same error as a missing name instead of throwing.
+  if (!(formData instanceof FormData) || typeof (formData as { get?: unknown }).get !== "function") {
+    return { error: "Please enter your name.", values: { ...emptyValues } };
+  }
+
   // Honeypot: real users never fill this.
   if (String(formData.get("website") ?? "").length > 0) return { ok: true };
 
@@ -97,10 +125,14 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
     const packageName = values.package
       ? (one<{ name: string }>(await db()`select name from packages where slug = ${values.package} limit 1`)?.name ?? null)
       : null;
-    const [notice, reply] = await Promise.all([inquiryNotification(inquiry, packageName), inquiryAutoReply(inquiry)]);
+    const skipReply = isLookalikeSpamDomain(inquiry.email);
+    const [notice, reply] = await Promise.all([
+      inquiryNotification(inquiry, packageName),
+      skipReply ? null : inquiryAutoReply(inquiry),
+    ]);
     const [a, b] = await Promise.all([
       sendEmail({ to: notifyAddress(), subject: notice.subject, text: notice.text, cta: notice.cta, replyTo: inquiry.email, kind: "inquiry_notice" }),
-      sendEmail({ to: inquiry.email, subject: reply.subject, text: reply.text, kind: "inquiry_reply" }),
+      reply ? sendEmail({ to: inquiry.email, subject: reply.subject, text: reply.text, kind: "inquiry_reply" }) : null,
       // GA4 conversion. Runs only here, after the database write, so the honeypot
       // early return above never counts as a lead.
       sendServerEvent(GA_EVENTS.generateLead, {
@@ -109,7 +141,7 @@ export async function submitInquiry(_prev: InquiryState, formData: FormData): Pr
         ...(values.package ? { package: values.package } : {}),
       }),
     ]);
-    emailed = a.ok && b.ok;
+    emailed = b ? a.ok && b.ok : a.ok;
   }
 
   return { ok: true, emailed };
