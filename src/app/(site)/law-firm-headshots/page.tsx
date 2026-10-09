@@ -7,24 +7,20 @@ import { site } from "@/lib/site";
 
 const title = "Law Firm and Attorney Headshots | Meilech Biller";
 const description =
-  "Attorney headshots for firm bio pages, Avvo, Martindale and bar profiles. I come to your firm or you visit my studio. $250 studio session, three finals.";
+  "Attorney headshots for firm bio pages, lawyer directories and bar profiles. I come to your firm or you visit my studio. Proofs in about 1 to 2 business days.";
 
 const faqs = [
   {
     q: "How much do attorney headshots cost?",
-    a: "A studio session is $250 and includes three final images. On-site sessions at your firm are quoted based on how many attorneys and where you are.",
+    a: "On-site sessions at your firm are quoted based on how many attorneys and where you are. See the pricing page for studio sessions.",
   },
   {
     q: "Can you match our firm's existing attorney photos?",
     a: "Yes. Send me a link to your attorneys page and I'll match the background, lighting and framing so new photos fit with the old ones.",
   },
   {
-    q: "Will the photo work for Avvo, Martindale and our bar profile?",
+    q: "Will the photo work for lawyer directories and bar profiles?",
     a: "Tell me where you'll use it and I'll deliver crops for the firm website and the directories you use.",
-  },
-  {
-    q: "How long does each attorney need?",
-    a: "About 10 to 15 minutes on-site, after a 20 minute setup in a conference room or office.",
   },
   {
     q: "How fast do we get the photos?",
@@ -57,12 +53,6 @@ export default function LawFirmHeadshotsPage() {
             url: `${site.url}/law-firm-headshots`,
             provider: { "@id": `${site.url}/#business` },
             areaServed: { "@type": "AdministrativeArea", name: "Rockland County, NY" },
-            offers: {
-              "@type": "Offer",
-              price: "250",
-              priceCurrency: "USD",
-              description: "Studio session, includes three final images",
-            },
           },
           faqJsonLd(faqs),
           breadcrumbJsonLd([
@@ -118,9 +108,8 @@ export default function LawFirmHeadshotsPage() {
                 Made for bio pages and lawyer directories
               </h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                Your photo shows up on the firm&apos;s attorney page, on directories like Avvo and
-                Martindale-Hubbell, on your bar association profile, on LinkedIn and next to
-                articles or speaking bios. I deliver the crops the firm website and attorney
+                Your photo shows up on the firm&apos;s attorney page, on lawyer directories and bar
+                profiles, on LinkedIn and next to articles or speaking bios. I deliver the crops the firm website and attorney
                 directories need, so the same photo works everywhere.
               </p>
             </div>
@@ -137,10 +126,9 @@ export default function LawFirmHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">At your firm or at my studio</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                I set up in a conference room or spare office in about 20 minutes with a
-                background, two lights and a laptop. Each attorney needs about 10 to 15 minutes, so
-                people can step out between calls and meetings. For one person, the studio in
-                Spring Valley is the simplest.
+                I set up quickly in a spare room or office and work around your schedule, so people
+                can step out between calls and meetings. For one person, the studio in Spring Valley
+                is the simplest.
               </p>
             </div>
             <div>
@@ -154,9 +142,11 @@ export default function LawFirmHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Pricing and turnaround</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                A studio session is $250 and includes three final images. On-site sessions at your
-                firm are quoted by headcount and location. Proofs are ready in about 1 to 2
-                business days. Photographing the whole office in one day? See{" "}
+                On-site sessions at your firm are quoted by headcount and location.{" "}
+                <Link href="/pricing" className="underline hover:text-brass-2">
+                  See pricing
+                </Link>{" "}
+                for studio sessions. Proofs are ready in about 1 to 2 business days. Photographing the whole office in one day? See{" "}
                 <Link href="/team-headshots" className="underline hover:text-brass-2">
                   team headshots
                 </Link>

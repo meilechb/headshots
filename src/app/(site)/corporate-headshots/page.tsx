@@ -7,12 +7,12 @@ import { site } from "@/lib/site";
 
 const title = "Corporate and Executive Headshots | Meilech Biller";
 const description =
-  "Corporate and executive headshots for offices, accounting, insurance and finance firms. Studio or on-site. $250 studio session, three final images.";
+  "Corporate and executive headshots for offices, accounting, insurance and finance firms. Studio or on-site. Proofs in about 1 to 2 business days.";
 
 const faqs = [
   {
     q: "How much do corporate headshots cost?",
-    a: "A studio session is $250 and includes three final images. On-site sessions at your office and group bookings are quoted based on headcount and location.",
+    a: "On-site sessions are quoted based on headcount and location. See the pricing page for studio sessions.",
   },
   {
     q: "Can you match our company's existing headshots?",
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "Do you come to our office?",
-    a: "Yes. I set up in a conference room or spare office in about 20 minutes. A room about 8 by 10 feet with an outlet is enough.",
+    a: "Yes. I set up quickly in a spare room or office and work around your schedule.",
   },
   {
     q: "How fast do we get the photos?",
@@ -57,12 +57,6 @@ export default function CorporateHeadshotsPage() {
             url: `${site.url}/corporate-headshots`,
             provider: { "@id": `${site.url}/#business` },
             areaServed: { "@type": "AdministrativeArea", name: "Rockland County, NY" },
-            offers: {
-              "@type": "Offer",
-              price: "250",
-              priceCurrency: "USD",
-              description: "Studio session, includes three final images",
-            },
           },
           faqJsonLd(faqs),
           breadcrumbJsonLd([
@@ -139,9 +133,8 @@ export default function CorporateHeadshotsPage() {
               <h2 className="font-display text-2xl tracking-tight">At your office or at my studio</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
                 For one or two people, the studio in Spring Valley is the simplest. For several
-                people, I can come to your office. I bring a background, two lights and a laptop,
-                and set up in about 20 minutes in a conference room or a spare office. Each person
-                takes about 10 to 15 minutes, so nobody loses much of their day.
+                people, I can come to your office. I set up quickly in a spare room or office and
+                work around your schedule, so nobody loses much of their day.
               </p>
             </div>
             <div>
@@ -156,9 +149,12 @@ export default function CorporateHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Pricing and turnaround</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                A studio session is $250 and includes three final images. On-site sessions and
-                groups are quoted, so tell me how many people and where. Proofs are ready in about
-                1 to 2 business days, and you choose your finals from there.
+                On-site sessions are quoted, so tell me how many people and where.{" "}
+                <Link href="/pricing" className="underline hover:text-brass-2">
+                  See pricing
+                </Link>{" "}
+                for studio sessions. Proofs are ready in about 1 to 2 business days, and you choose
+                your finals from there.
               </p>
             </div>
           </div>

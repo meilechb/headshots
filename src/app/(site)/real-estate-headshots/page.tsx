@@ -7,12 +7,12 @@ import { site } from "@/lib/site";
 
 const title = "Real Estate Agent Headshots | Meilech Biller";
 const description =
-  "Realtor headshots that look like you on your best day, ready for signs, listings and Zillow. Studio or on-site. $250 studio session, three finals.";
+  "Realtor headshots that look like you on your best day, ready for signs, listings and Zillow. Studio or on-site. Proofs in about 1 to 2 business days.";
 
 const faqs = [
   {
     q: "How much does a realtor headshot cost?",
-    a: "A studio session is $250 and includes three final images. Brokerage and team sessions at your office are quoted by headcount and location.",
+    a: "See the pricing page for studio sessions. Brokerage and team sessions at your office are quoted by headcount and location.",
   },
   {
     q: "Can I use the photo on signs, Zillow and my brokerage website?",
@@ -57,12 +57,6 @@ export default function RealEstateHeadshotsPage() {
             url: `${site.url}/real-estate-headshots`,
             provider: { "@id": `${site.url}/#business` },
             areaServed: { "@type": "AdministrativeArea", name: "Rockland County, NY" },
-            offers: {
-              "@type": "Offer",
-              price: "250",
-              priceCurrency: "USD",
-              description: "Studio session, includes three final images",
-            },
           },
           faqJsonLd(faqs),
           breadcrumbJsonLd([
@@ -129,8 +123,11 @@ export default function RealEstateHeadshotsPage() {
               <p className="mt-3 text-sm leading-7 text-ink-2">
                 Come to the studio in Spring Valley for a session. It takes about 30 to 90 minutes
                 depending on how many looks you want. A blazer for listings and something a little
-                more relaxed for social media is a common combination. $250 includes three final
-                images, and proofs are ready in about 1 to 2 business days.
+                more relaxed for social media is a common combination.{" "}
+                <Link href="/pricing" className="underline hover:text-brass-2">
+                  See pricing
+                </Link>{" "}
+                for studio sessions, and proofs are ready in about 1 to 2 business days.
               </p>
             </div>
             <div>

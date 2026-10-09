@@ -12,11 +12,11 @@ const description =
 const faqs = [
   {
     q: "How much do medical headshots cost?",
-    a: "A studio session is $250 and includes three final images. On-site sessions at your practice are quoted based on how many providers and where you are.",
+    a: "On-site sessions at your practice are quoted based on how many providers and where you are. See the pricing page for studio sessions.",
   },
   {
     q: "Can you photograph us at our practice?",
-    a: "Yes. I set up in an exam room or office in about 20 minutes, and each provider takes about ten minutes, so it fits between patients.",
+    a: "Yes. I set up quickly in a spare room or office and work around your schedule, so it fits between patients.",
   },
   {
     q: "Should I wear a white coat or scrubs?",
@@ -57,12 +57,6 @@ export default function MedicalHeadshotsPage() {
             url: `${site.url}/medical-headshots`,
             provider: { "@id": `${site.url}/#business` },
             areaServed: { "@type": "AdministrativeArea", name: "Rockland County, NY" },
-            offers: {
-              "@type": "Offer",
-              price: "250",
-              priceCurrency: "USD",
-              description: "Studio session, includes three final images",
-            },
           },
           faqJsonLd(faqs),
           breadcrumbJsonLd([
@@ -79,8 +73,8 @@ export default function MedicalHeadshotsPage() {
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-ink-2">
               Before a new patient books, they usually look you up. They see your photo on the
-              practice website, on a hospital or insurance directory, and on profiles like
-              Healthgrades or Zocdoc. That photo should look like the person they&apos;ll meet in
+              practice website, on insurance directories, and on doctor review sites and hospital
+              directories. That photo should look like the person they&apos;ll meet in
               the exam room: professional, calm, and easy to talk to.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -125,10 +119,9 @@ export default function MedicalHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Between patients, in your office</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                Practices are busy, so I come to you. I set up in an exam room or office in about 20
-                minutes with a background, two lights and a laptop. Each provider takes about ten
-                minutes, so people can step in when they have a gap in their schedule. For one
-                person, the studio in Spring Valley also works.
+                Practices are busy, so I come to you. I set up quickly in a spare room or office and
+                work around your schedule, so providers can step in when they have a gap between
+                patients. For one person, the studio in Spring Valley also works.
               </p>
             </div>
             <div>
@@ -157,9 +150,11 @@ export default function MedicalHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Pricing and turnaround</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                A studio session is $250 and includes three final images. On-site sessions at your
-                practice are quoted by headcount and location. Proofs are ready in about 1 to 2
-                business days. Planning to photograph the whole staff in one day? See{" "}
+                On-site sessions are quoted by headcount and location.{" "}
+                <Link href="/pricing" className="underline hover:text-brass-2">
+                  See pricing
+                </Link>{" "}
+                for studio sessions. Proofs are ready in about 1 to 2 business days. Planning to photograph the whole staff in one day? See{" "}
                 <Link href="/team-headshots" className="underline hover:text-brass-2">
                   team headshots
                 </Link>
