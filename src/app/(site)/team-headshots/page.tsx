@@ -6,9 +6,9 @@ import { linkedAreas } from "@/lib/area-nav";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-const title = "Team & Corporate Headshots in Rockland County, NY | Meilech Biller";
+const title = "Team Headshots, On-Site at Your Office | Meilech Biller";
 const description =
-  "Team headshots for Rockland offices that stand out — consistent, not cookie-cutter. On-site or studio. No Rockland travel fee.";
+  "Matching team headshots where everyone still looks like themselves. I come to your office or you visit my Spring Valley studio. Send headcount for a quote.";
 
 const faqs = [
   {
@@ -98,9 +98,27 @@ export default function TeamHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Who this is for</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                Offices, medical and dental practices, real estate teams, synagogues and community
-                orgs, startups, and law firms that want a clean, matching set that doesn’t look
-                mass-produced.
+                <Link href="/corporate-headshots" className="underline hover:text-brass-2">
+                  Offices
+                </Link>
+                ,{" "}
+                <Link href="/medical-headshots" className="underline hover:text-brass-2">
+                  medical and dental practices
+                </Link>
+                ,{" "}
+                <Link href="/real-estate-headshots" className="underline hover:text-brass-2">
+                  real estate teams
+                </Link>
+                , synagogues and community orgs, startups, and{" "}
+                <Link href="/law-firm-headshots" className="underline hover:text-brass-2">
+                  law firms
+                </Link>{" "}
+                that want a clean, matching set that doesn’t look mass-produced. Need just one or two
+                people photographed? See the page for your field above, or{" "}
+                <Link href="/linkedin-headshots" className="underline hover:text-brass-2">
+                  LinkedIn headshots
+                </Link>
+                .
               </p>
             </div>
             <div>

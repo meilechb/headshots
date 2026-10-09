@@ -24,7 +24,10 @@ export type Area = {
   faq: Faq[];
   neighbors: string[];
   defaultLocation: "studio" | "on-site" | "either";
+  links?: InlineLink[]; // phrases in the lead and sections rendered as links to service pages
 };
+
+export type InlineLink = { text: string; href: string };
 
 const studio = "Spring Valley";
 
@@ -331,6 +334,10 @@ export const areas: Area[] = [
     ],
     neighbors: ["nanuet", "spring-valley", "rockland-county", "monsey", "suffern"],
     defaultLocation: "on-site",
+    links: [
+      { text: "law firms", href: "/law-firm-headshots" },
+      { text: "accountants", href: "/corporate-headshots" },
+    ],
   },
   {
     slug: "airmont",
@@ -450,6 +457,7 @@ export const areas: Area[] = [
     ],
     neighbors: ["airmont", "monsey", "spring-valley", "ramapo", "rockland-county"],
     defaultLocation: "on-site",
+    links: [{ text: "Medical and dental practices", href: "/medical-headshots" }],
   },
   {
     slug: "ramapo",

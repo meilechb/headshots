@@ -6,9 +6,9 @@ import { linkedAreas } from "@/lib/area-nav";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-const title = "LinkedIn Headshots in Rockland County, NY | Meilech Biller";
+const title = "LinkedIn Headshots, Studio or On-Site | Meilech Biller";
 const description =
-  "LinkedIn headshots in Rockland County that make you stand out — not cookie-cutter. Spring Valley studio or on-site. $250 includes 3 final images.";
+  "LinkedIn headshots that look like you, not a template. Studio in Spring Valley, NY, or I come to you. $250 includes three final images.";
 
 const faqs = [
   {
@@ -128,8 +128,23 @@ export default function LinkedInHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Who this is for</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                Job seekers, realtors, attorneys, medical and office staff, founders, and anyone
-                refreshing a personal brand. If your face is how people meet you online, it should
+                Job seekers,{" "}
+                <Link href="/real-estate-headshots" className="underline hover:text-brass-2">
+                  realtors
+                </Link>
+                ,{" "}
+                <Link href="/law-firm-headshots" className="underline hover:text-brass-2">
+                  attorneys
+                </Link>
+                ,{" "}
+                <Link href="/medical-headshots" className="underline hover:text-brass-2">
+                  medical
+                </Link>{" "}
+                and office staff,{" "}
+                <Link href="/corporate-headshots" className="underline hover:text-brass-2">
+                  founders
+                </Link>
+                , and anyone refreshing a personal brand. If your face is how people meet you online, it should
                 feel like you — not a template.
               </p>
             </div>
