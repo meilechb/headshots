@@ -44,6 +44,10 @@ export function SiteFooter() {
             <li><Link href="/pricing" className="inline-block py-1 hover:text-brass-2">Pricing</Link></li>
             <li><Link href="/linkedin-headshots" className="inline-block py-1 hover:text-brass-2">LinkedIn headshots</Link></li>
             <li><Link href="/team-headshots" className="inline-block py-1 hover:text-brass-2">Team headshots</Link></li>
+            <li><Link href="/corporate-headshots" className="inline-block py-1 hover:text-brass-2">Corporate headshots</Link></li>
+            <li><Link href="/real-estate-headshots" className="inline-block py-1 hover:text-brass-2">Real estate headshots</Link></li>
+            <li><Link href="/medical-headshots" className="inline-block py-1 hover:text-brass-2">Medical headshots</Link></li>
+            <li><Link href="/law-firm-headshots" className="inline-block py-1 hover:text-brass-2">Law firm headshots</Link></li>
             <li><Link href="/contact" className="inline-block py-1 hover:text-brass-2">Contact</Link></li>
           </ul>
         </div>

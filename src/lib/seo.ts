@@ -107,6 +107,10 @@ export const publicPaths = [
   "/pricing",
   "/linkedin-headshots",
   "/team-headshots",
+  "/corporate-headshots",
+  "/real-estate-headshots",
+  "/medical-headshots",
+  "/law-firm-headshots",
   "/contact",
   ...areas.map((a) => `/headshots/${a.slug}`),
 ];

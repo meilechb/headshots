@@ -4,6 +4,8 @@ import { PRODUCTION_SITE_URL, site } from "@/lib/site";
 
 // Update when page content changes so crawlers know to revisit.
 const updated = "2026-09-07";
+// Service pages: new profession pages plus the LinkedIn/team title and meta update.
+const servicesUpdated = "2026-10-09";
 
 /**
  * Public sitemap. Uses the hardened production origin so preview hosts never
@@ -17,8 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       { url: base, lastModified: updated, changeFrequency: "monthly", priority: 1 },
       { url: `${base}/portfolio`, lastModified: updated, changeFrequency: "weekly", priority: 0.9 },
       { url: `${base}/pricing`, lastModified: updated, changeFrequency: "monthly", priority: 0.8 },
-      { url: `${base}/linkedin-headshots`, lastModified: updated, changeFrequency: "monthly", priority: 0.85 },
-      { url: `${base}/team-headshots`, lastModified: updated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${base}/linkedin-headshots`, lastModified: servicesUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${base}/team-headshots`, lastModified: servicesUpdated, changeFrequency: "monthly", priority: 0.85 },
+      { url: `${base}/corporate-headshots`, lastModified: servicesUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${base}/real-estate-headshots`, lastModified: servicesUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${base}/medical-headshots`, lastModified: servicesUpdated, changeFrequency: "monthly", priority: 0.8 },
+      { url: `${base}/law-firm-headshots`, lastModified: servicesUpdated, changeFrequency: "monthly", priority: 0.8 },
       ...areas.map((a) => ({
         url: `${base}/headshots/${a.slug}`,
         lastModified: updated,

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/seo/json-ld";
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
 import { ContactForm } from "@/app/(site)/contact/contact-form";
-import { areas, getArea } from "@/lib/areas";
+import { areas, getArea, type InlineLink } from "@/lib/areas";
 import { getActivePackages, getFeaturedPortfolio } from "@/lib/data/public";
 import { breadcrumbJsonLd, faqJsonLd, serviceJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -29,6 +30,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: { canonical: `/headshots/${area.slug}` },
     openGraph: { title: area.title, description: area.description, url: `${site.url}/headshots/${area.slug}` },
   };
+}
+
+/** Wraps each phrase from `links` found in `text` in a link; the text itself is unchanged. */
+function withLinks(text: string, links: InlineLink[] = []): ReactNode {
+  const parts: ReactNode[] = [];
+  let i = 0;
+  for (;;) {
+    let next: { at: number; link: InlineLink } | null = null;
+    for (const link of links) {
+      const at = text.indexOf(link.text, i);
+      if (at !== -1 && (!next || at < next.at)) next = { at, link };
+    }
+    if (!next) break;
+    parts.push(
+      text.slice(i, next.at),
+      <Link key={next.at} href={next.link.href} className="underline hover:text-brass-2">
+        {next.link.text}
+      </Link>,
+    );
+    i = next.at + next.link.text.length;
+  }
+  if (!parts.length) return text;
+  parts.push(text.slice(i));
+  return parts;
 }
 
 /**
@@ -61,7 +86,7 @@ export default async function AreaPage({ params }: Props) {
         <section className="container-x grid grid-cols-1 gap-10 pb-12 pt-12 md:grid-cols-[1.1fr_0.9fr] md:pb-16 md:pt-20">
           <div>
             <h1 className="font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl">{area.heading}</h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-ink-2">{area.lead}</p>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-ink-2">{withLinks(area.lead, area.links)}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#book" className="btn-primary">Book a session</a>
               {phoneHref ? (
@@ -104,10 +129,10 @@ export default async function AreaPage({ params }: Props) {
           <div className="container-x grid grid-cols-1 gap-10 py-14 md:grid-cols-2 md:py-16">
             {area.sections.map((s) => (
               <div key={s.heading}>
-                <h2 className="font-display text-2xl tracking-tight">{s.heading}</h2>
+                <h2 className="font-display text-2xl tracking-tight">{withLinks(s.heading, area.links)}</h2>
                 <div className="mt-3 space-y-3 text-sm leading-7 text-ink-2">
                   {s.paragraphs.map((p) => (
-                    <p key={p}>{p}</p>
+                    <p key={p}>{withLinks(p, area.links)}</p>
                   ))}
                 </div>
               </div>

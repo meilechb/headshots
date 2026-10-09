@@ -6,9 +6,9 @@ import { linkedAreas } from "@/lib/area-nav";
 import { breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-const title = "Team & Corporate Headshots in Rockland County, NY | Meilech Biller";
+const title = "Team Headshots, On-Site at Your Office | Meilech Biller";
 const description =
-  "Team headshots for Rockland offices that stand out — consistent, not cookie-cutter. On-site or studio. No Rockland travel fee.";
+  "Matching team headshots where everyone still looks like themselves. I come to your office or you visit my Spring Valley studio. Send headcount for a quote.";
 
 const faqs = [
   {
@@ -49,7 +49,7 @@ export default function TeamHeadshotsPage() {
           {
             "@context": "https://schema.org",
             "@type": "Service",
-            name: "Team and corporate headshots in Rockland County",
+            name: "Team headshots",
             serviceType: "Team headshot photography",
             description,
             url: `${site.url}/team-headshots`,
@@ -67,13 +67,13 @@ export default function TeamHeadshotsPage() {
         <section className="container-x grid grid-cols-1 gap-10 pb-12 pt-12 md:grid-cols-[1.1fr_0.9fr] md:pb-16 md:pt-20">
           <div>
             <h1 className="font-display text-4xl leading-[1.05] tracking-tight sm:text-5xl">
-              Team and corporate headshots in Rockland County
+              Team headshots
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-ink-2">
-              A team page full of mismatched selfies makes the brand look unfinished. I shoot
-              consistent sets for Rockland offices — same light language, same quality bar — so
-              everyone looks like they belong together <strong>and</strong> still stands out as a
-              person, not a template.
+              A team page full of mismatched selfies looks unfinished. I shoot consistent team
+              headshots so everyone feels like they belong together and still looks like
+              themselves. On-site or in studio. Tell me headcount and where, and I&apos;ll quote
+              you.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/contact" className="btn-primary">
@@ -98,17 +98,38 @@ export default function TeamHeadshotsPage() {
             <div>
               <h2 className="font-display text-2xl tracking-tight">Who this is for</h2>
               <p className="mt-3 text-sm leading-7 text-ink-2">
-                Offices, medical and dental practices, real estate teams, synagogues and community
-                orgs, startups, and law firms that want a clean, matching set that doesn’t look
-                mass-produced.
+                <Link href="/corporate-headshots" className="underline hover:text-brass-2">
+                  Offices
+                </Link>
+                ,{" "}
+                <Link href="/medical-headshots" className="underline hover:text-brass-2">
+                  medical and dental practices
+                </Link>
+                ,{" "}
+                <Link href="/real-estate-headshots" className="underline hover:text-brass-2">
+                  real estate teams
+                </Link>
+                , synagogues and community orgs, startups, and{" "}
+                <Link href="/law-firm-headshots" className="underline hover:text-brass-2">
+                  law firms
+                </Link>{" "}
+                that want a clean, matching set that doesn’t look mass-produced. Need just one or two
+                people photographed? See the page for your field above, or{" "}
+                <Link href="/linkedin-headshots" className="underline hover:text-brass-2">
+                  LinkedIn headshots
+                </Link>
+                . Need executive or bio photos? See{" "}
+                <Link href="/corporate-headshots" className="underline hover:text-brass-2">
+                  executive headshots
+                </Link>
+                .
               </p>
             </div>
             <div>
               <h2 className="font-display text-2xl tracking-tight">On-site or studio</h2>
               <ul className="mt-3 space-y-1.5 text-sm leading-7 text-ink-2">
                 <li>
-                  <strong>On-site:</strong> I come to your Rockland office — no travel fee in
-                  Rockland County
+                  <strong>On-site:</strong> I come to your office
                 </li>
                 <li>
                   <strong>Studio:</strong> Spring Valley — good when people can rotate through a
